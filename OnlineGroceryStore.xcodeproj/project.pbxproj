@@ -37,6 +37,67 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EF51091125E6E29B007A459F /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				EF5ADCA125E6E2400029A3B9 /* ViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		EF51091225E6E2A0007A459F /* Custom Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Custom Views";
+			sourceTree = "<group>";
+		};
+		EF51091325E6E2A6007A459F /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		EF51091425E6E2B6007A459F /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				EF51091825E6E2EA007A459F /* UIHelper */,
+				EF51091725E6E2CE007A459F /* Model */,
+				EF51091625E6E2BF007A459F /* Manager */,
+				EF51091525E6E2BA007A459F /* Extension */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		EF51091525E6E2BA007A459F /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		EF51091625E6E2BF007A459F /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		EF51091725E6E2CE007A459F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		EF51091825E6E2EA007A459F /* UIHelper */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = UIHelper;
+			sourceTree = "<group>";
+		};
 		EF5ADC9125E6E2400029A3B9 = {
 			isa = PBXGroup;
 			children = (
@@ -56,15 +117,26 @@
 		EF5ADC9C25E6E2400029A3B9 /* OnlineGroceryStore */ = {
 			isa = PBXGroup;
 			children = (
-				EF5ADC9D25E6E2400029A3B9 /* AppDelegate.swift */,
-				EF5ADC9F25E6E2400029A3B9 /* SceneDelegate.swift */,
-				EF5ADCA125E6E2400029A3B9 /* ViewController.swift */,
-				EF5ADCA325E6E2400029A3B9 /* Main.storyboard */,
-				EF5ADCA625E6E2400029A3B9 /* Assets.xcassets */,
-				EF5ADCA825E6E2400029A3B9 /* LaunchScreen.storyboard */,
+				EF51091425E6E2B6007A459F /* Utilities */,
+				EF51091325E6E2A6007A459F /* Manager */,
+				EF51091225E6E2A0007A459F /* Custom Views */,
+				EF51091125E6E29B007A459F /* Screens */,
+				EF5ADCB225E6E2440029A3B9 /* Component */,
 				EF5ADCAB25E6E2400029A3B9 /* Info.plist */,
 			);
 			path = OnlineGroceryStore;
+			sourceTree = "<group>";
+		};
+		EF5ADCB225E6E2440029A3B9 /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				EF5ADCA625E6E2400029A3B9 /* Assets.xcassets */,
+				EF5ADCA825E6E2400029A3B9 /* LaunchScreen.storyboard */,
+				EF5ADCA325E6E2400029A3B9 /* Main.storyboard */,
+				EF5ADC9F25E6E2400029A3B9 /* SceneDelegate.swift */,
+				EF5ADC9D25E6E2400029A3B9 /* AppDelegate.swift */,
+			);
+			path = Component;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
