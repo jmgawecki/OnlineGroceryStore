@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  HomeVC.swift
 //  OnlineGroceryStore
 //
 //  Created by Jakub Gawecki on 24/02/2021.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+final class HomeVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

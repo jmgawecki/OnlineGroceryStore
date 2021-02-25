@@ -7,23 +7,41 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EF51091B25E6E546007A459F /* LogInVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF51091A25E6E546007A459F /* LogInVC.swift */; };
+		EF51091E25E6E54E007A459F /* SignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF51091D25E6E54E007A459F /* SignUpVC.swift */; };
+		EF51092225E6E8C9007A459F /* EntryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF51092125E6E8C9007A459F /* EntryVC.swift */; };
 		EF5ADC9E25E6E2400029A3B9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF5ADC9D25E6E2400029A3B9 /* AppDelegate.swift */; };
 		EF5ADCA025E6E2400029A3B9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF5ADC9F25E6E2400029A3B9 /* SceneDelegate.swift */; };
-		EF5ADCA225E6E2400029A3B9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF5ADCA125E6E2400029A3B9 /* ViewController.swift */; };
-		EF5ADCA525E6E2400029A3B9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF5ADCA325E6E2400029A3B9 /* Main.storyboard */; };
+		EF5ADCA225E6E2400029A3B9 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF5ADCA125E6E2400029A3B9 /* HomeVC.swift */; };
 		EF5ADCA725E6E2400029A3B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EF5ADCA625E6E2400029A3B9 /* Assets.xcassets */; };
 		EF5ADCAA25E6E2400029A3B9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF5ADCA825E6E2400029A3B9 /* LaunchScreen.storyboard */; };
+		EFA981FC25E7C820002EB81E /* Links.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA981FB25E7C820002EB81E /* Links.swift */; };
+		EFA9820025E7C9CB002EB81E /* ShopImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA981FF25E7C9CB002EB81E /* ShopImageView.swift */; };
+		EFA9820325E7CA2C002EB81E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA9820225E7CA2C002EB81E /* Constants.swift */; };
+		EFA9820625E7CBC7002EB81E /* UIViewController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA9820525E7CBC7002EB81E /* UIViewController+Ext.swift */; };
+		EFA9820B25E7CD76002EB81E /* EntryVCStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA9820A25E7CD76002EB81E /* EntryVCStackView.swift */; };
+		EFA9821125E7CF6E002EB81E /* StoreButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA9821025E7CF6E002EB81E /* StoreButton.swift */; };
+		EFA9821625E7E93C002EB81E /* registerTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA9821525E7E93C002EB81E /* registerTextField.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		EF51091A25E6E546007A459F /* LogInVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInVC.swift; sourceTree = "<group>"; };
+		EF51091D25E6E54E007A459F /* SignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVC.swift; sourceTree = "<group>"; };
+		EF51092125E6E8C9007A459F /* EntryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryVC.swift; sourceTree = "<group>"; };
 		EF5ADC9A25E6E2400029A3B9 /* OnlineGroceryStore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OnlineGroceryStore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF5ADC9D25E6E2400029A3B9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EF5ADC9F25E6E2400029A3B9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		EF5ADCA125E6E2400029A3B9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		EF5ADCA425E6E2400029A3B9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		EF5ADCA125E6E2400029A3B9 /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
 		EF5ADCA625E6E2400029A3B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EF5ADCA925E6E2400029A3B9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EF5ADCAB25E6E2400029A3B9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EFA981FB25E7C820002EB81E /* Links.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Links.swift; sourceTree = "<group>"; };
+		EFA981FF25E7C9CB002EB81E /* ShopImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopImageView.swift; sourceTree = "<group>"; };
+		EFA9820225E7CA2C002EB81E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		EFA9820525E7CBC7002EB81E /* UIViewController+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Ext.swift"; sourceTree = "<group>"; };
+		EFA9820A25E7CD76002EB81E /* EntryVCStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryVCStackView.swift; sourceTree = "<group>"; };
+		EFA9821025E7CF6E002EB81E /* StoreButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreButton.swift; sourceTree = "<group>"; };
+		EFA9821525E7E93C002EB81E /* registerTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = registerTextField.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,7 +58,10 @@
 		EF51091125E6E29B007A459F /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				EF5ADCA125E6E2400029A3B9 /* ViewController.swift */,
+				EF51092125E6E8C9007A459F /* EntryVC.swift */,
+				EF5ADCA125E6E2400029A3B9 /* HomeVC.swift */,
+				EF51091A25E6E546007A459F /* LogInVC.swift */,
+				EF51091D25E6E54E007A459F /* SignUpVC.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -48,6 +69,10 @@
 		EF51091225E6E2A0007A459F /* Custom Views */ = {
 			isa = PBXGroup;
 			children = (
+				EFA9821425E7E930002EB81E /* Text Fields */,
+				EFA9820F25E7CF56002EB81E /* Buttons */,
+				EFA9820825E7CD68002EB81E /* Stack Views */,
+				EFA981FE25E7C9B8002EB81E /* Image Views */,
 			);
 			path = "Custom Views";
 			sourceTree = "<group>";
@@ -73,6 +98,7 @@
 		EF51091525E6E2BA007A459F /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				EFA9820525E7CBC7002EB81E /* UIViewController+Ext.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -94,6 +120,7 @@
 		EF51091825E6E2EA007A459F /* UIHelper */ = {
 			isa = PBXGroup;
 			children = (
+				EFA9820225E7CA2C002EB81E /* Constants.swift */,
 			);
 			path = UIHelper;
 			sourceTree = "<group>";
@@ -123,6 +150,7 @@
 				EF51091125E6E29B007A459F /* Screens */,
 				EF5ADCB225E6E2440029A3B9 /* Component */,
 				EF5ADCAB25E6E2400029A3B9 /* Info.plist */,
+				EFA981FB25E7C820002EB81E /* Links.swift */,
 			);
 			path = OnlineGroceryStore;
 			sourceTree = "<group>";
@@ -132,11 +160,42 @@
 			children = (
 				EF5ADCA625E6E2400029A3B9 /* Assets.xcassets */,
 				EF5ADCA825E6E2400029A3B9 /* LaunchScreen.storyboard */,
-				EF5ADCA325E6E2400029A3B9 /* Main.storyboard */,
 				EF5ADC9F25E6E2400029A3B9 /* SceneDelegate.swift */,
 				EF5ADC9D25E6E2400029A3B9 /* AppDelegate.swift */,
 			);
 			path = Component;
+			sourceTree = "<group>";
+		};
+		EFA981FE25E7C9B8002EB81E /* Image Views */ = {
+			isa = PBXGroup;
+			children = (
+				EFA981FF25E7C9CB002EB81E /* ShopImageView.swift */,
+			);
+			path = "Image Views";
+			sourceTree = "<group>";
+		};
+		EFA9820825E7CD68002EB81E /* Stack Views */ = {
+			isa = PBXGroup;
+			children = (
+				EFA9820A25E7CD76002EB81E /* EntryVCStackView.swift */,
+			);
+			path = "Stack Views";
+			sourceTree = "<group>";
+		};
+		EFA9820F25E7CF56002EB81E /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				EFA9821025E7CF6E002EB81E /* StoreButton.swift */,
+			);
+			path = Buttons;
+			sourceTree = "<group>";
+		};
+		EFA9821425E7E930002EB81E /* Text Fields */ = {
+			isa = PBXGroup;
+			children = (
+				EFA9821525E7E93C002EB81E /* registerTextField.swift */,
+			);
+			path = "Text Fields";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -198,7 +257,6 @@
 			files = (
 				EF5ADCAA25E6E2400029A3B9 /* LaunchScreen.storyboard in Resources */,
 				EF5ADCA725E6E2400029A3B9 /* Assets.xcassets in Resources */,
-				EF5ADCA525E6E2400029A3B9 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -209,23 +267,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EF5ADCA225E6E2400029A3B9 /* ViewController.swift in Sources */,
+				EFA9821625E7E93C002EB81E /* registerTextField.swift in Sources */,
+				EF5ADCA225E6E2400029A3B9 /* HomeVC.swift in Sources */,
 				EF5ADC9E25E6E2400029A3B9 /* AppDelegate.swift in Sources */,
+				EFA9820625E7CBC7002EB81E /* UIViewController+Ext.swift in Sources */,
+				EF51091B25E6E546007A459F /* LogInVC.swift in Sources */,
+				EF51092225E6E8C9007A459F /* EntryVC.swift in Sources */,
+				EFA9821125E7CF6E002EB81E /* StoreButton.swift in Sources */,
+				EFA981FC25E7C820002EB81E /* Links.swift in Sources */,
+				EF51091E25E6E54E007A459F /* SignUpVC.swift in Sources */,
+				EFA9820B25E7CD76002EB81E /* EntryVCStackView.swift in Sources */,
+				EFA9820025E7C9CB002EB81E /* ShopImageView.swift in Sources */,
 				EF5ADCA025E6E2400029A3B9 /* SceneDelegate.swift in Sources */,
+				EFA9820325E7CA2C002EB81E /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		EF5ADCA325E6E2400029A3B9 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				EF5ADCA425E6E2400029A3B9 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		EF5ADCA825E6E2400029A3B9 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
