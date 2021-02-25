@@ -11,6 +11,7 @@ enum imageAsUIImage {
     static let shopBuilding     = UIImage(named: "shopBuilding")
     static let shoppingLadyr071 = UIImage(named: "shoppingLadyr071")
     static let shoppingLadyr056 = UIImage(named: "shoppingLadyr056")
+    static let wavingPeopleR088 = UIImage(named: "wavingPeopleR088")
 }
 
 enum colorAsString {

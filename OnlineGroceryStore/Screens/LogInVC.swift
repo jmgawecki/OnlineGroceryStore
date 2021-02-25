@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Firebase
+
 
 final class LogInVC: UIViewController {
     // MARK: - Declaration
@@ -26,18 +28,62 @@ final class LogInVC: UIViewController {
         layoutUIElements()
         configureUIElements()
         configureButtonsStackView()
+        configureConfirmButton()
     }
     
     // MARK: - @Objectives
     
     
-    @objc private func loginButtonTapped(_ sender: UIView) {
+    @objc private func confirmButtonTapped(_ sender: UIView) {
         animateButtonView(sender)
+        let error = valideFields()
+        if error != nil {
+            print(error!)
+            return
+        }
+        signInToFirebase()
+        
     }
     
     
-    @objc private func registerButtonTapped(_ sender: UIView) {
-        animateButtonView(sender)
+    // MARK: - Private function
+    
+    
+    private func configureConfirmButton() {
+        confirmButton.addTarget(self, action: #selector(confirmButtonTapped), for: .touchUpInside)
+    }
+    
+    
+    private func valideFields() -> String? {
+        if email.text           == "",
+           password.text        == "" {
+            return "Seems like you haven't filled all fields. Please make sure that all the fields are correct"
+        }
+        return nil
+    }
+    
+    
+    private func signInToFirebase() {
+        let emailC      = email.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let passwordC   = password.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        Auth.auth().signIn(withEmail: emailC!, password: passwordC!) { [weak self] (result, error) in
+            guard let self = self else { return }
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            } else {
+                self.pushToHomeScreen()
+            }
+           
+            
+        }
+    }
+    
+    private func pushToHomeScreen() {
+        let destVC = HomeVC()
+        view.window?.rootViewController = destVC
+        view.window?.makeKeyAndVisible()
+        navigationController?.popToRootViewController(animated: true)
     }
     
     

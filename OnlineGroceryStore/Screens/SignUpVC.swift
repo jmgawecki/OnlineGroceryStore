@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import FirebaseAuth
+import Firebase
 
 final class SignUpVC: UIViewController {
     // MARK: - Declaration
@@ -30,20 +32,81 @@ final class SignUpVC: UIViewController {
         layoutUIElements()
         configureUIElements()
         configureRegisterStackView()
+        configureConfirmButton()
     }
     
     // MARK: - @Objectives
     
     
-    @objc private func loginButtonTapped(_ sender: UIView) {
+    @objc private func confirmButtonTapped(_ sender: UIView) {
         animateButtonView(sender)
+        // validate
+        let error = valideFields()
+        if error != nil {
+            print(error!)
+            return
+        }
+        createUserInFirebase()
+        
     }
     
     
-    @objc private func registerButtonTapped(_ sender: UIView) {
-        animateButtonView(sender)
+    // MARK: - Private Function
+    
+    
+    private func configureConfirmButton() {
+        confirmButton.addTarget(self, action: #selector(confirmButtonTapped), for: .touchUpInside)
     }
     
+    
+    private func createUserInFirebase() {
+        // trim the fields from white spaces and extra empty lines
+        let firstNameC  = firstName.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let lastNameC   = lastName.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let emailC      = email.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let passwordC   = password.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        // create the user
+        Auth.auth().createUser(withEmail: emailC!, password: passwordC!) { [weak self] (result, error) in
+            guard let self = self else { return }
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            let fireStore = Firestore.firestore()
+            
+            fireStore.collection("users").addDocument(data: ["firstname" : firstNameC!,
+                                                             "lastname"  : lastNameC!,
+                                                             "uid"       : result!.user.uid]) { (error) in
+                if error != nil {
+                    print("First name and last name saving failed")
+                }
+            }
+            self.pushToHomeScreen()
+        }
+    }
+    
+    private func pushToHomeScreen() {
+        let destVC = HomeVC()
+        view.window?.rootViewController = destVC
+        view.window?.makeKeyAndVisible()
+        navigationController?.popToRootViewController(animated: true)
+    }
+    
+    private func valideFields() -> String? {
+        if firstName.text       == "",
+           lastName.text        == "",
+           email.text           == "",
+           password.text        == "",
+           confirmPassword.text == "" {
+            return "Seems like you haven't field all fields. Please make sure that all the fields are correct"
+        }
+        if password.text != confirmPassword.text {
+            return "Password are not matching! Please make sure both password are correct."
+        } else if HelpFunctions.isPasswordValid(for: password.text!) == false {
+            return "Password is not valid."
+        }
+        return nil
+    }
     
     // MARK: - UI Configuration
     
@@ -79,7 +142,8 @@ final class SignUpVC: UIViewController {
 
     
     private func configureUIElements() {
-        shopImageView.image = imageAsUIImage.shoppingLadyr071    }
+        shopImageView.image = imageAsUIImage.shoppingLadyr071
+    }
     
     
     private func layoutUIElements() {

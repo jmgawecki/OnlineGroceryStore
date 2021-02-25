@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -19,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
-        window?.rootViewController = configureEntryNavController()
+        window?.rootViewController = setRootViewController()
         window?.makeKeyAndVisible()
         
         configureNavigationController()
@@ -32,10 +33,27 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         return UINavigationController(rootViewController: entryVC)
     }
     
+    private func configureHomeNavController() -> UINavigationController {
+        let entryVC = HomeVC()
+        entryVC.title = "Home"
+        return UINavigationController(rootViewController: entryVC)
+    }
+    
     
     private func configureNavigationController() {
         UINavigationBar.appearance().tintColor = UIColor(named: colorAsString.storeTertiary)
     }
+    
+    
+    func setRootViewController() -> UINavigationController {
+        var navigationController: UINavigationController?
+            if Auth.auth().currentUser != nil {
+                navigationController = configureHomeNavController()
+            } else {
+                navigationController = configureEntryNavController()
+            }
+        return navigationController!
+        }
     
     
     func sceneDidDisconnect(_ scene: UIScene) {

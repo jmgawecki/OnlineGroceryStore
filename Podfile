@@ -8,4 +8,6 @@ target 'OnlineGroceryStore' do
   # Pods for OnlineGroceryStore
 	pod 'Firebase/Analytics'
 	pod 'Firebase/Auth'
+	pod 'Firebase/Core'
+	pod 'Firebase/Firestore'
 end

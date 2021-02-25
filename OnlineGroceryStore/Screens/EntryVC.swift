@@ -35,6 +35,7 @@ final class EntryVC: UIViewController {
         configureVC()
     }
     
+    
     // MARK: - @Objectives
     
     
