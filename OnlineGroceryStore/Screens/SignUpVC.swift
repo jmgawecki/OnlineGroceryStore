@@ -10,7 +10,14 @@ import UIKit
 final class SignUpVC: UIViewController {
     // MARK: - Declaration
     var shopImageView       = ShopImageView(frame: .zero)
+    var registerFormStackV  = UIStackView()
     
+    var firstName       = registerTextField(placeholder: "First Name", capitalised: .words, isPassword: false)
+    var lastName        = registerTextField(placeholder: "Last Name", capitalised: .words, isPassword: false)
+    var email           = registerTextField(placeholder: "@Email", capitalised: .none, isPassword: false)
+    var password        = registerTextField(placeholder: "Password", capitalised: .none, isPassword: true)
+    var confirmPassword = registerTextField(placeholder: "Confirm Password", capitalised: .none, isPassword: true)
+    var confirmButton   = StoreButton(fontSize: 18, label: "Sign Up!")
     
     
     
@@ -22,6 +29,7 @@ final class SignUpVC: UIViewController {
         configureVC()
         layoutUIElements()
         configureUIElements()
+        configureRegisterStackView()
     }
     
     // MARK: - @Objectives
@@ -40,11 +48,30 @@ final class SignUpVC: UIViewController {
     // MARK: - UI Configuration
     
     
+    private func configureRegisterStackView() {
+        registerFormStackV.translatesAutoresizingMaskIntoConstraints = false
+        registerFormStackV.axis                = .vertical
+        registerFormStackV.distribution        = .fillEqually
+        registerFormStackV.spacing             = 14
+        registerFormStackV.backgroundColor     = UIColor(named: colorAsString.storeBackground)
+        
+        registerFormStackV.addArrangedSubview(firstName)
+        registerFormStackV.addArrangedSubview(lastName)
+        registerFormStackV.addArrangedSubview(email)
+        registerFormStackV.addArrangedSubview(password)
+        registerFormStackV.addArrangedSubview(confirmPassword)
+        registerFormStackV.addArrangedSubview(confirmButton)
+        
+    }
+    
+    
+    
     // MARK: - UI Layout Configuration
     
     
     private func configureVC() {
         view.backgroundColor = UIColor(named: colorAsString.storeBackground)
+        title = "Sign Up"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
@@ -56,13 +83,18 @@ final class SignUpVC: UIViewController {
     
     
     private func layoutUIElements() {
-        addSubviews(shopImageView)
+        addSubviews(shopImageView, registerFormStackV)
         
         NSLayoutConstraint.activate([
-            shopImageView.topAnchor.constraint          (equalTo: view.topAnchor, constant: 100),
-            shopImageView.heightAnchor.constraint       (equalToConstant: 250),
-            shopImageView.widthAnchor.constraint        (equalTo: shopImageView.heightAnchor, multiplier: 0.71),
-            shopImageView.centerXAnchor.constraint      (equalTo: view.centerXAnchor),
+            shopImageView.bottomAnchor.constraint           (equalTo: view.bottomAnchor, constant: -50),
+            shopImageView.heightAnchor.constraint           (equalToConstant: 250),
+            shopImageView.widthAnchor.constraint            (equalTo: shopImageView.heightAnchor, multiplier: 0.71),
+            shopImageView.centerXAnchor.constraint          (equalTo: view.centerXAnchor),
+            
+            registerFormStackV.bottomAnchor.constraint      (equalTo: shopImageView.topAnchor, constant: -30),
+            registerFormStackV.heightAnchor.constraint      (equalToConstant: 300),
+            registerFormStackV.widthAnchor.constraint       (equalToConstant: 280),
+            registerFormStackV.centerXAnchor.constraint     (equalTo: view.centerXAnchor),
         ])
     }
     

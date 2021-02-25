@@ -24,10 +24,11 @@ class registerTextField: UITextField {
     }
     
     
-    convenience init(placeholder: String, capitalised: UITextAutocapitalizationType) {
+    convenience init(placeholder: String, capitalised: UITextAutocapitalizationType, isPassword: Bool) {
         self.init(frame: .zero)
         self.placeholder            = placeholder
         self.autocapitalizationType = capitalised
+        self.isSecureTextEntry      = isPassword
     }
     
     
@@ -46,10 +47,8 @@ class registerTextField: UITextField {
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor         = .white
         
-        layer.cornerRadius      = 15
-        layer.borderWidth       = 2
-        
-        font                    = UIFont.systemFont(ofSize: 20, weight: .regular)
+        borderStyle             = .roundedRect
+        font                    = UIFont.systemFont(ofSize: 15, weight: .regular)
         
         textAlignment           = .left
         returnKeyType           = .done
