@@ -26,6 +26,9 @@
 		EFA9821C25E7F4E6002EB81E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EFA9821B25E7F4E6002EB81E /* GoogleService-Info.plist */; };
 		EFA9822F25E7FB43002EB81E /* HelpFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA9822E25E7FB43002EB81E /* HelpFunctions.swift */; };
 		EFA9824725E81898002EB81E /* logOutVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA9824625E81898002EB81E /* logOutVC.swift */; };
+		EFA9824B25E81DA2002EB81E /* StoreBoldLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA9824A25E81DA2002EB81E /* StoreBoldLabel.swift */; };
+		EFA9825025E823CE002EB81E /* UIView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA9824F25E823CE002EB81E /* UIView+Ext.swift */; };
+		EFA9825325E84C6D002EB81E /* UserLocal.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA9825225E84C6D002EB81E /* UserLocal.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +55,9 @@
 		EFA9821B25E7F4E6002EB81E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EFA9822E25E7FB43002EB81E /* HelpFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpFunctions.swift; sourceTree = "<group>"; };
 		EFA9824625E81898002EB81E /* logOutVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = logOutVC.swift; sourceTree = "<group>"; };
+		EFA9824A25E81DA2002EB81E /* StoreBoldLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreBoldLabel.swift; sourceTree = "<group>"; };
+		EFA9824F25E823CE002EB81E /* UIView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ext.swift"; sourceTree = "<group>"; };
+		EFA9825225E84C6D002EB81E /* UserLocal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocal.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +104,7 @@
 		EF51091225E6E2A0007A459F /* Custom Views */ = {
 			isa = PBXGroup;
 			children = (
+				EFA9824925E81D97002EB81E /* Labels */,
 				EFA9821425E7E930002EB81E /* Text Fields */,
 				EFA9820F25E7CF56002EB81E /* Buttons */,
 				EFA9820825E7CD68002EB81E /* Stack Views */,
@@ -128,6 +135,7 @@
 			isa = PBXGroup;
 			children = (
 				EFA9820525E7CBC7002EB81E /* UIViewController+Ext.swift */,
+				EFA9824F25E823CE002EB81E /* UIView+Ext.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -142,6 +150,7 @@
 		EF51091725E6E2CE007A459F /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				EFA9825225E84C6D002EB81E /* UserLocal.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -229,6 +238,14 @@
 				EFA9821525E7E93C002EB81E /* registerTextField.swift */,
 			);
 			path = "Text Fields";
+			sourceTree = "<group>";
+		};
+		EFA9824925E81D97002EB81E /* Labels */ = {
+			isa = PBXGroup;
+			children = (
+				EFA9824A25E81DA2002EB81E /* StoreBoldLabel.swift */,
+			);
+			path = Labels;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -345,6 +362,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EFA9825025E823CE002EB81E /* UIView+Ext.swift in Sources */,
 				EFA9821625E7E93C002EB81E /* registerTextField.swift in Sources */,
 				EF5ADCA225E6E2400029A3B9 /* HomeVC.swift in Sources */,
 				EF5ADC9E25E6E2400029A3B9 /* AppDelegate.swift in Sources */,
@@ -358,7 +376,9 @@
 				EFA9820B25E7CD76002EB81E /* EntryVCStackView.swift in Sources */,
 				EFA9824725E81898002EB81E /* logOutVC.swift in Sources */,
 				EFA9820025E7C9CB002EB81E /* ShopImageView.swift in Sources */,
+				EFA9825325E84C6D002EB81E /* UserLocal.swift in Sources */,
 				EF5ADCA025E6E2400029A3B9 /* SceneDelegate.swift in Sources */,
+				EFA9824B25E81DA2002EB81E /* StoreBoldLabel.swift in Sources */,
 				EFA9820325E7CA2C002EB81E /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

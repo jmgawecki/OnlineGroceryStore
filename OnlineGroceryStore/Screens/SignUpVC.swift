@@ -14,14 +14,14 @@ final class SignUpVC: UIViewController {
     var shopImageView       = ShopImageView(frame: .zero)
     var registerFormStackV  = UIStackView()
     
-    var firstName       = registerTextField(placeholder: "First Name", capitalised: .words, isPassword: false)
-    var lastName        = registerTextField(placeholder: "Last Name", capitalised: .words, isPassword: false)
-    var email           = registerTextField(placeholder: "@Email", capitalised: .none, isPassword: false)
-    var password        = registerTextField(placeholder: "Password", capitalised: .none, isPassword: true)
-    var confirmPassword = registerTextField(placeholder: "Confirm Password", capitalised: .none, isPassword: true)
-    var confirmButton   = StoreButton(fontSize: 18, label: "Sign Up!")
+    var firstName           = registerTextField(placeholder: "First Name", capitalised: .words, isPassword: false)
+    var lastName            = registerTextField(placeholder: "Last Name", capitalised: .words, isPassword: false)
+    var email               = registerTextField(placeholder: "@Email", capitalised: .none, isPassword: false)
+    var password            = registerTextField(placeholder: "Password", capitalised: .none, isPassword: true)
+    var confirmPassword     = registerTextField(placeholder: "Confirm Password", capitalised: .none, isPassword: true)
+    var confirmButton       = StoreButton(fontSize: 18, label: "Sign Up!")
     
-    
+    var currentUser: UserLocal?
     
     // MARK: - Override, Initialiser
     
@@ -61,35 +61,37 @@ final class SignUpVC: UIViewController {
     
     private func createUserInFirebase() {
         // trim the fields from white spaces and extra empty lines
-        let firstNameC  = firstName.text?.trimmingCharacters(in: .whitespacesAndNewlines)
-        let lastNameC   = lastName.text?.trimmingCharacters(in: .whitespacesAndNewlines)
-        let emailC      = email.text?.trimmingCharacters(in: .whitespacesAndNewlines)
-        let passwordC   = password.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let firstNameC      = firstName.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let lastNameC       = lastName.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let emailC          = email.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let passwordC       = password.text?.trimmingCharacters(in: .whitespacesAndNewlines)
         // create the user
         Auth.auth().createUser(withEmail: emailC!, password: passwordC!) { [weak self] (result, error) in
-            guard let self = self else { return }
-            if let error = error {
+            guard let self  = self else { return }
+            if let error    = error {
                 print(error.localizedDescription)
                 return
             }
-            let fireStore = Firestore.firestore()
+            let fireStore   = Firestore.firestore()
             
-            fireStore.collection("users").addDocument(data: ["firstname" : firstNameC!,
-                                                             "lastname"  : lastNameC!,
-                                                             "uid"       : result!.user.uid]) { (error) in
+            self.currentUser = UserLocal(uid: (result?.user.uid)!, firstName: firstNameC!, lastName: lastNameC!, email: (result?.user.email)!)
+            
+            fireStore.collection("usersData").document(emailC!).setData(["firstname" : firstNameC!,
+                                                                         "lastname"  : lastNameC!,
+                                                                         "uid"       : result!.user.uid]) { (error) in
                 if error != nil {
                     print("First name and last name saving failed")
                 }
             }
-            self.pushToHomeScreen()
+            self.pushToHomeScreen(with: self.currentUser!)
+            
+            
         }
     }
     
-    private func pushToHomeScreen() {
+    private func pushToHomeScreen(with currentUser: UserLocal) {
         let destVC = HomeVC()
-        view.window?.rootViewController = destVC
-        view.window?.makeKeyAndVisible()
-        navigationController?.popToRootViewController(animated: true)
+        navigationController?.pushViewController(destVC, animated: true)
     }
     
     private func valideFields() -> String? {

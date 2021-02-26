@@ -8,15 +8,17 @@
 import UIKit
 
 enum imageAsUIImage {
-    static let shopBuilding     = UIImage(named: "shopBuilding")
-    static let shoppingLadyr071 = UIImage(named: "shoppingLadyr071")
-    static let shoppingLadyr056 = UIImage(named: "shoppingLadyr056")
-    static let wavingPeopleR088 = UIImage(named: "wavingPeopleR088")
+    static let shopBuilding         = UIImage(named: "shopBuilding")
+    static let shoppingLadyr071     = UIImage(named: "shoppingLadyr071")
+    static let shoppingLadyr056     = UIImage(named: "shoppingLadyr056")
+    static let wavingPeopleR088     = UIImage(named: "wavingPeopleR088")
+    static let shoppingPerson3R079  = UIImage(named: "shoppingPerson3R079")
 }
 
 enum colorAsString {
-    static let storeBackground  = "storeBackground"
-    static let storeSecondary   = "storeSecondary"
-    static let storeTertiary    = "storeTertiary"
+    static let storeBackground      = "storeBackground"
+    static let storeSecondary       = "storeSecondary"
+    static let storeTertiary        = "storeTertiary"
+    static let storePrimaryText     = "storePrimaryText"
 }
 

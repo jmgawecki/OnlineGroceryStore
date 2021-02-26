@@ -71,8 +71,18 @@ final class LogInVC: UIViewController {
             if let error = error {
                 print(error.localizedDescription)
                 return
+                
             } else {
                 self.pushToHomeScreen()
+//                switch result {
+//                case .none:
+//                    print("none")
+//                case .some(let this):
+//                    print(this.user.uid)
+//                    Firestore.firestore().
+//
+//                }
+                
             }
            
             
@@ -81,9 +91,7 @@ final class LogInVC: UIViewController {
     
     private func pushToHomeScreen() {
         let destVC = HomeVC()
-        view.window?.rootViewController = destVC
-        view.window?.makeKeyAndVisible()
-        navigationController?.popToRootViewController(animated: true)
+        navigationController?.pushViewController(destVC, animated: true)
     }
     
     

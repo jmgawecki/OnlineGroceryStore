@@ -16,7 +16,12 @@ final class logOutVC: UIViewController {
     var shopImageView       = ShopImageView(frame: .zero)
     var buttonsStack        = UIStackView()
     
-    
+    var byeLabel            = StoreBoldLabel(with: "We hope to see You around very soon!",
+                                             from: .left,
+                                             ofsize: 35,
+                                             ofweight: .bold,
+                                             alpha: 1,
+                                             color: UIColor(named: colorAsString.storePrimaryText)!)
     
     
     // MARK: - Override, Initialiser
@@ -74,7 +79,6 @@ final class logOutVC: UIViewController {
         view.backgroundColor = UIColor(named: colorAsString.storeBackground)
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.setNavigationBarHidden(true, animated: true)
-        navigationController?.isNavigationBarHidden = true
     }
     
     
@@ -90,18 +94,23 @@ final class logOutVC: UIViewController {
     }
     
     private func configureUIElements() {
-        shopImageView.image = imageAsUIImage.shopBuilding
+        shopImageView.image = imageAsUIImage.wavingPeopleR088
     }
     
     
     private func layoutUIElements() {
-        addSubviews(shopImageView, buttonsStack)
+        addSubviews(shopImageView, buttonsStack, byeLabel)
         
         NSLayoutConstraint.activate([
             shopImageView.topAnchor.constraint          (equalTo: view.topAnchor, constant: 100),
             shopImageView.heightAnchor.constraint       (equalToConstant: 250),
-            shopImageView.widthAnchor.constraint        (equalTo: shopImageView.heightAnchor, multiplier: 1.5),
+            shopImageView.widthAnchor.constraint        (equalTo: shopImageView.heightAnchor, multiplier: 0.88),
             shopImageView.centerXAnchor.constraint      (equalTo: view.centerXAnchor),
+            
+            byeLabel.topAnchor.constraint               (equalTo: shopImageView.bottomAnchor, constant: 10),
+            byeLabel.widthAnchor.constraint             (equalToConstant: 320),
+            byeLabel.heightAnchor.constraint            (equalToConstant: 100),
+            byeLabel.leadingAnchor.constraint           (equalTo: view.leadingAnchor, constant: 15),
             
             buttonsStack.bottomAnchor.constraint        (equalTo: view.bottomAnchor, constant: -80),
             buttonsStack.heightAnchor.constraint        (equalToConstant: 110),

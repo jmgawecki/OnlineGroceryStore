@@ -15,6 +15,19 @@ final class EntryVC: UIViewController {
     var shopImageView       = ShopImageView(frame: .zero)
     var buttonsStack        = UIStackView()
     
+    var welcomeLabel        = StoreBoldLabel(with: "Hi there",
+                                             from: .left,
+                                             ofsize: 35,
+                                             ofweight: .bold,
+                                             alpha: 0,
+                                             color: UIColor(named: colorAsString.storePrimaryText)!)
+    
+    var bodyLabel           = StoreBoldLabel(with: "Please log in or sign up in order to buy some awesome things!",
+                                             from: .left,
+                                             ofsize: 20,
+                                             ofweight: .medium,
+                                             alpha: 0,
+                                             color: UIColor(named: colorAsString.storePrimaryText)!)
     
     
     
@@ -33,6 +46,7 @@ final class EntryVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         configureVC()
+        performContentAnimation(firstLabel: welcomeLabel, secondLabel: bodyLabel, anArrow: nil)
     }
     
     
@@ -94,13 +108,24 @@ final class EntryVC: UIViewController {
     
     
     private func layoutUIElements() {
-        addSubviews(shopImageView, buttonsStack)
+//        debugConfiguration(shopImageView,buttonsStack,welcomeLabel,bodyLabel)
+        addSubviews(shopImageView, buttonsStack, welcomeLabel, bodyLabel)
         
         NSLayoutConstraint.activate([
             shopImageView.topAnchor.constraint          (equalTo: view.topAnchor, constant: 100),
             shopImageView.heightAnchor.constraint       (equalToConstant: 250),
             shopImageView.widthAnchor.constraint        (equalTo: shopImageView.heightAnchor, multiplier: 1.5),
             shopImageView.centerXAnchor.constraint      (equalTo: view.centerXAnchor),
+            
+            welcomeLabel.topAnchor.constraint           (equalTo: shopImageView.bottomAnchor, constant: 10),
+            welcomeLabel.widthAnchor.constraint         (equalToConstant: 250),
+            welcomeLabel.heightAnchor.constraint        (equalToConstant: 45),
+            welcomeLabel.leadingAnchor.constraint       (equalTo: shopImageView.leadingAnchor, constant: 15),
+            
+            bodyLabel.topAnchor.constraint              (equalTo: welcomeLabel.bottomAnchor),
+            bodyLabel.widthAnchor.constraint            (equalToConstant: 310),
+            bodyLabel.heightAnchor.constraint           (equalToConstant: 65),
+            bodyLabel.leadingAnchor.constraint          (equalTo: shopImageView.leadingAnchor, constant: 15),
             
             buttonsStack.bottomAnchor.constraint        (equalTo: view.bottomAnchor, constant: -80),
             buttonsStack.heightAnchor.constraint        (equalToConstant: 110),
@@ -122,6 +147,25 @@ final class EntryVC: UIViewController {
                 return
             }
         }
+    }
+    
+    private func performContentAnimation(firstLabel: UIView, secondLabel: UIView, anArrow: UIImageView?) {
+        UIView.animate(withDuration: 1) {
+            firstLabel.alpha = 1
+        } completion: { (_) in
+            UIView.animate(withDuration: 0.75) {
+                secondLabel.alpha = 1
+            } completion: { (_) in
+                UIView.animate(withDuration: 0.5) {
+                    if anArrow != nil{
+                        anArrow!.alpha = 1
+                    }
+                    
+                }
+            }
+
+        }
+
     }
    
 }
