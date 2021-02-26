@@ -27,7 +27,7 @@ final class HomeVC: UIViewController {
     
     var vawingGirlImageView         = ShopImageView(frame: .zero)
     
-    var allCategoriesButton = StoreImageLabelButton(fontSize: 20, label: "Browse by category", image: UIImage(systemName: "xmark")!)
+    var allCategoriesButton = StoreImageLabelButton(fontSize: 20, message: "Shop by Category", image: imageAsUIImage.foodPlaceholder!, textColor: UIColor(named: colorAsString.storeTertiary) ?? .green)
     
     // MARK: - Override and Initialise
     
@@ -89,6 +89,7 @@ final class HomeVC: UIViewController {
     
     @objc private func allCategoriesButtonTapped(_ sender: UIView) {
         animateButtonViewAlpha(sender)
+        navigationController?.pushViewController(CategoriesVC(), animated: true)
     }
     
     

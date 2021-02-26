@@ -26,6 +26,7 @@ class ShopImageView: UIImageView {
     // MARK: - Configuration
     
     private func configure() {
+        image = imageAsUIImage.foodPlaceholder
         translatesAutoresizingMaskIntoConstraints = false
         clipsToBounds = true
         layer.cornerRadius = 10

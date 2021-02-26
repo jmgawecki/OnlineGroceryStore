@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
-        window?.rootViewController = setRootViewController()
+        window?.rootViewController = setRootAsHomeTabBar() ?? configureEntryNavController()
         window?.makeKeyAndVisible()
         
         configureNavigationController()
@@ -45,15 +45,23 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     
-    func setRootViewController() -> UINavigationController {
-        var navigationController: UINavigationController?
-            if Auth.auth().currentUser != nil {
-                navigationController = configureHomeNavController()
-            } else {
-                navigationController = configureEntryNavController()
-            }
-        return navigationController!
-        }
+//    func setRootViewController() -> UINavigationController {
+//        var navigationController: UINavigationController?
+//            if Auth.auth().currentUser != nil {
+//                navigationController = configureHomeNavController()
+//            } else {
+//                navigationController = configureEntryNavController()
+//            }
+//        return navigationController!
+//        }
+    
+    func setRootAsHomeTabBar() -> UITabBarController? {
+        var homeTabBarController: UITabBarController?
+            
+        if Auth.auth().currentUser != nil { homeTabBarController = HomeTabBarController() }
+        
+        return homeTabBarController
+    }
     
     
     func sceneDidDisconnect(_ scene: UIScene) {

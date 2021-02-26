@@ -8,6 +8,10 @@
 import UIKit
 
 class StoreImageLabelButton: UIButton {
+    // MARK: - Declaration
+    
+    var buttonImageView = ShopImageView(frame: .zero)
+    var buttonLabel: StoreBoldLabel!
     
     
     // MARK: - Override and Initialiser
@@ -16,6 +20,7 @@ class StoreImageLabelButton: UIButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
+        layoutUI()
     }
     
     
@@ -24,11 +29,17 @@ class StoreImageLabelButton: UIButton {
     }
     
     
-    convenience init(fontSize: CGFloat, label: String, image: UIImage) {
-        self.init(frame: .zero)
-        titleLabel?.font = UIFont.systemFont(ofSize: fontSize, weight: .medium)
-        setTitle(label, for: .normal)
-        setImage(image, for: .normal)
+    init(fontSize: CGFloat, message: String, image: UIImage, textColor: UIColor) {
+        super.init(frame: .zero)
+        
+        buttonLabel = StoreBoldLabel(with: message,
+                               from: .left,
+                               ofsize: fontSize,
+                               ofweight: .medium,
+                               alpha: 1,
+                               color: textColor)
+        configure()
+        layoutUI()
     }
     
     
@@ -45,5 +56,26 @@ class StoreImageLabelButton: UIButton {
         layer.shadowOpacity = 0.5
         layer.shadowRadius  = 0.0
         layer.masksToBounds = false
+    }
+    
+    private func layoutUI() {
+        addSubview(buttonImageView)
+        addSubview(buttonLabel)
+        buttonImageView.image = imageAsUIImage.foodPlaceholder
+        
+        
+        NSLayoutConstraint.activate([
+            buttonLabel.topAnchor.constraint            (equalTo: topAnchor, constant: 5),
+            buttonLabel.bottomAnchor.constraint         (equalTo: bottomAnchor, constant: -5),
+            buttonLabel.centerXAnchor.constraint        (equalTo: centerXAnchor, constant: 10),
+            buttonLabel.widthAnchor.constraint          (equalToConstant: 200),
+            
+            buttonImageView.topAnchor.constraint        (equalTo: topAnchor, constant: 5),
+            buttonImageView.bottomAnchor.constraint     (equalTo: bottomAnchor, constant: -5),
+            buttonImageView.trailingAnchor.constraint   (equalTo: buttonLabel.leadingAnchor, constant: -10),
+            buttonImageView.widthAnchor.constraint      (lessThanOrEqualTo: heightAnchor, multiplier: 1.33, constant: -10),
+            
+            
+        ])
     }
 }

@@ -19,6 +19,7 @@ enum imageAsUIImage {
     static let sadBlackGirlR056         = UIImage(named: "sadBlackGirlR056")
     static let smilingBlackGirlR065     = UIImage(named: "smilingBlackGirlR065")
     static let wavingBlackGirlR056      = UIImage(named: "wavingBlackGirlR056")
+    static let foodPlaceholder          = UIImage(named: "foodPlaceholder")
 }
 
 enum colorAsString {
@@ -26,5 +27,13 @@ enum colorAsString {
     static let storeSecondary           = "storeSecondary"
     static let storeTertiary            = "storeTertiary"
     static let storePrimaryText         = "storePrimaryText"
+}
+
+enum systemImageAsString {
+    static let search                   = "magnifyingglass"
+    static let favorites                = "suit.heart"
+    static let home                     = "house"
+    static let orders                   = "bag"
+    static let basket                   = "cart"
 }
 
