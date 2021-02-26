@@ -12,4 +12,6 @@ extension UIView {
         for view in views {
             view.layer.borderWidth = 1 }
     }
+    
+    func addSubviews(_ views: UIView...) { for view in views { self.addSubview(view) } }
 }

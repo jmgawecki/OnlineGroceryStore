@@ -15,22 +15,32 @@ final class HomeVC: UIViewController {
     var scrollView              = UIScrollView()
     var hiNameLabel             = StoreBoldLabel(with: "Hello ",
                                                  from: .left,
-                                                 ofsize: 20,
+                                                 ofsize: 30,
                                                  ofweight: .bold,
-                                                 alpha: 1,
+                                                 alpha: 0,
                                                  color: UIColor(named: colorAsString.storePrimaryText) ?? .orange)
+    var contentView             = UIView()
+    var favoritesView           = FavoritesView()
+    var specialOffersView       = SpecialOffersView()
     
     var currentUser: UserLocal?
+    
+    var vawingGirlImageView         = ShopImageView(frame: .zero)
+    
+    var allCategoriesButton = StoreImageLabelButton(fontSize: 20, label: "Browse by category", image: UIImage(systemName: "xmark")!)
     
     // MARK: - Override and Initialise
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        layoutUI()
+        layoutScrollViewAndContentView()
+        layoutUIInScrollView()
         configureLogOutButton()
-        configureDeclarations()
+        configureAllCategoriesButton()
         configureUIElements()
+        getCurrentUserData()
+        animateViews()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -49,7 +59,7 @@ final class HomeVC: UIViewController {
                 self.currentUser = UserLocal(uid:       user?.data()!["uid"]        as! String,
                                              firstName: user?.data()!["firstname"]  as! String,
                                              lastName:  user?.data()!["lastname"]   as! String,
-                                             email:     user?.data()!["email"]      as! String)
+                                             email:     userEmail)
                 
                 #warning("How to make it better? How to append name to a label before class is initialised. Tried in scene delegate but its a one big mess")
                 DispatchQueue.main.async {
@@ -77,6 +87,11 @@ final class HomeVC: UIViewController {
     }
     
     
+    @objc private func allCategoriesButtonTapped(_ sender: UIView) {
+        animateButtonViewAlpha(sender)
+    }
+    
+    
     //MARK: - Private Function
     
     
@@ -86,53 +101,117 @@ final class HomeVC: UIViewController {
     }
     
     
-    private func configureDeclarations() {
-      
-    }
-    
-    
     private func configureLogOutButton() {
         logOutButton.addTarget(self, action: #selector(logOutButtonTapped), for: .touchUpInside)
     }
     
     
+    private func configureAllCategoriesButton() {
+        allCategoriesButton.addTarget(self, action: #selector(allCategoriesButtonTapped), for: .touchUpInside)
+    }
+    
+    
+    private func animateViews() {
+        animateViewAlpha(hiNameLabel)
+        animateViewAlpha(vawingGirlImageView)
+    }
+    
     //MARK: - VC Configuration
     
     
     private func configureUIElements() {
-        
+        vawingGirlImageView.image = imageAsUIImage.wavingBlackGirlR056
+        vawingGirlImageView.alpha = 0
     }
     
     
     //MARK: - Layout configuration
     
     
-    private func layoutUI() {
+    private func layoutScrollViewAndContentView() {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(scrollView)
-        scrollView.addSubview(hiNameLabel)
-        scrollView.addSubview(logOutButton)
-        scrollView.backgroundColor = .systemRed
-        scrollView.isScrollEnabled = true
-        
+        scrollView.addSubview(contentView)
+        scrollView.backgroundColor = UIColor(named: colorAsString.storeBackground)
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint             (equalTo: view.topAnchor),
-            scrollView.heightAnchor.constraint          (equalToConstant: 1000),
+            scrollView.bottomAnchor.constraint          (equalTo: view.bottomAnchor),
             scrollView.leadingAnchor.constraint         (equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint        (equalTo: view.trailingAnchor),
-
-            logOutButton.centerXAnchor.constraint       (equalTo: scrollView.centerXAnchor),
-            logOutButton.topAnchor.constraint           (equalTo: scrollView.centerYAnchor),
-            logOutButton.widthAnchor.constraint         (equalToConstant: 150),
-            logOutButton.heightAnchor.constraint        (equalToConstant: 500),
+        
+            contentView.topAnchor.constraint            (equalTo: scrollView.topAnchor),
+            contentView.bottomAnchor.constraint         (equalTo: scrollView.bottomAnchor),
+            contentView.leadingAnchor.constraint        (equalTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint       (equalTo: scrollView.trailingAnchor),
+        
+            contentView.widthAnchor.constraint          (equalTo: scrollView.widthAnchor),
+            contentView.heightAnchor.constraint         (equalToConstant: 2000),
             
-            hiNameLabel.centerXAnchor.constraint        (equalTo: scrollView.centerXAnchor),
-            hiNameLabel.topAnchor.constraint            (equalTo: logOutButton.bottomAnchor),
-            hiNameLabel.widthAnchor.constraint          (equalToConstant: 150),
-            hiNameLabel.heightAnchor.constraint         (equalToConstant: 500),
         ])
     }
+    
+    
+    private func layoutUIInScrollView() {
+        contentView.addSubviews(hiNameLabel, vawingGirlImageView, favoritesView, specialOffersView, allCategoriesButton)
+//        debugConfiguration(hiNameLabel, vawingGirlImageView, favoritesView, specialOffersView, allCategoriesButton)
+        favoritesView.translatesAutoresizingMaskIntoConstraints = false
+        specialOffersView.translatesAutoresizingMaskIntoConstraints = false
 
-
+        NSLayoutConstraint.activate([
+            hiNameLabel.leadingAnchor.constraint            (equalTo: contentView.leadingAnchor, constant: 30),
+            hiNameLabel.topAnchor.constraint                (equalTo: contentView.topAnchor, constant: 20),
+            hiNameLabel.widthAnchor.constraint              (equalToConstant: 220),
+            hiNameLabel.heightAnchor.constraint             (equalToConstant: 50),
+                
+            vawingGirlImageView.topAnchor.constraint        (equalTo: contentView.topAnchor),
+            vawingGirlImageView.leadingAnchor.constraint    (equalTo: hiNameLabel.trailingAnchor, constant: 5), //
+            vawingGirlImageView.widthAnchor.constraint      (equalToConstant: 100),
+            vawingGirlImageView.heightAnchor.constraint     (equalTo: vawingGirlImageView.widthAnchor, multiplier: 1.78),
+            
+            favoritesView.topAnchor.constraint              (equalTo: vawingGirlImageView.bottomAnchor),
+            favoritesView.leadingAnchor.constraint          (equalTo: contentView.leadingAnchor, constant: 0),
+            favoritesView.trailingAnchor.constraint         (equalTo: contentView.trailingAnchor, constant: 0),
+            favoritesView.heightAnchor.constraint           (equalToConstant: 315),
+            
+            specialOffersView.topAnchor.constraint          (equalTo: favoritesView.bottomAnchor, constant: 20),
+            specialOffersView.leadingAnchor.constraint      (equalTo: contentView.leadingAnchor, constant: 0),
+            specialOffersView.trailingAnchor.constraint     (equalTo: contentView.trailingAnchor, constant: 0),
+            specialOffersView.heightAnchor.constraint       (equalToConstant: 315),
+            
+            allCategoriesButton.topAnchor.constraint        (equalTo: specialOffersView.bottomAnchor, constant: 10),
+            allCategoriesButton.leadingAnchor.constraint    (equalTo: contentView.leadingAnchor, constant: 10),
+            allCategoriesButton.trailingAnchor.constraint   (equalTo: contentView.trailingAnchor, constant: -10),
+            allCategoriesButton.heightAnchor.constraint (equalToConstant: 60),
+        ])
+    }
+    
+    
+    private func animateViewAlpha(_ viewToAnimate: UIView) {
+        UIView.animate(withDuration: 1, delay: 0.5) {
+            viewToAnimate.alpha = 1
+        }
+    }
+    
+    
+    private func animateButtonViewAlpha(_ viewToAnimate: UIView) {
+        UIView.animate(withDuration: 0.2, animations: {viewToAnimate.alpha = 0.3}) { (true) in
+            switch true {
+            case true:
+                UIView.animate(withDuration: 0.2, animations: {viewToAnimate.alpha = 1} )
+            case false:
+                return
+            }
+        }
+    }
 }
 
+/*
+ scrollView.addSubview(logOutButton)
+ 
+ 
+ logOutButton.centerXAnchor.constraint       (equalTo: scrollView.centerXAnchor),
+ logOutButton.topAnchor.constraint           (equalTo: scrollView.centerYAnchor),
+ logOutButton.widthAnchor.constraint         (equalToConstant: 150),
+ logOutButton.heightAnchor.constraint        (equalToConstant: 500),
+ */
