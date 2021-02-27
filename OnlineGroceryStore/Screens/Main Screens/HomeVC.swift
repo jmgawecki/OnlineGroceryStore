@@ -43,6 +43,7 @@ final class HomeVC: UIViewController {
         animateViews()
     }
     
+    
     override func viewWillAppear(_ animated: Bool) {
         configureVC()
     }
@@ -89,7 +90,9 @@ final class HomeVC: UIViewController {
     
     @objc private func allCategoriesButtonTapped(_ sender: UIView) {
         animateButtonViewAlpha(sender)
-        navigationController?.pushViewController(CategoriesVC(), animated: true)
+        let destVC = CategoriesVC()
+        destVC.retrieveDocumentsNameAsString()
+        navigationController?.pushViewController(destVC, animated: true)
     }
     
     
@@ -155,16 +158,16 @@ final class HomeVC: UIViewController {
     
     private func layoutUIInScrollView() {
         contentView.addSubviews(hiNameLabel, vawingGirlImageView, favoritesView, specialOffersView, allCategoriesButton)
-//        debugConfiguration(hiNameLabel, vawingGirlImageView, favoritesView, specialOffersView, allCategoriesButton)
+        //        debugConfiguration(hiNameLabel, vawingGirlImageView, favoritesView, specialOffersView, allCategoriesButton)
         favoritesView.translatesAutoresizingMaskIntoConstraints = false
         specialOffersView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         NSLayoutConstraint.activate([
             hiNameLabel.leadingAnchor.constraint            (equalTo: contentView.leadingAnchor, constant: 30),
             hiNameLabel.topAnchor.constraint                (equalTo: contentView.topAnchor, constant: 20),
             hiNameLabel.widthAnchor.constraint              (equalToConstant: 220),
             hiNameLabel.heightAnchor.constraint             (equalToConstant: 50),
-                
+            
             vawingGirlImageView.topAnchor.constraint        (equalTo: contentView.topAnchor),
             vawingGirlImageView.leadingAnchor.constraint    (equalTo: hiNameLabel.trailingAnchor, constant: 5), //
             vawingGirlImageView.widthAnchor.constraint      (equalToConstant: 100),

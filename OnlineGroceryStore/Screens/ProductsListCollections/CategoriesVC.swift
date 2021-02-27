@@ -12,8 +12,7 @@ class CategoriesVC: UIViewController {
     // MARK: - Declaration
     var categoriesTableView: UITableView!
     
-    var categoriesCounter = 15
-    
+    var categories: [String] = []
     
     
     // MARK: - Override and Initialise
@@ -25,7 +24,6 @@ class CategoriesVC: UIViewController {
         configureUIElements()
         layoutUI()
         configureUITableView()
-        getCategories()
         // Do any additional setup after loading the view.
     }
     
@@ -74,12 +72,20 @@ class CategoriesVC: UIViewController {
     
     
     //MARK: - Firebase
+
     
-    private func getCategories() {
-        let categories = Firestore.firestore().collectionGroup("tralala")
-        print(categories)
-        
- 
+    func retrieveDocumentsNameAsString() {
+        Firestore.firestore().collection("groceryCategory").getDocuments() { [weak self] (querySnapshot, err) in
+            guard let self = self else { return }
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    self.categories.append(document.documentID)
+                }
+                self.categoriesTableView.reloadData()
+            }
+        }
     }
 }
 
@@ -88,7 +94,7 @@ class CategoriesVC: UIViewController {
 
 extension CategoriesVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return categoriesCounter
+        return categories.count
     }
     
     
