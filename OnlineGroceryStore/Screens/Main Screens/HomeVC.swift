@@ -47,28 +47,6 @@ final class HomeVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         configureVC()
     }
-    
-    
-    private func getCurrentUserData() {
-        let userEmail = (Auth.auth().currentUser?.email)!
-        Firestore.firestore().collection("usersData").document(userEmail).getDocument(completion: { [weak self] (user, error) in
-            guard let self = self else { return }
-            if let error = error {
-                print(error.localizedDescription)
-                return
-            } else {
-                self.currentUser = UserLocal(uid:       user?.data()!["uid"]        as! String,
-                                             firstName: user?.data()!["firstname"]  as! String,
-                                             lastName:  user?.data()!["lastname"]   as! String,
-                                             email:     userEmail)
-                
-                #warning("How to make it better? How to append name to a label before class is initialised. Tried in scene delegate but its a one big mess")
-                DispatchQueue.main.async {
-                    self.hiNameLabel.text?.append("\(self.currentUser!.firstName)")
-                }
-            }
-        })
-    }
 
     
     // MARK: - @Objectives
@@ -126,6 +104,31 @@ final class HomeVC: UIViewController {
     private func configureUIElements() {
         vawingGirlImageView.image = imageAsUIImage.wavingBlackGirlR056
         vawingGirlImageView.alpha = 0
+    }
+    
+    
+    //MARK: - Firebase
+    
+    
+    private func getCurrentUserData() {
+        let userEmail = (Auth.auth().currentUser?.email)!
+        Firestore.firestore().collection("usersData").document(userEmail).getDocument(completion: { [weak self] (user, error) in
+            guard let self = self else { return }
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            } else {
+                self.currentUser = UserLocal(uid:       user?.data()!["uid"]        as! String,
+                                             firstName: user?.data()!["firstname"]  as! String,
+                                             lastName:  user?.data()!["lastname"]   as! String,
+                                             email:     userEmail)
+                
+                #warning("How to make it better? How to append name to a label before class is initialised. Tried in scene delegate but its a one big mess")
+                DispatchQueue.main.async {
+                    self.hiNameLabel.text?.append("\(self.currentUser!.firstName)")
+                }
+            }
+        })
     }
     
     

@@ -10,9 +10,17 @@ import Firebase
 
 class CategoriesVC: UIViewController {
     // MARK: - Declaration
+    
+    enum Section { case main }
+    
     var categoriesTableView: UITableView!
     
     var categories: [String] = []
+    
+    var dataSource: UITableViewDiffableDataSource<Section, String>!
+    var snapshot: NSDiffableDataSourceSnapshot<Section, String>!
+    
+    
     
     
     // MARK: - Override and Initialise
@@ -21,10 +29,8 @@ class CategoriesVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureVC()
-        configureUIElements()
-        layoutUI()
-        configureUITableView()
-        // Do any additional setup after loading the view.
+        configureTableView()
+        configureDataSource()
     }
     
     
@@ -45,29 +51,33 @@ class CategoriesVC: UIViewController {
     
     
     
-    //MARK: - VC Configuration
+    //MARK: - UITableView Configuration
     
     
-    private func configureUIElements() {
-        
-    }
-    
-    private func configureUITableView() {
+    private func configureTableView() {
         categoriesTableView = UITableView(frame: view.bounds, style: .plain)
         view.addSubview(categoriesTableView)
         categoriesTableView.rowHeight = 80
-        categoriesTableView.delegate = self
-        categoriesTableView.dataSource = self
         categoriesTableView.backgroundColor = UIColor(named: colorAsString.storeBackground)
         categoriesTableView.register(BrowseByCategoryTableViewCell.self, forCellReuseIdentifier: BrowseByCategoryTableViewCell.reuseID)
     }
     
     
-    //MARK: - Layout configuration
+    private func configureDataSource() {
+        dataSource = UITableViewDiffableDataSource<Section, String>(tableView: categoriesTableView, cellProvider: { (tableView, indexPath, category) -> UITableViewCell? in
+            let cell = tableView.dequeueReusableCell(withIdentifier: BrowseByCategoryTableViewCell.reuseID) as! BrowseByCategoryTableViewCell
+            cell.currentCategory = category
+            cell.retrieveImageWithUrlFromDocument(from: category)
+            return cell
+        })
+    }
     
     
-    private func layoutUI() {
-        
+    private func updateData() {
+        snapshot = NSDiffableDataSourceSnapshot()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(categories, toSection: .main)
+        DispatchQueue.main.async { self.dataSource.apply(self.snapshot, animatingDifferences: true) }
     }
     
     
@@ -83,33 +93,16 @@ class CategoriesVC: UIViewController {
                 for document in querySnapshot!.documents {
                     self.categories.append(document.documentID)
                 }
-                self.categoriesTableView.reloadData()
+                self.updateData()
+            }
+        }
+    }
+    
+    func retrieveImageWithUrlFromDocument() {
+        for category in categories {
+            Firestore.firestore().collection("groceryCategory").document(category).getDocument { (category, error) in
+                print("nothing")
             }
         }
     }
 }
-
-
-//MARK: - Extension
-
-extension CategoriesVC: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return categories.count
-    }
-    
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: BrowseByCategoryTableViewCell.reuseID) as! BrowseByCategoryTableViewCell
-        return cell
-    }
-    
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let destVC = ProductsVC()
-        navigationController?.pushViewController(destVC, animated: true)
-    }
-    
-    
-}
-
-

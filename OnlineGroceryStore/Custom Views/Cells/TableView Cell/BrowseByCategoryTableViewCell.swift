@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseUI
 
 class BrowseByCategoryTableViewCell: UITableViewCell {
     // MARK: - Declaration
@@ -20,6 +22,8 @@ class BrowseByCategoryTableViewCell: UITableViewCell {
                                              color: UIColor(named: colorAsString.storePrimaryText) ?? .orange)
     
     static let reuseID = "BrowseByCategoryCell"
+    
+    var currentCategory: String!
     
     
     // MARK: - Override and Initialise
@@ -39,6 +43,26 @@ class BrowseByCategoryTableViewCell: UITableViewCell {
     
     func set() {
         
+    }
+    
+    func retrieveImageWithUrlFromDocument(from category: String) {
+            Firestore.firestore().collection("groceryCategory").document(category).getDocument { (category, error) in
+                let storageReference = Storage.storage().reference()
+                let urlString = storageReference.child(category?.data()!["imageUrl"] as! String)
+
+                // Download in memory with a maximum allowed size of 1MB (1 * 1024 * 1024 bytes)
+                urlString.getData(maxSize: 2 * 2024 * 2024) { data, error in
+                  if let error = error {
+                    print(error.localizedDescription)
+                  } else {
+                    print("image download succesful!")
+                    let image = UIImage(data: data!)
+                  }
+                }
+                    
+                    
+
+            }
     }
     
     // MARK: - Cell configuration
