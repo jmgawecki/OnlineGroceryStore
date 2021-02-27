@@ -99,20 +99,14 @@ class CategoriesVC: UIViewController {
             }
         }
     }
-    
-    func retrieveImageWithUrlFromDocument() {
-        for category in categories {
-            Firestore.firestore().collection("groceryCategory").document(category).getDocument { (category, error) in
-                print("nothing")
-            }
-        }
-    }
 }
 
 extension CategoriesVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let destVC = ProductsVC()
+        destVC.currentCategory = categories[indexPath.row]
         #warning("how to add category's title?")
+        
         navigationController?.pushViewController(destVC, animated: true)
     }
 }

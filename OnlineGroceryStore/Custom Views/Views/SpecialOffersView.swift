@@ -22,7 +22,7 @@ class SpecialOffersView: UIView {
     var dataSource:     UICollectionViewDiffableDataSource<Section, Product>!
     var snapshot:       NSDiffableDataSourceSnapshot<Section, Product>!
     
-    var products: [Product] = MockData.products
+    var products: [Product] = []
     
     var segmentedControl: UISegmentedControl!
     

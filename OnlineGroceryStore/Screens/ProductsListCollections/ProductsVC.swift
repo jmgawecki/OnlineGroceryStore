@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseUI
 
 final class ProductsVC: UIViewController {
     // MARK: - Declaration
@@ -14,7 +16,8 @@ final class ProductsVC: UIViewController {
     var collectionView: UICollectionView!
     var dataSource:     UICollectionViewDiffableDataSource<Section, Product>!
     
-    var products: [Product] = MockData.products
+    var products: [Product] = []
+    var currentCategory: String!
     // MARK: - Override and Initialise
     
     
@@ -25,8 +28,7 @@ final class ProductsVC: UIViewController {
         layoutUI()
         configureCollectionView()
         configureDataSource()
-        configureSnapshot()
-        // Do any additional setup after loading the view.
+        retrieveProductsFromFirestoreBasedOnField()
     }
     
     
@@ -54,6 +56,30 @@ final class ProductsVC: UIViewController {
     }
     
     
+    // MARK: - Firebase
+    
+    
+    private func retrieveProductsFromFirestoreBasedOnField() {
+        Firestore.firestore().collection("products").whereField("category", isEqualTo: currentCategory.lowercased()).getDocuments { [weak self] (querySnapshot, error) in
+            guard let self = self else { return }
+            if let error = error {
+                print("Error getting documents: \(error)")
+            } else {
+                for document in querySnapshot!.documents {
+                    print("\(document.documentID) => \(document.data())")
+                    self.products.append(Product(name: document.data()["name"] as! String,
+                                                 description: document.data()["description"] as! String?,
+                                                 price: document.data()["price"] as! Double,
+                                                 favorite: document.data()["favorite"] as! Bool,
+                                                 category: document.data()["category"] as! String,
+                                                 imageReference: document.data()["imageReference"] as! String,
+                                                 id: document.data()["id"] as! String))
+                }
+                self.updateDataOnCollection()
+            }
+        }
+    }
+    
     // MARK: - Collection View Configuration
     
     
@@ -65,16 +91,16 @@ final class ProductsVC: UIViewController {
     }
     
     private func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<FavoritesCollectionViewCell, Product> { (cell, indexPath, identifier) in
-            cell.set()
+        let cellRegistration = UICollectionView.CellRegistration<ProductsVCCollectionViewCell, Product> { (cell, indexPath, product) in
+            cell.set(with: product)
         }
         
-        dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { (collectionView, indexPath, product) -> UICollectionViewCell? in
+        dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { (collectionView, indexPath, product) -> ProductsVCCollectionViewCell? in
             return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: product)
         })
     }
     
-    private func configureSnapshot() {
+    private func updateDataOnCollection() {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Product>()
         snapshot.appendSections([.main])
         snapshot.appendItems(products, toSection: .main)

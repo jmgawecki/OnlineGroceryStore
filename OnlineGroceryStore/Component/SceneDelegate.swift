@@ -45,16 +45,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     
-//    func setRootViewController() -> UINavigationController {
-//        var navigationController: UINavigationController?
-//            if Auth.auth().currentUser != nil {
-//                navigationController = configureHomeNavController()
-//            } else {
-//                navigationController = configureEntryNavController()
-//            }
-//        return navigationController!
-//        }
-    
     func setRootAsHomeTabBar() -> UITabBarController? {
         var homeTabBarController: UITabBarController?
             
