@@ -14,7 +14,7 @@ class BrowseByCategoryTableViewCell: UITableViewCell {
     
     var categoryImageView = ShopImageView(frame: .zero)
     #warning("Refactor later so its initialised in a function set")
-    var categoryLabel       = StoreBoldLabel(with: "Category",
+    var categoryLabel       = StoreBoldLabel(with: "",
                                              from: .left,
                                              ofsize: 20,
                                              ofweight: .medium,
@@ -41,28 +41,23 @@ class BrowseByCategoryTableViewCell: UITableViewCell {
     
     // MARK: - Called Outside
     
-    func set() {
-        
+    func set(with categoryTitle: String) {
+        categoryLabel.text = categoryTitle
     }
     
-    func retrieveImageWithUrlFromDocument(from category: String) {
-            Firestore.firestore().collection("groceryCategory").document(category).getDocument { (category, error) in
-                let storageReference = Storage.storage().reference()
-                let urlString = storageReference.child(category?.data()!["imageUrl"] as! String)
-
-                // Download in memory with a maximum allowed size of 1MB (1 * 1024 * 1024 bytes)
-                urlString.getData(maxSize: 2 * 2024 * 2024) { data, error in
-                  if let error = error {
+    func retrieveImageWithPathReferenceFromDocument(from category: String) {
+        Firestore.firestore().collection("groceryCategory").document(category).getDocument { [weak self] (category, error) in
+            guard let self = self else { return }
+            let pathReference = Storage.storage().reference(withPath: "categoryImage/\(category?.data()!["imageReference"] as! String)")
+            
+            pathReference.getData(maxSize: 1 * 2024 * 2024) { data, error in
+                if let error = error {
                     print(error.localizedDescription)
-                  } else {
-                    print("image download succesful!")
-                    let image = UIImage(data: data!)
-                  }
+                } else {
+                    self.categoryImageView.image = UIImage(data: data!)
                 }
-                    
-                    
-
             }
+        }
     }
     
     // MARK: - Cell configuration

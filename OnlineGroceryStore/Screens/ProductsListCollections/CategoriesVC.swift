@@ -43,7 +43,7 @@ class CategoriesVC: UIViewController {
     
     
     private func configureVC() {
-        title = "Search By Category"
+        title = "Categories"
         view.backgroundColor = UIColor(named: colorAsString.storeBackground)
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -58,6 +58,7 @@ class CategoriesVC: UIViewController {
         categoriesTableView = UITableView(frame: view.bounds, style: .plain)
         view.addSubview(categoriesTableView)
         categoriesTableView.rowHeight = 80
+        categoriesTableView.delegate = self
         categoriesTableView.backgroundColor = UIColor(named: colorAsString.storeBackground)
         categoriesTableView.register(BrowseByCategoryTableViewCell.self, forCellReuseIdentifier: BrowseByCategoryTableViewCell.reuseID)
     }
@@ -67,7 +68,8 @@ class CategoriesVC: UIViewController {
         dataSource = UITableViewDiffableDataSource<Section, String>(tableView: categoriesTableView, cellProvider: { (tableView, indexPath, category) -> UITableViewCell? in
             let cell = tableView.dequeueReusableCell(withIdentifier: BrowseByCategoryTableViewCell.reuseID) as! BrowseByCategoryTableViewCell
             cell.currentCategory = category
-            cell.retrieveImageWithUrlFromDocument(from: category)
+            cell.set(with: category)
+            cell.retrieveImageWithPathReferenceFromDocument(from: category)
             return cell
         })
     }
@@ -104,5 +106,13 @@ class CategoriesVC: UIViewController {
                 print("nothing")
             }
         }
+    }
+}
+
+extension CategoriesVC: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let destVC = ProductsVC()
+        #warning("how to add category's title?")
+        navigationController?.pushViewController(destVC, animated: true)
     }
 }
