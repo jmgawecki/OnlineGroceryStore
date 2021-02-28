@@ -12,6 +12,8 @@ import FirebaseUI
 class BrowseByCategoryTableViewCell: UITableViewCell {
     // MARK: - Declaration
     
+    let cache = NSCache<NSString, UIImage>()
+    
     var categoryImageView = ShopImageView(frame: .zero)
     #warning("Refactor later so its initialised in a function set")
     var categoryLabel       = StoreBoldLabel(with: "",
@@ -46,6 +48,9 @@ class BrowseByCategoryTableViewCell: UITableViewCell {
     }
     
     func retrieveImageWithPathReferenceFromDocument(from category: String) {
+        let cacheKey = NSString(string: category)
+        if let image = cache.object(forKey: cacheKey) { self.categoryImageView.image = image; return}
+        
         Firestore.firestore().collection("groceryCategory").document(category).getDocument { [weak self] (category, error) in
             guard let self = self else { return }
             let pathReference = Storage.storage().reference(withPath: "categoryImage/\(category?.data()!["imageReference"] as! String)")
@@ -54,7 +59,10 @@ class BrowseByCategoryTableViewCell: UITableViewCell {
                 if let error = error {
                     print(error.localizedDescription)
                 } else {
-                    self.categoryImageView.image = UIImage(data: data!)
+                    DispatchQueue.main.async {
+                        self.categoryImageView.image = UIImage(data: data!)
+                    }
+                    self.cache.setObject(UIImage(data: data!)!, forKey: cacheKey)
                 }
             }
         }

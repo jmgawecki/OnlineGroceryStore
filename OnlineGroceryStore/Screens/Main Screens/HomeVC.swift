@@ -21,9 +21,10 @@ final class HomeVC: UIViewController {
                                                  color: UIColor(named: colorAsString.storePrimaryText) ?? .orange)
     var contentView             = UIView()
     var favoritesView           = FavoritesView()
-    var specialOffersView       = SpecialOffersView()
     
     var currentUser: UserLocal?
+    
+    var specialOffersView = UIView()
     
     var vawingGirlImageView         = ShopImageView(frame: .zero)
     
@@ -41,6 +42,7 @@ final class HomeVC: UIViewController {
         configureUIElements()
         getCurrentUserData()
         animateViews()
+        add(childVC: SpecialOffersView(), to: specialOffersView)
     }
     
     
@@ -69,7 +71,6 @@ final class HomeVC: UIViewController {
     @objc private func allCategoriesButtonTapped(_ sender: UIView) {
         animateButtonViewAlpha(sender)
         let destVC = CategoriesVC()
-        destVC.retrieveDocumentsNameAsString()
         navigationController?.pushViewController(destVC, animated: true)
     }
     
@@ -135,6 +136,13 @@ final class HomeVC: UIViewController {
     //MARK: - Layout configuration
     
     
+    private func add(childVC: UIViewController, to containerView: UIView) {
+        addChild(childVC)
+        containerView.addSubview(childVC.view)
+        childVC.view.frame = containerView.bounds
+        childVC.didMove(toParent: self)
+    }
+    
     private func layoutScrollViewAndContentView() {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         contentView.translatesAutoresizingMaskIntoConstraints = false
@@ -179,12 +187,12 @@ final class HomeVC: UIViewController {
             favoritesView.topAnchor.constraint              (equalTo: vawingGirlImageView.bottomAnchor),
             favoritesView.leadingAnchor.constraint          (equalTo: contentView.leadingAnchor, constant: 0),
             favoritesView.trailingAnchor.constraint         (equalTo: contentView.trailingAnchor, constant: 0),
-            favoritesView.heightAnchor.constraint           (equalToConstant: 315),
+            favoritesView.heightAnchor.constraint           (equalToConstant: 355),
             
             specialOffersView.topAnchor.constraint          (equalTo: favoritesView.bottomAnchor, constant: 20),
             specialOffersView.leadingAnchor.constraint      (equalTo: contentView.leadingAnchor, constant: 0),
             specialOffersView.trailingAnchor.constraint     (equalTo: contentView.trailingAnchor, constant: 0),
-            specialOffersView.heightAnchor.constraint       (equalToConstant: 315),
+            specialOffersView.heightAnchor.constraint       (equalToConstant: 355),
             
             allCategoriesButton.topAnchor.constraint        (equalTo: specialOffersView.bottomAnchor, constant: 10),
             allCategoriesButton.leadingAnchor.constraint    (equalTo: contentView.leadingAnchor, constant: 10),

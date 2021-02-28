@@ -28,7 +28,11 @@ final class ProductsVC: UIViewController {
         layoutUI()
         configureCollectionView()
         configureDataSource()
-        retrieveProductsFromFirestoreBasedOnField()
+        getProducts()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        print("tralala")
     }
     
     
@@ -58,24 +62,17 @@ final class ProductsVC: UIViewController {
     
     // MARK: - Firebase
     
-    
-    private func retrieveProductsFromFirestoreBasedOnField() {
-        Firestore.firestore().collection("products").whereField("category", isEqualTo: currentCategory.lowercased()).getDocuments { [weak self] (querySnapshot, error) in
+    private func getProducts() {
+        NetworkManager.shared.retrieveProductsFromFirestoreBasedOnField(collection: "products",
+                                                                        uponField: "category",
+                                                                        withCondition: currentCategory.lowercased()) { [weak self] (result) in
             guard let self = self else { return }
-            if let error = error {
-                print("Error getting documents: \(error)")
-            } else {
-                for document in querySnapshot!.documents {
-                    print("\(document.documentID) => \(document.data())")
-                    self.products.append(Product(name: document.data()["name"] as! String,
-                                                 description: document.data()["description"] as! String?,
-                                                 price: document.data()["price"] as! Double,
-                                                 favorite: document.data()["favorite"] as! Bool,
-                                                 category: document.data()["category"] as! String,
-                                                 imageReference: document.data()["imageReference"] as! String,
-                                                 id: document.data()["id"] as! String))
-                }
+            switch result {
+            case .success(let products):
+                self.products = products
                 self.updateDataOnCollection()
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
     }
@@ -104,7 +101,8 @@ final class ProductsVC: UIViewController {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Product>()
         snapshot.appendSections([.main])
         snapshot.appendItems(products, toSection: .main)
-        DispatchQueue.main.async { self.dataSource.apply(snapshot, animatingDifferences: true) }
+        DispatchQueue.main.async { self.dataSource.apply(snapshot, animatingDifferences: true); self.collectionView.reloadData() }
+        
     }
     
     

@@ -11,9 +11,22 @@ class FavoritesCollectionViewCell: UICollectionViewCell {
     // MARK: - Declaration
     static let reuseId = "SpeicificCellName"
     
+    var productImageView = ShopImageView(frame: .zero)
+    var productTitleLabel = StoreBoldLabel(with: "Product's name",
+                                           from: .center,
+                                           ofsize: 15,
+                                           ofweight: .medium,
+                                           alpha: 1,
+                                           color: UIColor(named: colorAsString.storePrimaryText) ?? .orange)
     
+    var priceLabel = StoreBoldLabel(with: "$3.50",
+                                    from: .center,
+                                    ofsize: 15,
+                                    ofweight: .semibold,
+                                    alpha: 1,
+                                    color: UIColor(named: colorAsString.storeTertiary) ?? .orange)
     
-    
+    var product: Product!
     // MARK: - Override and Initialise
     
     
@@ -32,8 +45,10 @@ class FavoritesCollectionViewCell: UICollectionViewCell {
     // MARK: - Called Outside
     
     
-    func set() {
-        
+    func set(with product: Product) {
+        self.product = product
+        priceLabel.text = "$\(String(product.price))"
+        productTitleLabel.text = product.name
     }
     
     
@@ -41,7 +56,7 @@ class FavoritesCollectionViewCell: UICollectionViewCell {
     
     
     private func configureCell() {
-        backgroundColor                     = .systemBackground
+        backgroundColor                     = UIColor(named: colorAsString.storeBackground)
         layer.cornerRadius                  = 15
     }
     
@@ -51,5 +66,24 @@ class FavoritesCollectionViewCell: UICollectionViewCell {
     
     private func layoutUI() {
         
+        addSubviews(productImageView, productTitleLabel, priceLabel)
+//        debugConfiguration(productImageView, productTitleLabel, priceLabel)
+        
+        NSLayoutConstraint.activate([
+            productImageView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
+            productImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
+            productImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
+            productImageView.heightAnchor.constraint(equalTo: productImageView.widthAnchor),
+            
+            productTitleLabel.topAnchor.constraint(equalTo: productImageView.bottomAnchor, constant: 0),
+            productTitleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
+            productTitleLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.7),
+            productTitleLabel.heightAnchor.constraint(equalToConstant: 60),
+            
+            priceLabel.topAnchor.constraint(equalTo: productImageView.bottomAnchor, constant: 0),
+            priceLabel.leadingAnchor.constraint(equalTo: productTitleLabel.trailingAnchor, constant: 5),
+            priceLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
+            priceLabel.heightAnchor.constraint(equalToConstant: 60),
+        ])
     }
 }

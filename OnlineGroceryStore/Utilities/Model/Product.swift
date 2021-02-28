@@ -15,5 +15,7 @@ struct Product: Hashable {
     let category: String
     let imageReference: String
     let id: String
+    let discountMlt: Double
+    let tag: [String]
 }
 

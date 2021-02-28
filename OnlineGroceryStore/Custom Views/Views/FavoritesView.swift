@@ -27,17 +27,18 @@ class FavoritesView: UIView {
     var segmentedControl: UISegmentedControl!
     
     
-    let items                   = ["Favorite", "Last orders", "Usual"]
     // MARK: - Override and Initialise
     
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureCollectionView()
+        configureSegmentedControl()
         layoutUI()
         configureDataSource()
         configureSnapshot()
-        configureSegmentedControl()
+        
+        configureSegmentedControlSwitch()
     }
     
     
@@ -50,8 +51,42 @@ class FavoritesView: UIView {
 //        <#statements#>
 //    }
 //
-    // MARK: - View Configuration
+    // MARK: - @Objectives
     
+    @objc private func segmentedControlSwitched() {
+        if segmentedControl.selectedSegmentIndex == 0 {
+//            getProducts(uponField: <#T##String#>, withCondition: <#T##Any#>)
+        } else if segmentedControl.selectedSegmentIndex == 1 {
+            print("second")
+        } else if segmentedControl.selectedSegmentIndex == 2 {
+            print("third")
+        }
+    }
+    
+    
+    // MARK: - Firebase / Firestore
+    
+    private func getProducts(uponField: String, withCondition: Any) {
+        NetworkManager.shared.retrieveProductsFromFirestoreBasedOnField(collection: "products", uponField: uponField, withCondition: withCondition) { [weak self] (result) in
+            guard let self = self else { return }
+            switch result {
+            case .success(let products):
+                self.products.removeAll()
+                self.products.append(contentsOf: products)
+                self.configureSnapshot()
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
+    
+    // MARK: - Private functions
+    
+    
+    private func configureSegmentedControlSwitch() {
+        segmentedControl.addTarget(self, action: #selector(segmentedControlSwitched), for: .valueChanged)
+    }
     
     
     // MARK: - Collection View Configuration
@@ -60,11 +95,12 @@ class FavoritesView: UIView {
     private func configureCollectionView() {
         collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: CollectionLayouts.favoriteCollectionViewLayout())
         collectionView.backgroundColor = UIColor(named: colorAsString.storeBackground)
+        collectionView.delegate = self
     }
     
     private func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<FavoritesCollectionViewCell, Product> { (cell, indexPath, identifier) in
-            cell.set()
+        let cellRegistration = UICollectionView.CellRegistration<FavoritesCollectionViewCell, Product> { (cell, indexPath, product) in
+            cell.set(with: product)
         }
         
         dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { (collectionView, indexPath, product) -> UICollectionViewCell? in
@@ -85,8 +121,11 @@ class FavoritesView: UIView {
     // MARK: - UI Configuration
     
     private func configureSegmentedControl() {
-        segmentedControl.selectedSegmentIndex = 0
-        segmentedControl.selectedSegmentTintColor = UIColor(named: colorAsString.storeTertiary)
+        let items        = ["Favorite", "Last orders", "Usual"]
+        segmentedControl = UISegmentedControl(items: items)
+        
+        segmentedControl.selectedSegmentIndex       = 0
+        segmentedControl.selectedSegmentTintColor   = UIColor(named: colorAsString.storeTertiary)
     }
     
     
@@ -96,7 +135,6 @@ class FavoritesView: UIView {
     
     
     private func layoutUI() {
-        segmentedControl = UISegmentedControl(items: items)
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         addSubviews(hiNameLabel, segmentedControl, collectionView)
@@ -117,7 +155,17 @@ class FavoritesView: UIView {
             collectionView.topAnchor.constraint         (equalTo: segmentedControl.bottomAnchor, constant: 0),
             collectionView.leadingAnchor.constraint     (equalTo: leadingAnchor, constant: 0),
             collectionView.trailingAnchor.constraint    (equalTo: trailingAnchor, constant: 0),
-            collectionView.heightAnchor.constraint      (equalToConstant: 200),
+            collectionView.bottomAnchor.constraint      (equalTo: bottomAnchor, constant: 0),
         ])
+    }
+}
+
+    // MARK: - Extension
+
+extension FavoritesView: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let navigationController = UINavigationController()
+        let destVC = ProductDetailsVC()
+        navigationController.present(destVC, animated: true)
     }
 }

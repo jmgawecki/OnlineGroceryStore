@@ -31,6 +31,7 @@ class CategoriesVC: UIViewController {
         configureVC()
         configureTableView()
         configureDataSource()
+        getCategories()
     }
     
     
@@ -81,21 +82,19 @@ class CategoriesVC: UIViewController {
         snapshot.appendItems(categories, toSection: .main)
         DispatchQueue.main.async { self.dataSource.apply(self.snapshot, animatingDifferences: true) }
     }
-    
-    
-    //MARK: - Firebase
 
     
-    func retrieveDocumentsNameAsString() {
-        Firestore.firestore().collection("groceryCategory").getDocuments() { [weak self] (querySnapshot, err) in
+    //MARK: - Firebase
+    
+    func getCategories() {
+        NetworkManager.shared.retrieveDocumentsNameAsString(collection: "groceryCategory") { [weak self] (result) in
             guard let self = self else { return }
-            if let err = err {
-                print("Error getting documents: \(err)")
-            } else {
-                for document in querySnapshot!.documents {
-                    self.categories.append(document.documentID)
-                }
+            switch result {
+            case .success(let categories):
+                self.categories = categories
                 self.updateData()
+            case .failure(let error):
+                print(error)
             }
         }
     }

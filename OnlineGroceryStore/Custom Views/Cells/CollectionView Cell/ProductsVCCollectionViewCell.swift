@@ -11,6 +11,9 @@ import FirebaseUI
 
 class ProductsVCCollectionViewCell: UICollectionViewCell {
     // MARK: - Declaration
+    
+    let cache = NSCache<NSString, UIImage>()
+    
     static let reuseId = "SpeicificCellName"
     
     var productImageView = ShopImageView(frame: .zero)
@@ -43,6 +46,8 @@ class ProductsVCCollectionViewCell: UICollectionViewCell {
     }
     
     
+    
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -56,6 +61,7 @@ class ProductsVCCollectionViewCell: UICollectionViewCell {
         productTitleLabel.text = product.name
         priceLabel.text = "$\(String(product.price))"
         retrieveImageWithPathReferenceFromDocument(from: product.id)
+        print(product.id)
         if product.favorite == true {
             favoriteSystemButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         } else {
@@ -65,6 +71,9 @@ class ProductsVCCollectionViewCell: UICollectionViewCell {
     
     
     private func retrieveImageWithPathReferenceFromDocument(from category: String) {
+        let cacheKey = NSString(string: category)
+        if let image = cache.object(forKey: cacheKey) { self.productImageView.image = image; return}
+        /// Perhaps products/diary/
         Firestore.firestore().collection("products").document(category).getDocument { [weak self] (category, error) in
             guard let self = self else { return }
             let pathReference = Storage.storage().reference(withPath: "productImage/\(category?.data()!["imageReference"] as! String)")
@@ -73,17 +82,23 @@ class ProductsVCCollectionViewCell: UICollectionViewCell {
                 if let error = error {
                     print(error.localizedDescription)
                 } else {
-                    self.productImageView.image = UIImage(data: data!)
+                    DispatchQueue.main.async {
+                        self.productImageView.image = UIImage(data: data!)
+                    }
+                    self.cache.setObject(UIImage(data: data!)!, forKey: cacheKey)
                 }
             }
         }
     }
     
+    // MARK: - Firebase
+    
+    
     // MARK: - Cell configuration
     
     
     private func configureCell() {
-        backgroundColor                     = .systemBackground
+        backgroundColor                     = UIColor(named: colorAsString.storeBackground)
         layer.cornerRadius                  = 15
     }
     
