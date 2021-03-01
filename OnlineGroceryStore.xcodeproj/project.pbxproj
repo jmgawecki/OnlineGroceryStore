@@ -47,6 +47,7 @@
 		EFA9825025E823CE002EB81E /* UIView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA9824F25E823CE002EB81E /* UIView+Ext.swift */; };
 		EFA9825325E84C6D002EB81E /* UserLocal.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA9825225E84C6D002EB81E /* UserLocal.swift */; };
 		EFB774BF25EBFED600BF4B74 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB774BE25EBFED600BF4B74 /* NetworkManager.swift */; };
+		EFB774F225ED32A900BF4B74 /* onlineGroceryStore.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EFB774F025ED32A900BF4B74 /* onlineGroceryStore.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -94,6 +95,7 @@
 		EFA9824F25E823CE002EB81E /* UIView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ext.swift"; sourceTree = "<group>"; };
 		EFA9825225E84C6D002EB81E /* UserLocal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocal.swift; sourceTree = "<group>"; };
 		EFB774BE25EBFED600BF4B74 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		EFB774F125ED32A900BF4B74 /* OnlineGroceryStore.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = OnlineGroceryStore.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -237,6 +239,7 @@
 				EF5ADCA825E6E2400029A3B9 /* LaunchScreen.storyboard */,
 				EF5ADC9F25E6E2400029A3B9 /* SceneDelegate.swift */,
 				EF5ADC9D25E6E2400029A3B9 /* AppDelegate.swift */,
+				EFB774F025ED32A900BF4B74 /* onlineGroceryStore.xcdatamodeld */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -503,6 +506,7 @@
 				EFA9820625E7CBC7002EB81E /* UIViewController+Ext.swift in Sources */,
 				EF8A6F5B25E924B60029EB00 /* Product.swift in Sources */,
 				EF8A6F8725E948D10029EB00 /* CategoriesVC.swift in Sources */,
+				EFB774F225ED32A900BF4B74 /* onlineGroceryStore.xcdatamodeld in Sources */,
 				EF51091B25E6E546007A459F /* LogInVC.swift in Sources */,
 				EF51092225E6E8C9007A459F /* EntryVC.swift in Sources */,
 				EF8A6F6125E92D860029EB00 /* CollectionLayouts.swift in Sources */,
@@ -719,6 +723,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		EFB774F025ED32A900BF4B74 /* onlineGroceryStore.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				EFB774F125ED32A900BF4B74 /* OnlineGroceryStore.xcdatamodel */,
+			);
+			currentVersion = EFB774F125ED32A900BF4B74 /* OnlineGroceryStore.xcdatamodel */;
+			path = onlineGroceryStore.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = EF5ADC9225E6E2400029A3B9 /* Project object */;
 }
