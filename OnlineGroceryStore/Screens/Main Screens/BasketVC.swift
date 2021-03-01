@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BasketVC: UIViewController {
+final class BasketVC: UIViewController {
     // MARK: - Declaration
     
     

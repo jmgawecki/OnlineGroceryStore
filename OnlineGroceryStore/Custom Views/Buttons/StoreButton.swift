@@ -7,7 +7,7 @@
 
 import UIKit
 
-class StoreButton: UIButton {
+final class StoreButton: UIButton {
     
     
     // MARK: - Override and Initialiser

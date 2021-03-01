@@ -7,7 +7,7 @@
 
 import UIKit
 
-class StoreBoldLabel: UILabel {
+final class StoreBoldLabel: UILabel {
     //MARK: - Initialisers
     
     

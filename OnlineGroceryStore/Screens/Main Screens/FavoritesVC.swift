@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FavoritesVC: UIViewController {
+final class FavoritesVC: UIViewController {
     // MARK: - Declaration
     
     

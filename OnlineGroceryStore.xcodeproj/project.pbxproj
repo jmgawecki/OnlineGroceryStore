@@ -20,7 +20,7 @@
 		EF8A6F5225E91AB50029EB00 /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF8A6F5125E91AB50029EB00 /* FavoritesView.swift */; };
 		EF8A6F5825E921640029EB00 /* FavoritesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF8A6F5725E921640029EB00 /* FavoritesCollectionViewCell.swift */; };
 		EF8A6F5B25E924B60029EB00 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF8A6F5A25E924B60029EB00 /* Product.swift */; };
-		EF8A6F6125E92D860029EB00 /* CollectionViewLayouts.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF8A6F6025E92D860029EB00 /* CollectionViewLayouts.swift */; };
+		EF8A6F6125E92D860029EB00 /* CollectionLayouts.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF8A6F6025E92D860029EB00 /* CollectionLayouts.swift */; };
 		EF8A6F6425E931C80029EB00 /* SpecialOffersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF8A6F6325E931C80029EB00 /* SpecialOffersView.swift */; };
 		EF8A6F6725E9345D0029EB00 /* StoreImageLabelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF8A6F6625E9345D0029EB00 /* StoreImageLabelButton.swift */; };
 		EF8A6F6B25E93E8C0029EB00 /* HomeTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF8A6F6A25E93E8C0029EB00 /* HomeTabBarController.swift */; };
@@ -39,7 +39,7 @@
 		EFA9820625E7CBC7002EB81E /* UIViewController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA9820525E7CBC7002EB81E /* UIViewController+Ext.swift */; };
 		EFA9820B25E7CD76002EB81E /* EntryVCStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA9820A25E7CD76002EB81E /* EntryVCStackView.swift */; };
 		EFA9821125E7CF6E002EB81E /* StoreButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA9821025E7CF6E002EB81E /* StoreButton.swift */; };
-		EFA9821625E7E93C002EB81E /* registerTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA9821525E7E93C002EB81E /* registerTextField.swift */; };
+		EFA9821625E7E93C002EB81E /* RegisterTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA9821525E7E93C002EB81E /* RegisterTextField.swift */; };
 		EFA9821C25E7F4E6002EB81E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EFA9821B25E7F4E6002EB81E /* GoogleService-Info.plist */; };
 		EFA9822F25E7FB43002EB81E /* HelpFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA9822E25E7FB43002EB81E /* HelpFunctions.swift */; };
 		EFA9824725E81898002EB81E /* logOutVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA9824625E81898002EB81E /* logOutVC.swift */; };
@@ -67,7 +67,7 @@
 		EF8A6F5125E91AB50029EB00 /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
 		EF8A6F5725E921640029EB00 /* FavoritesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesCollectionViewCell.swift; sourceTree = "<group>"; };
 		EF8A6F5A25E924B60029EB00 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
-		EF8A6F6025E92D860029EB00 /* CollectionViewLayouts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewLayouts.swift; sourceTree = "<group>"; };
+		EF8A6F6025E92D860029EB00 /* CollectionLayouts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionLayouts.swift; sourceTree = "<group>"; };
 		EF8A6F6325E931C80029EB00 /* SpecialOffersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecialOffersView.swift; sourceTree = "<group>"; };
 		EF8A6F6625E9345D0029EB00 /* StoreImageLabelButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreImageLabelButton.swift; sourceTree = "<group>"; };
 		EF8A6F6A25E93E8C0029EB00 /* HomeTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarController.swift; sourceTree = "<group>"; };
@@ -86,7 +86,7 @@
 		EFA9820525E7CBC7002EB81E /* UIViewController+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Ext.swift"; sourceTree = "<group>"; };
 		EFA9820A25E7CD76002EB81E /* EntryVCStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryVCStackView.swift; sourceTree = "<group>"; };
 		EFA9821025E7CF6E002EB81E /* StoreButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreButton.swift; sourceTree = "<group>"; };
-		EFA9821525E7E93C002EB81E /* registerTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = registerTextField.swift; sourceTree = "<group>"; };
+		EFA9821525E7E93C002EB81E /* RegisterTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterTextField.swift; sourceTree = "<group>"; };
 		EFA9821B25E7F4E6002EB81E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EFA9822E25E7FB43002EB81E /* HelpFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpFunctions.swift; sourceTree = "<group>"; };
 		EFA9824625E81898002EB81E /* logOutVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = logOutVC.swift; sourceTree = "<group>"; };
@@ -193,7 +193,7 @@
 			children = (
 				EFA9820225E7CA2C002EB81E /* Constants.swift */,
 				EFA9822E25E7FB43002EB81E /* HelpFunctions.swift */,
-				EF8A6F6025E92D860029EB00 /* CollectionViewLayouts.swift */,
+				EF8A6F6025E92D860029EB00 /* CollectionLayouts.swift */,
 			);
 			path = UIHelper;
 			sourceTree = "<group>";
@@ -353,7 +353,7 @@
 		EFA9821425E7E930002EB81E /* Text Fields */ = {
 			isa = PBXGroup;
 			children = (
-				EFA9821525E7E93C002EB81E /* registerTextField.swift */,
+				EFA9821525E7E93C002EB81E /* RegisterTextField.swift */,
 			);
 			path = "Text Fields";
 			sourceTree = "<group>";
@@ -490,7 +490,7 @@
 			files = (
 				EFB774BF25EBFED600BF4B74 /* NetworkManager.swift in Sources */,
 				EFA9825025E823CE002EB81E /* UIView+Ext.swift in Sources */,
-				EFA9821625E7E93C002EB81E /* registerTextField.swift in Sources */,
+				EFA9821625E7E93C002EB81E /* RegisterTextField.swift in Sources */,
 				EF5ADCA225E6E2400029A3B9 /* HomeVC.swift in Sources */,
 				EF8A6FA325E983630029EB00 /* GroceryTextView.swift in Sources */,
 				EF8A6F8D25E94BFF0029EB00 /* BrowseByCategoryTableViewCell.swift in Sources */,
@@ -505,7 +505,7 @@
 				EF8A6F8725E948D10029EB00 /* CategoriesVC.swift in Sources */,
 				EF51091B25E6E546007A459F /* LogInVC.swift in Sources */,
 				EF51092225E6E8C9007A459F /* EntryVC.swift in Sources */,
-				EF8A6F6125E92D860029EB00 /* CollectionViewLayouts.swift in Sources */,
+				EF8A6F6125E92D860029EB00 /* CollectionLayouts.swift in Sources */,
 				EFA9822F25E7FB43002EB81E /* HelpFunctions.swift in Sources */,
 				EF8A6F5225E91AB50029EB00 /* FavoritesView.swift in Sources */,
 				EFA9821125E7CF6E002EB81E /* StoreButton.swift in Sources */,

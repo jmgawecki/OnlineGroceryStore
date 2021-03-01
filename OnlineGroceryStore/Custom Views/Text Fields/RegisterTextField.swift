@@ -7,7 +7,7 @@
 
 import UIKit
 
-class registerTextField: UITextField {
+final class RegisterTextField: UITextField {
 
     //MARK: - Overrides
 

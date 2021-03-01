@@ -7,7 +7,7 @@
 
 import UIKit
 
-class OrdersVC: UIViewController {
+final class OrdersVC: UIViewController {
     // MARK: - Declaration
     
     

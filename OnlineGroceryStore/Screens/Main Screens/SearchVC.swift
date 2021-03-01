@@ -7,22 +7,27 @@
 
 import UIKit
 
-class SearchVC: UIViewController {
+final class SearchVC: UIViewController {
     // MARK: - Declaration
     
-//    var collectionView: UICollectionView!
-//    var dataSource:     UICollectionViewDiffableDataSource<Section, Product>!
-//    var snapshot:       NSDiffableDataSourceSnapshot<Section, Product>!
-//
+    enum Section { case main }
+    
+    var collectionView: UICollectionView!
+    var dataSource:     UICollectionViewDiffableDataSource<Section, Product>!
+    var snapshot:       NSDiffableDataSourceSnapshot<Section, Product>!
+    
+    var products: [Product] = []
     var isSearching         = false
-
-
+    
+    
     // MARK: - Override and Initialise
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureVC()
+        configureCollectionView()
+        configureDataSource()
         configureUIElements()
         layoutUI()
         configureSearchController()
@@ -34,6 +39,24 @@ class SearchVC: UIViewController {
     
     
     
+    
+    // MARK: - Firebase
+    
+    private func getSearchedProducts(collection: String, uponField: String, withCondition: String) {
+        NetworkManager.shared.retrieveProductsFromFirestoreBasedOnTag(withTag: withCondition) { [weak self] (result) in
+            guard let self = self else { return }
+            switch result {
+            case .success(let products):
+                print(products)
+                self.products.removeAll()
+                self.products.append(contentsOf: products)
+                self.updateData()
+                
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
     
     //MARK: - Private Function
     
@@ -47,36 +70,31 @@ class SearchVC: UIViewController {
     
     // MARK: - Collection View
     
-   
-//    
-//    var products: [Product] = []
-//    
-//    private func configureCollectionView() {
-//        collectionView = UICollectionView()
-//        view.addSubview(collectionView)
-//        collectionView.collectionViewLayout = UICollectionViewLayout() // your custom here
-//        // tamic delete or leave depending if collectionView is view.bounds. If its with manual constrain then
-//        // collectionView.frame = CGRect.zero
-//        collectionView.translatesAutoresizingMaskIntoConstraints = false
-//    }
-//
-//    private func configureDataSource() {
-//        let cellRegistration = UICollectionView.CellRegistration<FavoritesCollectionViewCell, Product> { (cell, indexPath, identifier) in
-//            cell.set()
-//        }
-//
-//        dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { (collectionView, indexPath, product) -> UICollectionViewCell? in
-//            return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: product)
-//        })
-//    }
-//
-//    private func configureSnapshot() {
-//        var snapshot = NSDiffableDataSourceSnapshot<Section, Product>()
-//        snapshot.appendSections([.main])
-//        snapshot.appendItems(products, toSection: .main)
-//
-//        DispatchQueue.main.async { self.dataSource.apply(snapshot, animatingDifferences: true) }
-//    }
+    
+    
+    private func configureCollectionView() {
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: CollectionLayouts.searchVCCollectionViewLayout())
+        view.addSubview(collectionView)
+        collectionView.backgroundColor = UIColor(named: colorAsString.storeBackground)
+        collectionView.delegate = self
+    }
+    
+    private func configureDataSource() {
+        let cellRegistration = UICollectionView.CellRegistration<ProductsVCCollectionViewCell, Product> { (cell, indexPath, product) in
+            cell.set(with: product)
+        }
+        
+        dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { (collectionView, indexPath, product) -> UICollectionViewCell? in
+            return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: product)
+        })
+    }
+    
+    private func updateData() {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Product>()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(products, toSection: .main)
+        DispatchQueue.main.async { self.dataSource.apply(snapshot, animatingDifferences: true) }
+    }
     
     
     //MARK: - VC Configuration
@@ -96,7 +114,6 @@ class SearchVC: UIViewController {
     
     private func configureSearchController() {
         let searchController                    = UISearchController()
-        
         searchController.searchResultsUpdater   = self
         searchController.searchBar.delegate     = self
         searchController.searchBar.placeholder  = "Type a username"
@@ -112,13 +129,20 @@ class SearchVC: UIViewController {
 
 extension SearchVC: UISearchResultsUpdating, UISearchBarDelegate {
     func updateSearchResults(for searchController: UISearchController) {
-        guard let filter = searchController.searchBar.text, !filter.isEmpty else { return }
-//        filteredFollowers = followers.filter {$0.login.lowercased().contains(filter.lowercased())}
-//        updateData(on: filteredFollowers)
+        guard let keyTag = searchController.searchBar.text, !keyTag.isEmpty else { return }
+        getSearchedProducts(collection: "products", uponField: "id", withCondition: keyTag.lowercased())
         isSearching = true
+        collectionView.reloadData()
     }
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         isSearching = false
 //        updateData(on: followers)
+    }
+}
+
+extension SearchVC: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let destVC = ProductDetailsVC()
+        navigationController?.present(destVC, animated: true)
     }
 }

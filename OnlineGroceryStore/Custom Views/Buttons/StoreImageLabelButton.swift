@@ -7,7 +7,7 @@
 
 import UIKit
 
-class StoreImageLabelButton: UIButton {
+final class StoreImageLabelButton: UIButton {
     // MARK: - Declaration
     
     var buttonImageView = ShopImageView(frame: .zero)

@@ -15,8 +15,8 @@ final class LogInVC: UIViewController {
     var shopImageView   = ShopImageView(frame: .zero)
     var loginFormStackV = UIStackView()
     
-    var email           = registerTextField(placeholder: "@Email", capitalised: .none, isPassword: false)
-    var password        = registerTextField(placeholder: "Password", capitalised: .none, isPassword: true)
+    var email           = RegisterTextField(placeholder: "@Email", capitalised: .none, isPassword: false)
+    var password        = RegisterTextField(placeholder: "Password", capitalised: .none, isPassword: true)
     var confirmButton   = StoreButton(fontSize: 18, label: "Log In!")
     
     // MARK: - Override, Initialiser
@@ -74,18 +74,7 @@ final class LogInVC: UIViewController {
                 
             } else {
                 self.pushToHomeScreen()
-//                switch result {
-//                case .none:
-//                    print("none")
-//                case .some(let this):
-//                    print(this.user.uid)
-//                    Firestore.firestore().
-//
-//                }
-                
             }
-           
-            
         }
     }
     

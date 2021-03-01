@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FavoritesView: UIView {
+final class FavoritesView: UIView {
     // MARK: - Declaration
     
     enum Section { case main }

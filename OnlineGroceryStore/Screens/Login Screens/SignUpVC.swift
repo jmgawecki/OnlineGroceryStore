@@ -14,11 +14,11 @@ final class SignUpVC: UIViewController {
     var shopImageView       = ShopImageView(frame: .zero)
     var registerFormStackV  = UIStackView()
     
-    var firstName           = registerTextField(placeholder: "First Name", capitalised: .words, isPassword: false)
-    var lastName            = registerTextField(placeholder: "Last Name", capitalised: .words, isPassword: false)
-    var email               = registerTextField(placeholder: "@Email", capitalised: .none, isPassword: false)
-    var password            = registerTextField(placeholder: "Password", capitalised: .none, isPassword: true)
-    var confirmPassword     = registerTextField(placeholder: "Confirm Password", capitalised: .none, isPassword: true)
+    var firstName           = RegisterTextField(placeholder: "First Name", capitalised: .words, isPassword: false)
+    var lastName            = RegisterTextField(placeholder: "Last Name", capitalised: .words, isPassword: false)
+    var email               = RegisterTextField(placeholder: "@Email", capitalised: .none, isPassword: false)
+    var password            = RegisterTextField(placeholder: "Password", capitalised: .none, isPassword: true)
+    var confirmPassword     = RegisterTextField(placeholder: "Confirm Password", capitalised: .none, isPassword: true)
     var confirmButton       = StoreButton(fontSize: 18, label: "Sign Up!")
     
     var currentUser: UserLocal?

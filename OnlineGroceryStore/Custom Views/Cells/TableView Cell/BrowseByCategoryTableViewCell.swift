@@ -9,7 +9,7 @@ import UIKit
 import Firebase
 import FirebaseUI
 
-class BrowseByCategoryTableViewCell: UITableViewCell {
+final class BrowseByCategoryTableViewCell: UITableViewCell {
     // MARK: - Declaration
     
     let cache = NSCache<NSString, UIImage>()

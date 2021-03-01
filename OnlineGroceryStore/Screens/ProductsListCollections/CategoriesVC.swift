@@ -8,7 +8,7 @@
 import UIKit
 import Firebase
 
-class CategoriesVC: UIViewController {
+final class CategoriesVC: UIViewController {
     // MARK: - Declaration
     
     enum Section { case main }

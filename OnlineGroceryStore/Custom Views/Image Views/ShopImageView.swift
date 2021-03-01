@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ShopImageView: UIImageView {
+final class ShopImageView: UIImageView {
     // MARK: - Declaration
 
     

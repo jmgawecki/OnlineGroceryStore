@@ -38,6 +38,31 @@ class NetworkManager {
                 completed(.success(products))
             }
         }
+        
+    }
+    
+    
+    func retrieveProductsFromFirestoreBasedOnTag(withTag: String, completed: @escaping(Result<[Product], Error>) -> Void) {
+        var products: [Product] = []
+        Firestore.firestore().collection("products").whereField("tag", arrayContains: withTag).getDocuments { (querySnapshot, error) in
+            if let error = error {
+                completed(.failure(error))
+            } else {
+                for document in querySnapshot!.documents {
+                    print("\(document.documentID) => \(document.data())")
+                    products.append(Product(name:             document.data()["name"]             as! String,
+                                            description:      document.data()["description"]      as! String?,
+                                            price:            document.data()["price"]            as! Double,
+                                            favorite:         document.data()["favorite"]         as! Bool,
+                                            category:         document.data()["category"]         as! String,
+                                            imageReference:   document.data()["imageReference"]   as! String,
+                                            id:               document.data()["id"]               as! String,
+                                            discountMlt:      document.data()["discountMlt"]      as! Double,
+                                            tag:              document.data()["tag"]              as! [String]))
+                }
+                completed(.success(products))
+            }
+        }
     }
     
     

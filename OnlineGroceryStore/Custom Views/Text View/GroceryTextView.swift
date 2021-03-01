@@ -7,7 +7,7 @@
 
 import UIKit
 
-class GroceryTextView: UITextView {
+final class GroceryTextView: UITextView {
     // MARK: - Declaration
     
     

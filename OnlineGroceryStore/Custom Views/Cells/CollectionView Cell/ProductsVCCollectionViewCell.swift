@@ -9,7 +9,7 @@ import UIKit
 import Firebase
 import FirebaseUI
 
-class ProductsVCCollectionViewCell: UICollectionViewCell {
+final class ProductsVCCollectionViewCell: UICollectionViewCell {
     // MARK: - Declaration
     
     let cache = NSCache<NSString, UIImage>()

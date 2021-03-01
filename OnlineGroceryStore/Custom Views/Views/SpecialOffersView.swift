@@ -13,7 +13,7 @@ protocol SpecialOffersViewDelegate: class {
     func presentProductDetailModally()
 }
 
-class SpecialOffersView: UIViewController {
+final class SpecialOffersView: UIViewController {
     // MARK: - Declaration
     
     enum Section { case main }

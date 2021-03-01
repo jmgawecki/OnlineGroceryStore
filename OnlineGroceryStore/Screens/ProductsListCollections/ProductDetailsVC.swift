@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ProductDetailsVC: UIViewController {
+final class ProductDetailsVC: UIViewController {
     // MARK: - Declaration
     
     var productImageView    = ShopImageView(frame: .zero)

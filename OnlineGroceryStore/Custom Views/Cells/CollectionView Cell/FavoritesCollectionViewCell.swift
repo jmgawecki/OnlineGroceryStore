@@ -6,10 +6,14 @@
 //
 
 import UIKit
+import FirebaseUI
+import Firebase
 
-class FavoritesCollectionViewCell: UICollectionViewCell {
+final class FavoritesCollectionViewCell: UICollectionViewCell {
     // MARK: - Declaration
     static let reuseId = "SpeicificCellName"
+    
+    let cache = NSCache<NSString, UIImage>()
     
     var productImageView = ShopImageView(frame: .zero)
     var productTitleLabel = StoreBoldLabel(with: "Product's name",
@@ -49,6 +53,29 @@ class FavoritesCollectionViewCell: UICollectionViewCell {
         self.product = product
         priceLabel.text = "$\(String(product.price))"
         productTitleLabel.text = product.name
+        retrieveImageWithPathReferenceFromDocument(from: product.id)
+    }
+    
+    
+    private func retrieveImageWithPathReferenceFromDocument(from category: String) {
+        let cacheKey = NSString(string: category)
+        if let image = cache.object(forKey: cacheKey) { self.productImageView.image = image; return}
+        /// Perhaps products/diary/
+        Firestore.firestore().collection("products").document(category).getDocument { [weak self] (category, error) in
+            guard let self = self else { return }
+            let pathReference = Storage.storage().reference(withPath: "productImage/\(category?.data()!["imageReference"] as! String)")
+            
+            pathReference.getData(maxSize: 1 * 2024 * 2024) { data, error in
+                if let error = error {
+                    print(error.localizedDescription)
+                } else {
+                    DispatchQueue.main.async {
+                        self.productImageView.image = UIImage(data: data!)
+                    }
+                    self.cache.setObject(UIImage(data: data!)!, forKey: cacheKey)
+                }
+            }
+        }
     }
     
     
