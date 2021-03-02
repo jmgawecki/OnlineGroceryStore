@@ -32,3 +32,6 @@ import Foundation
 #warning("create a model for the basket")
 #warning("Create payment authorisation")
 #warning("create a button action in homeVC that extends and offers quick action, like changing your data or loging out or deleting the account")
+#warning("finish data base for categories")
+#warning("add textfields for extra data like the adress")
+#warning("add app authorisation with face id and touch id")

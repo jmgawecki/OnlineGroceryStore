@@ -16,6 +16,7 @@ final class CategoriesVC: UIViewController {
     var categoriesTableView: UITableView!
     
     var categories: [String] = []
+    var currentUser: UserLocal!
     
     var dataSource: UITableViewDiffableDataSource<Section, String>!
     var snapshot: NSDiffableDataSourceSnapshot<Section, String>!
@@ -33,6 +34,18 @@ final class CategoriesVC: UIViewController {
         configureDataSource()
         getCategories()
     }
+    
+    
+    init(currentUser: UserLocal) {
+        super.init(nibName: nil, bundle: nil)
+        self.currentUser = currentUser
+    }
+    
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     
     
     // MARK: - @Objectives
@@ -70,7 +83,6 @@ final class CategoriesVC: UIViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: BrowseByCategoryTableViewCell.reuseID) as! BrowseByCategoryTableViewCell
             cell.currentCategory = category
             cell.set(with: category)
-            cell.retrieveImageWithPathReferenceFromDocument(from: category)
             return cell
         })
     }
@@ -102,7 +114,8 @@ final class CategoriesVC: UIViewController {
 
 extension CategoriesVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let destVC = ProductsVC()
+        #warning("do a check for current user")
+        let destVC = ProductsVC(currentUser: currentUser!)
         destVC.currentCategory = categories[indexPath.row]
         #warning("how to add category's title?")
         

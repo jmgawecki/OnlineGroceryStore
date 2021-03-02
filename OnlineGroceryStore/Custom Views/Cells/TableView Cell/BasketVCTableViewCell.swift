@@ -1,15 +1,18 @@
 //
-//  BrowseByCategoryTableViewCell.swift
+//  BasketVCTableViewCell.swift
 //  OnlineGroceryStore
 //
-//  Created by Jakub Gawecki on 26/02/2021.
+//  Created by Jakub Gawecki on 02/03/2021.
 //
 
 import UIKit
 import Firebase
 import FirebaseUI
 
-final class BrowseByCategoryTableViewCell: UITableViewCell {
+class BasketVCTableViewCell: UITableViewCell {
+    
+    
+    
     // MARK: - Declaration
     
     let cache = NSCache<NSString, UIImage>()
@@ -25,7 +28,7 @@ final class BrowseByCategoryTableViewCell: UITableViewCell {
     
     static let reuseID = "BrowseByCategoryCell"
     
-    var currentCategory: String!
+    var product: ProductLocal!
     
     
     // MARK: - Override and Initialise
@@ -43,14 +46,14 @@ final class BrowseByCategoryTableViewCell: UITableViewCell {
     
     // MARK: - Called Outside
     
-    func set(with categoryTitle: String) {
-        categoryLabel.text = categoryTitle
-        downloadImage(from: categoryTitle)
+    func set(with basketProduct: ProductLocal) {
+        self.product = basketProduct
+        categoryLabel.text = basketProduct.name
+        downloadImage(from: basketProduct.id)
     }
     
-    
     private func downloadImage(from category: String) {
-        NetworkManager.shared.retrieveImageWithPathReferenceFromDocument(from: category, categoryOrProduct: .category) { [weak self] (image) in
+        NetworkManager.shared.retrieveImageWithPathReferenceFromDocument(from: category, categoryOrProduct: .product) { [weak self] (image) in
             guard let self = self else { return }
             DispatchQueue.main.async { self.categoryImageView.image = image }
         }
@@ -69,15 +72,15 @@ final class BrowseByCategoryTableViewCell: UITableViewCell {
         let padding: CGFloat    = 12
         
         NSLayoutConstraint.activate([
-            categoryImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            categoryImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
-            categoryImageView.heightAnchor.constraint(equalToConstant: 60),
-            categoryImageView.widthAnchor.constraint(equalToConstant: 60),
+            categoryImageView.centerYAnchor.constraint      (equalTo: self.centerYAnchor),
+            categoryImageView.leadingAnchor.constraint      (equalTo: self.leadingAnchor, constant: padding),
+            categoryImageView.heightAnchor.constraint       (equalToConstant: 60),
+            categoryImageView.widthAnchor.constraint        (equalToConstant: 60),
             
-            categoryLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            categoryLabel.leadingAnchor.constraint(equalTo: categoryImageView.trailingAnchor, constant: 24),
-            categoryLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
-            categoryLabel.heightAnchor.constraint(equalToConstant: 40)
+            categoryLabel.centerYAnchor.constraint          (equalTo: self.centerYAnchor),
+            categoryLabel.leadingAnchor.constraint          (equalTo: categoryImageView.trailingAnchor, constant: 24),
+            categoryLabel.trailingAnchor.constraint         (equalTo: self.trailingAnchor, constant: -padding),
+            categoryLabel.heightAnchor.constraint           (equalToConstant: 40)
         ])
     }
 }

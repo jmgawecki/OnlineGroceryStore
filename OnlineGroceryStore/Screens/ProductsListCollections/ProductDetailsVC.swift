@@ -19,6 +19,7 @@ final class ProductDetailsVC: UIViewController {
                                              color: UIColor(named: colorAsString.storePrimaryText) ?? .orange)
     
     var descriptionTextView = GroceryTextView(with: "Product's Description")
+    var currentUser: UserLocal!
     
     
     // MARK: - Override and Initialise

@@ -30,7 +30,7 @@ final class FavoritesCollectionViewCell: UICollectionViewCell {
                                     alpha: 1,
                                     color: UIColor(named: colorAsString.storeTertiary) ?? .orange)
     
-    var product: Product!
+    var product: ProductLocal!
     // MARK: - Override and Initialise
     
     
@@ -49,34 +49,22 @@ final class FavoritesCollectionViewCell: UICollectionViewCell {
     // MARK: - Called Outside
     
     
-    func set(with product: Product) {
+    func set(with product: ProductLocal) {
         self.product = product
         priceLabel.text = "$\(String(product.price))"
         productTitleLabel.text = product.name
-        retrieveImageWithPathReferenceFromDocument(from: product.id)
+        downloadImage(from: product.id)
     }
     
-    
-    private func retrieveImageWithPathReferenceFromDocument(from category: String) {
-        let cacheKey = NSString(string: category)
-        if let image = cache.object(forKey: cacheKey) { self.productImageView.image = image; return}
-        /// Perhaps products/diary/
-        Firestore.firestore().collection("products").document(category).getDocument { [weak self] (category, error) in
+    private func downloadImage(from category: String) {
+        NetworkManager.shared.retrieveImageWithPathReferenceFromDocument(from: category, categoryOrProduct: .product) { [weak self] (image) in
             guard let self = self else { return }
-            let pathReference = Storage.storage().reference(withPath: "productImage/\(category?.data()!["imageReference"] as! String)")
-            
-            pathReference.getData(maxSize: 1 * 2024 * 2024) { data, error in
-                if let error = error {
-                    print(error.localizedDescription)
-                } else {
-                    DispatchQueue.main.async {
-                        self.productImageView.image = UIImage(data: data!)
-                    }
-                    self.cache.setObject(UIImage(data: data!)!, forKey: cacheKey)
-                }
-            }
+            DispatchQueue.main.async { self.productImageView.image = image }
         }
     }
+    
+    
+    
     
     
     // MARK: - Cell configuration

@@ -40,7 +40,7 @@ final class HomeVC: UIViewController {
         configureLogOutButton()
         configureAllCategoriesButton()
         configureUIElements()
-        getCurrentUserData()
+        getCurrentUser()
         animateViews()
         add(childVC: SpecialOffersView(), to: specialOffersView)
     }
@@ -70,7 +70,8 @@ final class HomeVC: UIViewController {
     
     @objc private func allCategoriesButtonTapped(_ sender: UIView) {
         animateButtonViewAlpha(sender)
-        let destVC = CategoriesVC()
+        #warning("before a push do a check if currentUser != nil. If its nil shows alert that internetConnection was probably lost")
+        let destVC = CategoriesVC(currentUser: currentUser!)
         navigationController?.pushViewController(destVC, animated: true)
     }
     
@@ -110,26 +111,18 @@ final class HomeVC: UIViewController {
     
     //MARK: - Firebase
     
-    
-    private func getCurrentUserData() {
-        let userEmail = (Auth.auth().currentUser?.email)!
-        Firestore.firestore().collection("usersData").document(userEmail).getDocument(completion: { [weak self] (user, error) in
+    func getCurrentUser() {
+        NetworkManager.shared.getCurrentUserData { [weak self] (result) in
             guard let self = self else { return }
-            if let error = error {
-                print(error.localizedDescription)
-                return
-            } else {
-                self.currentUser = UserLocal(uid:       user?.data()!["uid"]        as! String,
-                                             firstName: user?.data()!["firstname"]  as! String,
-                                             lastName:  user?.data()!["lastname"]   as! String,
-                                             email:     userEmail)
+            switch result {
+            case .success(let currentUser):
+                self.currentUser = currentUser
+                DispatchQueue.main.async { self.hiNameLabel.text = "Hi \(currentUser.firstName)" }
                 
-                #warning("How to make it better? How to append name to a label before class is initialised. Tried in scene delegate but its a one big mess")
-                DispatchQueue.main.async {
-                    self.hiNameLabel.text?.append("\(self.currentUser!.firstName)")
-                }
+            case .failure(let error):
+                print(error.localizedDescription)
             }
-        })
+        }
     }
     
     
@@ -197,7 +190,7 @@ final class HomeVC: UIViewController {
             allCategoriesButton.topAnchor.constraint        (equalTo: specialOffersView.bottomAnchor, constant: 10),
             allCategoriesButton.leadingAnchor.constraint    (equalTo: contentView.leadingAnchor, constant: 10),
             allCategoriesButton.trailingAnchor.constraint   (equalTo: contentView.trailingAnchor, constant: -10),
-            allCategoriesButton.heightAnchor.constraint (equalToConstant: 60),
+            allCategoriesButton.heightAnchor.constraint     (equalToConstant: 60),
         ])
     }
     
@@ -220,13 +213,3 @@ final class HomeVC: UIViewController {
         }
     }
 }
-
-/*
- scrollView.addSubview(logOutButton)
- 
- 
- logOutButton.centerXAnchor.constraint       (equalTo: scrollView.centerXAnchor),
- logOutButton.topAnchor.constraint           (equalTo: scrollView.centerYAnchor),
- logOutButton.widthAnchor.constraint         (equalToConstant: 150),
- logOutButton.heightAnchor.constraint        (equalToConstant: 500),
- */

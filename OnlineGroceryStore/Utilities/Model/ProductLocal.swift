@@ -3,11 +3,11 @@
 //  OnlineGroceryStore
 //
 //  Created by Jakub Gawecki on 26/02/2021.
-//
+
 
 import Foundation
 
-struct Product: Hashable {
+struct ProductLocal: Hashable {
     let name: String
     let description: String?
     let price: Double
@@ -17,5 +17,7 @@ struct Product: Hashable {
     let id: String
     let discountMlt: Double
     let tag: [String]
+    let topOffer: Bool
+    let quantity: Int
 }
 

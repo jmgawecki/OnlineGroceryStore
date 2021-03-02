@@ -13,11 +13,12 @@ final class ProductsVC: UIViewController {
     // MARK: - Declaration
     enum Section { case main }
     
-    var collectionView: UICollectionView!
-    var dataSource:     UICollectionViewDiffableDataSource<Section, Product>!
+    var collectionView:     UICollectionView!
+    var dataSource:         UICollectionViewDiffableDataSource<Section, ProductLocal>!
     
-    var products: [Product] = []
-    var currentCategory: String!
+    var products:           [ProductLocal] = []
+    var currentUser:        UserLocal!
+    var currentCategory:    String!
     // MARK: - Override and Initialise
     
     
@@ -31,8 +32,20 @@ final class ProductsVC: UIViewController {
         getProducts()
     }
     
+    
     override func viewWillDisappear(_ animated: Bool) {
         print("tralala")
+    }
+    
+    
+    init(currentUser: UserLocal) {
+        super.init(nibName: nil, bundle: nil)
+        self.currentUser = currentUser
+    }
+    
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     
@@ -56,7 +69,6 @@ final class ProductsVC: UIViewController {
     
     
     private func configureUIElements() {
-       
     }
     
     
@@ -88,8 +100,8 @@ final class ProductsVC: UIViewController {
     }
     
     private func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<ProductsVCCollectionViewCell, Product> { (cell, indexPath, product) in
-            cell.set(with: product)
+        let cellRegistration = UICollectionView.CellRegistration<ProductsVCCollectionViewCell, ProductLocal> { (cell, indexPath, product) in
+            cell.set(with: product, currentUser: self.currentUser)
         }
         
         dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { (collectionView, indexPath, product) -> ProductsVCCollectionViewCell? in
@@ -98,7 +110,7 @@ final class ProductsVC: UIViewController {
     }
     
     private func updateDataOnCollection() {
-        var snapshot = NSDiffableDataSourceSnapshot<Section, Product>()
+        var snapshot = NSDiffableDataSourceSnapshot<Section, ProductLocal>()
         snapshot.appendSections([.main])
         snapshot.appendItems(products, toSection: .main)
         DispatchQueue.main.async { self.dataSource.apply(snapshot, animatingDifferences: true); self.collectionView.reloadData() }
@@ -124,6 +136,8 @@ final class ProductsVC: UIViewController {
 extension ProductsVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let destVC = ProductDetailsVC()
+        #warning("do a check if current user exists")
+        destVC.currentUser = currentUser!
         navigationController?.present(destVC, animated: true)
     }
 }

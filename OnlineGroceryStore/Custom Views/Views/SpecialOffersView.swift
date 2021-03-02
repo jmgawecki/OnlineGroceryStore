@@ -25,10 +25,10 @@ final class SpecialOffersView: UIViewController {
                                                  alpha: 1,
                                                  color: UIColor(named: colorAsString.storePrimaryText) ?? .orange)
     var collectionView: UICollectionView!
-    var dataSource:     UICollectionViewDiffableDataSource<Section, Product>!
-    var snapshot:       NSDiffableDataSourceSnapshot<Section, Product>!
+    var dataSource:     UICollectionViewDiffableDataSource<Section, ProductLocal>!
+    var snapshot:       NSDiffableDataSourceSnapshot<Section, ProductLocal>!
     
-    var products: [Product] = []
+    var products: [ProductLocal] = []
     
     var segmentedControl: UISegmentedControl!
     
@@ -103,7 +103,7 @@ final class SpecialOffersView: UIViewController {
     
     
     private func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<FavoritesCollectionViewCell, Product> { (cell, indexPath, product) in
+        let cellRegistration = UICollectionView.CellRegistration<FavoritesCollectionViewCell, ProductLocal> { (cell, indexPath, product) in
             cell.set(with: product)
         }
         
@@ -114,7 +114,7 @@ final class SpecialOffersView: UIViewController {
     
     
     private func configureSnapshot() {
-        var snapshot = NSDiffableDataSourceSnapshot<Section, Product>()
+        var snapshot = NSDiffableDataSourceSnapshot<Section, ProductLocal>()
         snapshot.appendSections([.main])
         snapshot.appendItems(products, toSection: .main)
         

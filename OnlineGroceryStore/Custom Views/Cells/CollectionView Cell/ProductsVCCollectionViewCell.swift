@@ -32,7 +32,14 @@ final class ProductsVCCollectionViewCell: UICollectionViewCell {
     
     var favoriteSystemButton = UIButton()
     var addToBasketButton = StoreButton(fontSize: 20, label: "Add")
-    var product: Product!
+    var product: ProductLocal!
+    var currentUser: UserLocal!
+    
+    var productCounter: UIStackView!
+    let plusButton = UIButton()
+    let minusButton = UIButton()
+    let counter = UITextField()
+    var count = 0
     
     
     
@@ -42,54 +49,90 @@ final class ProductsVCCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        configureUIStackView()
         layoutUI()
+        configureStackViewButtons()
+        configureAddToBasketButton()
+    }
+    
+
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    
+    
+    // MARK: - @Objectives
+    
+    
+    @objc private func plusButtonTapped() {
+        animateCounterView(counter)
+        count += 1
+        DispatchQueue.main.async {
+            self.counter.text = String(self.count)
+        }
     }
     
     
-    
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    @objc private func minusButtonTapped() {
+        if count > 0 {
+            animateCounterView(counter)
+            count -= 1
+            DispatchQueue.main.async { self.counter.text = String(self.count) }
+        }
+        
     }
     
+    
+    @objc private func addToBasketButtonTapped(sender: UIView) {
+        animateButtonView(sender)
+        NetworkManager.shared.addProductToBasket(for: currentUser, with: product, howMany: count) { (error) in
+            if let error = error {
+                print(error.localizedDescription)
+            }
+        }
+
+        self.count = 0
+        DispatchQueue.main.async { self.counter.text = String(self.count) }
+    }
+    
+    
+    // MARK: - Private function
+    
+    private func configureStackViewButtons() {
+        plusButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
+        minusButton.addTarget(self, action: #selector(minusButtonTapped), for: .touchUpInside)
+    }
+    
+    
+    private func configureAddToBasketButton() {
+        addToBasketButton.addTarget(self, action: #selector(addToBasketButtonTapped), for: .touchUpInside)
+    }
     
     // MARK: - Called Outside
     
     
-    func set(with product: Product) {
+    func set(with product: ProductLocal, currentUser: UserLocal) {
         self.product = product
+        self.currentUser = currentUser
         productTitleLabel.text = product.name
         priceLabel.text = "$\(String(product.price))"
-        retrieveImageWithPathReferenceFromDocument(from: product.id)
+        downloadImage(from: product.id)
         print(product.id)
         if product.favorite == true {
-            favoriteSystemButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+            favoriteSystemButton.setImage(UIImage(systemName: "heart.fill", withConfiguration: UIImage.SymbolConfiguration(scale: .large)), for: .normal)
+            favoriteSystemButton.tintColor = UIColor(named: colorAsString.storeTertiary)
         } else {
-            favoriteSystemButton.setImage(UIImage(systemName: "heart"), for: .normal)
+            favoriteSystemButton.setImage(UIImage(systemName: "heart", withConfiguration: UIImage.SymbolConfiguration(scale: .large)), for: .normal)
+            favoriteSystemButton.tintColor = UIColor(named: colorAsString.storeTertiary)
         }
     }
     
     
-    private func retrieveImageWithPathReferenceFromDocument(from category: String) {
-        let cacheKey = NSString(string: category)
-        if let image = cache.object(forKey: cacheKey) { self.productImageView.image = image; return}
-        /// Perhaps products/diary/
-        Firestore.firestore().collection("products").document(category).getDocument { [weak self] (category, error) in
+    private func downloadImage(from category: String) {
+        NetworkManager.shared.retrieveImageWithPathReferenceFromDocument(from: category, categoryOrProduct: .product) { [weak self] (image) in
             guard let self = self else { return }
-            let pathReference = Storage.storage().reference(withPath: "productImage/\(category?.data()!["imageReference"] as! String)")
-            
-            pathReference.getData(maxSize: 1 * 2024 * 2024) { data, error in
-                if let error = error {
-                    print(error.localizedDescription)
-                } else {
-                    DispatchQueue.main.async {
-                        self.productImageView.image = UIImage(data: data!)
-                    }
-                    self.cache.setObject(UIImage(data: data!)!, forKey: cacheKey)
-                }
-            }
+            DispatchQueue.main.async { self.productImageView.image = image }
         }
     }
+
     
     // MARK: - Firebase
     
@@ -103,13 +146,42 @@ final class ProductsVCCollectionViewCell: UICollectionViewCell {
     }
     
     
+    // MARK: - Layout Configuration
+    
+    
+    private func configureUIStackView() {
+        plusButton.setImage(UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(scale: .large)), for: .normal)
+        plusButton.tintColor = UIColor(named: colorAsString.storeTertiary)
+        
+        minusButton.setImage(UIImage(systemName: "minus", withConfiguration: UIImage.SymbolConfiguration(scale: .large)), for: .normal)
+        minusButton.tintColor = UIColor(named: colorAsString.storeTertiary)
+        
+        counter.text = String(count)
+        counter.font = UIFont.preferredFont(forTextStyle: .title2)
+        counter.textColor = UIColor(named: colorAsString.storeTertiary)
+        counter.textAlignment = .center
+        counter.isEnabled = false
+        
+        productCounter                   = UIStackView()
+        productCounter.axis              = .horizontal
+        productCounter.distribution      = .fillEqually
+        productCounter.alignment         = .center
+        productCounter.translatesAutoresizingMaskIntoConstraints = false
+        minusButton.layer.borderWidth = 2
+        counter.layer.borderWidth = 2
+        productCounter.addArrangedSubview(minusButton)
+        productCounter.addArrangedSubview(counter)
+        productCounter.addArrangedSubview(plusButton)
+    }
+    
+    
     // MARK: - Layout UI
     
     
     private func layoutUI() {
         favoriteSystemButton.translatesAutoresizingMaskIntoConstraints = false
-        addSubviews(productImageView, productTitleLabel, priceLabel, favoriteSystemButton, addToBasketButton)
-        debugConfiguration(productImageView, productTitleLabel, priceLabel, favoriteSystemButton, addToBasketButton)
+        addSubviews(productImageView, productTitleLabel, priceLabel, favoriteSystemButton, addToBasketButton, productCounter)
+        debugConfiguration(productImageView, productTitleLabel, priceLabel, favoriteSystemButton, addToBasketButton, productCounter)
         
         NSLayoutConstraint.activate([
             productImageView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
@@ -117,13 +189,8 @@ final class ProductsVCCollectionViewCell: UICollectionViewCell {
             productImageView.heightAnchor.constraint(equalToConstant: 175),
             productImageView.widthAnchor.constraint(equalTo: productImageView.heightAnchor),
             
-            productTitleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 0),
-            productTitleLabel.leadingAnchor.constraint(equalTo: productImageView.trailingAnchor, constant: 10),
-            productTitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5),
-            productTitleLabel.heightAnchor.constraint(equalToConstant: 60),
-            
-            priceLabel.topAnchor.constraint(equalTo: productImageView.bottomAnchor, constant: 5),
-            priceLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5),
+            priceLabel.topAnchor.constraint(equalTo: topAnchor, constant: 0),
+            priceLabel.leadingAnchor.constraint(equalTo: productImageView.trailingAnchor, constant: 0),
             priceLabel.widthAnchor.constraint(equalToConstant: 80),
             priceLabel.heightAnchor.constraint(equalToConstant: 40),
             
@@ -132,10 +199,46 @@ final class ProductsVCCollectionViewCell: UICollectionViewCell {
             favoriteSystemButton.heightAnchor.constraint(equalTo: priceLabel.heightAnchor),
             favoriteSystemButton.widthAnchor.constraint(equalTo: favoriteSystemButton.heightAnchor),
             
-            addToBasketButton.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 0),
-            addToBasketButton.topAnchor.constraint(equalTo: favoriteSystemButton.bottomAnchor, constant: 10),
+            productCounter.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 0),
+            productCounter.leadingAnchor.constraint(equalTo: productImageView.trailingAnchor, constant: 0),
+            productCounter.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
+            productCounter.heightAnchor.constraint(equalToConstant: 50),
+            
+            addToBasketButton.leadingAnchor.constraint(equalTo: productImageView.trailingAnchor, constant: 0),
+            addToBasketButton.topAnchor.constraint(equalTo: productCounter.bottomAnchor, constant: 10),
             addToBasketButton.widthAnchor.constraint(equalToConstant: 150),
             addToBasketButton.heightAnchor.constraint(equalToConstant: 50),
+            
+            productTitleLabel.topAnchor.constraint(equalTo: productImageView.bottomAnchor, constant: 0),
+            productTitleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
+            productTitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
+            productTitleLabel.heightAnchor.constraint(equalToConstant: 60),
         ])
     }
+    
+    // MARK: - Animation
+    
+    
+    private func animateButtonView(_ viewToAnimate: UIView) {
+        UIView.animate(withDuration: 0.2, animations: {viewToAnimate.alpha = 0.3}) { (true) in
+            switch true {
+            case true:
+                UIView.animate(withDuration: 0.2, animations: {viewToAnimate.alpha = 1} )
+            case false:
+                return
+            }
+        }
+    }
+    
+    private func animateCounterView(_ viewToAnimate: UIView) {
+        UIView.animate(withDuration: 0.1, animations: {viewToAnimate.alpha = 0.3}) { (true) in
+            switch true {
+            case true:
+                UIView.animate(withDuration: 0.1, animations: {viewToAnimate.alpha = 1} )
+            case false:
+                return
+            }
+        }
+    }
+    
 }

@@ -61,10 +61,10 @@ final class SignUpVC: UIViewController {
     
     private func createUserInFirebase() {
         // trim the fields from white spaces and extra empty lines
-        let firstNameC      = firstName.text?.trimmingCharacters(in: .whitespacesAndNewlines)
-        let lastNameC       = lastName.text?.trimmingCharacters(in: .whitespacesAndNewlines)
-        let emailC          = email.text?.trimmingCharacters(in: .whitespacesAndNewlines)
-        let passwordC       = password.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let firstNameC      = firstName.text?.trimmingCharacters    (in: .whitespacesAndNewlines)
+        let lastNameC       = lastName.text?.trimmingCharacters     (in: .whitespacesAndNewlines)
+        let emailC          = email.text?.trimmingCharacters        (in: .whitespacesAndNewlines)
+        let passwordC       = password.text?.trimmingCharacters     (in: .whitespacesAndNewlines)
         // create the user
         Auth.auth().createUser(withEmail: emailC!, password: passwordC!) { [weak self] (result, error) in
             guard let self  = self else { return }

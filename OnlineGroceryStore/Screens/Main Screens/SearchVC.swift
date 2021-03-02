@@ -13,10 +13,11 @@ final class SearchVC: UIViewController {
     enum Section { case main }
     
     var collectionView: UICollectionView!
-    var dataSource:     UICollectionViewDiffableDataSource<Section, Product>!
-    var snapshot:       NSDiffableDataSourceSnapshot<Section, Product>!
+    var dataSource:     UICollectionViewDiffableDataSource<Section, ProductLocal>!
+    var snapshot:       NSDiffableDataSourceSnapshot<Section, ProductLocal>!
     
-    var products: [Product] = []
+    var products: [ProductLocal] = []
+    var currentUser: UserLocal!
     var isSearching         = false
     
     
@@ -34,6 +35,9 @@ final class SearchVC: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        getCurrentUser()
+    }
     
     // MARK: - @Objectives
     
@@ -43,6 +47,7 @@ final class SearchVC: UIViewController {
     // MARK: - Firebase
     
     private func getSearchedProducts(collection: String, uponField: String, withCondition: String) {
+        if currentUser == nil { getCurrentUser() }
         NetworkManager.shared.retrieveProductsFromFirestoreBasedOnTag(withTag: withCondition) { [weak self] (result) in
             guard let self = self else { return }
             switch result {
@@ -57,6 +62,21 @@ final class SearchVC: UIViewController {
             }
         }
     }
+    
+    
+    func getCurrentUser() {
+        NetworkManager.shared.getCurrentUserData { [weak self] (result) in
+            guard let self = self else { return }
+            switch result {
+            case .success(let currentUser):
+                self.currentUser = currentUser
+                
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
     
     //MARK: - Private Function
     
@@ -80,8 +100,9 @@ final class SearchVC: UIViewController {
     }
     
     private func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<ProductsVCCollectionViewCell, Product> { (cell, indexPath, product) in
-            cell.set(with: product)
+        let cellRegistration = UICollectionView.CellRegistration<ProductsVCCollectionViewCell, ProductLocal> { (cell, indexPath, product) in
+            #warning("do a check if the current user exists")
+            cell.set(with: product, currentUser: self.currentUser )
         }
         
         dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { (collectionView, indexPath, product) -> UICollectionViewCell? in
@@ -90,7 +111,7 @@ final class SearchVC: UIViewController {
     }
     
     private func updateData() {
-        var snapshot = NSDiffableDataSourceSnapshot<Section, Product>()
+        var snapshot = NSDiffableDataSourceSnapshot<Section, ProductLocal>()
         snapshot.appendSections([.main])
         snapshot.appendItems(products, toSection: .main)
         DispatchQueue.main.async { self.dataSource.apply(snapshot, animatingDifferences: true) }
