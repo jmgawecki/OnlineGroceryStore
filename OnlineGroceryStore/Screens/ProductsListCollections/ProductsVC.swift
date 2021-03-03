@@ -76,7 +76,7 @@ final class ProductsVC: UIViewController {
     
     
     private func getProducts() {
-        NetworkManager.shared.fetchProductsBasedOnField(collection: "products", uponField: "category", withCondition: currentCategory.lowercased()) { [weak self] (result) in
+        FireManager.shared.fetchProductsBasedOnField(collection: "products", uponField: "category", withCondition: currentCategory.lowercased()) { [weak self] (result) in
             guard let self = self else { return }
             switch result {
             case .success(let products):

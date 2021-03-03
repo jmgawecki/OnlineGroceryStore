@@ -24,14 +24,34 @@ enum categoryOrProduct: String {
 }
 
 
-class NetworkManager {
+class FireManager {
     
-    static let shared   = NetworkManager()
+    static let shared   = FireManager()
     let cache           = NSCache<NSString, UIImage>()
     let db = Firestore.firestore()
     private init() {}
     
     // MARK: - Firebase / Firestore
+    
+    /// Does not work for now. refactor somehow
+//    func fetchCurrentUser(completed: @escaping(Result<UserLocal, Error>) -> Void) {
+//        let userEmail = (Auth.auth().currentUser?.email)!
+//        var user: UserLocal?
+//
+//        db.collection("usersData").document(userEmail).addSnapshotListener { (querySnapshot, error) in
+//            guard let userDocument = querySnapshot else {
+//                completed(.failure(error!))
+//                return
+//            }
+//            do {
+//                user = try? userDocument.data(as: UserLocal.self)
+//                completed(.success(user!))
+//            } catch {
+//                completed(.failure(error))
+//            }
+//
+//        }
+//    }
     
     
     func getCurrentUserData(completed: @escaping(Result<UserLocal, Error>) -> Void) {
@@ -50,6 +70,7 @@ class NetworkManager {
             }
         })
     }
+    
     
     func fetchProductsBasedOnField(collection: String, uponField: String, withCondition: Any, completed: @escaping(Result<[ProductLocal], Error>) -> Void) {
         var products: [ProductLocal] = []
@@ -84,32 +105,22 @@ class NetworkManager {
     }
     
 
-
-    
-    func retrieveProductsFromFirestoreBasedOnTag(withTag: String, completed: @escaping(Result<[ProductLocal], Error>) -> Void) {
+    func fetchProductsBasedOnTag(withTag: String, completed: @escaping(Result<[ProductLocal], Error>) -> Void) {
         var products: [ProductLocal] = []
-        Firestore.firestore().collection("products").whereField("tag", arrayContains: withTag).getDocuments { (querySnapshot, error) in
-            if let error = error {
-                completed(.failure(error))
-            } else {
-                for document in querySnapshot!.documents {
-//                    print("\(document.documentID) => \(document.data())")
-                    products.append(ProductLocal(name:             document.data()["name"]             as! String,
-                                                 description:      document.data()["description"]      as! String?,
-                                                 price:            document.data()["price"]            as! Double,
-                                                 favorite:         document.data()["favorite"]         as! Bool,
-                                                 category:         document.data()["category"]         as! String,
-                                                 imageReference:   document.data()["imageReference"]   as! String,
-                                                 id:               document.data()["id"]               as! String,
-                                                 discountMlt:      document.data()["discountMlt"]      as! Double,
-                                                 tag:              document.data()["tag"]              as! [String],
-                                                 topOffer:         document.data()["topOffer"]         as! Bool,
-                                                 quantity:         document.data()["quantity"]         as! Int))
-                }
-                completed(.success(products))
+        db.collection("products").whereField("tag", arrayContains: withTag).addSnapshotListener { (querySnapshot, error) in
+            guard let documents = querySnapshot?.documents else {
+                completed(.failure(error!))
+                return
             }
+            
+            products = documents.compactMap({ (queryDocumentSnapshot) -> ProductLocal? in
+                return try? queryDocumentSnapshot.data(as: ProductLocal.self)
+            })
+            completed(.success(products))
+
         }
     }
+
     
     
     func retrieveDocumentsNameAsString(collection: String, completed: @escaping(Result<[String], Error>) -> Void) {
@@ -198,97 +209,30 @@ class NetworkManager {
         }
     }
     
-
-    func confirmOrder2(for user: UserLocal, products: [ProductLocal], date: String, idOrder: String) {
-        
-        for product in products {
-            Firestore.firestore().collection("userPersistence")
-                .document(user.email)
-                .collection("lastOrders")
-                .document(date)
-                .collection(idOrder)
-                .addDocument(data: ["id":             product.id,
-                                    "name":           product.name,
-                                    "imageReference": product.imageReference,
-                                    "price":          product.price,
-                                    "discountMlt":    product.discountMlt,
-                                    "quantity":       product.quantity,
-                                    "category":       product.category,
-                                    "description":    product.description ?? "No product's description",
-                                    "favorite":       product.favorite,
-                                    "topOffer":       product.topOffer,
-                                    "tag":            product.tag]) { (error) in
-                    if let error = error {
-                        print(error.localizedDescription)
-                    }
-                }
-        }
-    }
     
-    func confirmOrder(for user: UserLocal, products: [ProductLocal], date: String, idOrder: String) {
-        
-        for product in products {
-            Firestore.firestore().collection("userPersistence")
-                .document(user.email)
-                .collection("lastOrders")
-                .document(date)
-                .collection(idOrder)
-                .document(product.id)
-                .setData(["id":             product.id,
-                          "name":           product.name,
-                          "imageReference": product.imageReference,
-                          "price":          product.price,
-                          "discountMlt":    product.discountMlt,
-                          "quantity":       product.quantity,
-                          "category":       product.category,
-                          "description":    product.description ?? "No product's description",
-                          "favorite":       product.favorite,
-                          "topOffer":       product.topOffer,
-                          "tag":            product.tag]) { (error) in
-                    if let error = error {
-                        print(error.localizedDescription)
-                    }
-                }
-        }
-    }
-    
-    func confirmOrder3(for user: UserLocal, products: [ProductLocal], date: String, idOrder: String) {
-        
-        Firestore.firestore().collection("userPersistence")
-            .document(user.email)
-            .collection("lastOrders")
-            .document(idOrder)
-            .setData(["orderNumber":    idOrder,
-                      "date":           date,
-                      "products":       ["product1": products[0]]]) { (error) in
-                if let error = error {
-                    print(error.localizedDescription)
-                }
-                
-            }
-    }
-    
-    func getLastOrders(for user: UserLocal) {
-        Firestore.firestore().collection("userPersistence")
-                            .document(user.email)
-                            .collection("lastOrders")
-                            .getDocuments { (snapshot, error) in
-                                print(user.email)
-                                print(error)
-                                print("Tralalalal")
-                                print(snapshot?.documents)
-                                for document in snapshot!.documents {
-                                    print("tralalala")
-                                    print(document.documentID)
-                                }
-                            }
-        Firestore.firestore().document("/userPersistence/jmgawecki@icloud.com/lastOrders").getDocument {  (snapshot, error) in
-            print(user.email)
+    func addOrder(for user: UserLocal, products: [ProductLocal], date: String, idOrder: String) {
+        var order: Order?
+        order = Order(orderNumber: idOrder, date: date, products: products)
+        do {
+            let _ = try db.collection("userPersistence").document(user.email).collection("lastOrders").addDocument(from: order)
+        } catch {
             print(error)
-            print("Tralalalal")
-            print(snapshot)
-            
         }
-        
+    }
+    
+    
+    func fetchOrders(for user: UserLocal, completed: @escaping(Result<[Order], Error>) -> Void) {
+        var orders: [Order] = []
+        db.collection("userPersistence").document(user.email).collection("lastOrders").addSnapshotListener { (querySnapshot, error) in
+            guard let documents = querySnapshot?.documents else {
+                completed(.failure(error!))
+                return
+            }
+            
+            orders = documents.compactMap({ (queryDocumentSnapshot) -> Order? in
+                return try? queryDocumentSnapshot.data(as: Order.self)
+            })
+            completed(.success(orders))
+        }
     }
 }

@@ -49,7 +49,7 @@ final class BasketVC: UIViewController {
     
     @objc private func orderButtonTapped(sender: UIView) {
         animateButtonView(sender)
-        NetworkManager.shared.confirmOrder(for: currentUser, products: basketProducts, date: createTodaysDate(), idOrder: UUID().uuidString)
+        FireManager.shared.addOrder(for: currentUser, products: basketProducts, date: createTodaysDate(), idOrder: UUID().uuidString)
     }
     
     
@@ -82,7 +82,7 @@ final class BasketVC: UIViewController {
     
     
     func getCurrentUser() {
-        NetworkManager.shared.getCurrentUserData { [weak self] (result) in
+        FireManager.shared.getCurrentUserData { [weak self] (result) in
             guard let self = self else { return }
             switch result {
             case .success(let currentUser):
@@ -96,7 +96,7 @@ final class BasketVC: UIViewController {
     }
     
     func fetchBasketProducts() {
-        NetworkManager.shared.fetchProductsFromUserPersistenceSubCollection(for: currentUser, usualOrCurrentOrFavorites: .currentOrder) { [weak self] (result) in
+        FireManager.shared.fetchProductsFromUserPersistenceSubCollection(for: currentUser, usualOrCurrentOrFavorites: .currentOrder) { [weak self] (result) in
             guard let self = self else { return }
             switch result {
             case .success(let basketProducts):

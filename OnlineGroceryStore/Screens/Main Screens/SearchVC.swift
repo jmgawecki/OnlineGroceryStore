@@ -46,26 +46,29 @@ final class SearchVC: UIViewController {
     
     // MARK: - Firebase
     
-    private func getSearchedProducts(collection: String, uponField: String, withCondition: String) {
-        if currentUser == nil { getCurrentUser() }
-        NetworkManager.shared.retrieveProductsFromFirestoreBasedOnTag(withTag: withCondition) { [weak self] (result) in
+    private func fetchSearchedProducts(collection: String, uponField: String, withCondition: String) {
+        guard currentUser != nil else {
+            getCurrentUser()
+            return
+        }
+        FireManager.shared.fetchProductsBasedOnTag(withTag: withCondition) { [weak self] (result) in
             guard let self = self else { return }
             switch result {
             case .success(let products):
                 print(products)
                 self.products.removeAll()
                 self.products.append(contentsOf: products)
-                self.updateData()
+                self.updateDataOnCollection()
                 
             case .failure(let error):
                 print(error.localizedDescription)
             }
         }
     }
-    
+  
     
     func getCurrentUser() {
-        NetworkManager.shared.getCurrentUserData { [weak self] (result) in
+        FireManager.shared.getCurrentUserData { [weak self] (result) in
             guard let self = self else { return }
             switch result {
             case .success(let currentUser):
@@ -110,7 +113,7 @@ final class SearchVC: UIViewController {
         })
     }
     
-    private func updateData() {
+    private func updateDataOnCollection() {
         var snapshot = NSDiffableDataSourceSnapshot<Section, ProductLocal>()
         snapshot.appendSections([.main])
         snapshot.appendItems(products, toSection: .main)
@@ -151,7 +154,7 @@ final class SearchVC: UIViewController {
 extension SearchVC: UISearchResultsUpdating, UISearchBarDelegate {
     func updateSearchResults(for searchController: UISearchController) {
         guard let keyTag = searchController.searchBar.text, !keyTag.isEmpty else { return }
-        getSearchedProducts(collection: "products", uponField: "id", withCondition: keyTag.lowercased())
+        fetchSearchedProducts(collection: "products", uponField: "id", withCondition: keyTag.lowercased())
         isSearching = true
         collectionView.reloadData()
     }

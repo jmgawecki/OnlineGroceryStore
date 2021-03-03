@@ -99,7 +99,7 @@ final class CategoriesVC: UIViewController {
     //MARK: - Firebase
     
     func getCategories() {
-        NetworkManager.shared.retrieveDocumentsNameAsString(collection: "groceryCategory") { [weak self] (result) in
+        FireManager.shared.retrieveDocumentsNameAsString(collection: "groceryCategory") { [weak self] (result) in
             guard let self = self else { return }
             switch result {
             case .success(let categories):
@@ -111,6 +111,10 @@ final class CategoriesVC: UIViewController {
         }
     }
 }
+
+
+    // MARK: - Extension
+
 
 extension CategoriesVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

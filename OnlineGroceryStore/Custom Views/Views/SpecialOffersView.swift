@@ -78,7 +78,7 @@ final class SpecialOffersView: UIViewController {
     // MARK: - Firebase / Firestore
     
     private func getProducts(uponField: String, withCondition: Any) {
-        NetworkManager.shared.fetchProductsBasedOnField(collection: "products", uponField: uponField, withCondition: withCondition) { [weak self] (result) in
+        FireManager.shared.fetchProductsBasedOnField(collection: "products", uponField: uponField, withCondition: withCondition) { [weak self] (result) in
             guard let self = self else { return }
             switch result {
             case .success(let products):

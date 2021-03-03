@@ -111,8 +111,23 @@ final class HomeVC: UIViewController {
     
     //MARK: - Firebase
     
+//    func fetchCurrentUser() {
+//        NetworkManager.shared.fetchCurrentUser { [weak self] (result) in
+//            guard let self = self else { return }
+//            switch result {
+//            case .success(let currentUser):
+//                self.currentUser = currentUser
+//                DispatchQueue.main.async { self.hiNameLabel.text = "Hi \(currentUser.firstName)" }
+//
+//
+//            case .failure(let error):
+//                print(error.localizedDescription)
+//            }
+//        }
+//    }
+    
     func getCurrentUser() {
-        NetworkManager.shared.getCurrentUserData { [weak self] (result) in
+        FireManager.shared.getCurrentUserData { [weak self] (result) in
             guard let self = self else { return }
             switch result {
             case .success(let currentUser):

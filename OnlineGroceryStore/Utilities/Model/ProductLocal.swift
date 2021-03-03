@@ -8,16 +8,16 @@
 import Foundation
 
 struct ProductLocal: Codable, Hashable {
-    let name: String
-    let description: String?
-    let price: Double
-    let favorite: Bool
-    let category: String
+    let name:           String
+    let description:    String?
+    let price:          Double
+    let favorite:       Bool
+    let category:       String
     let imageReference: String
-    let id: String
-    let discountMlt: Double
-    let tag: [String]
-    let topOffer: Bool
-    let quantity: Int
+    let id:             String
+    let discountMlt:    Double
+    let tag:            [String]
+    let topOffer:       Bool
+    let quantity:       Int
 }
 

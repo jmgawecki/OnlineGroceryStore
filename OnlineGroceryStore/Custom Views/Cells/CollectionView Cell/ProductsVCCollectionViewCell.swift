@@ -83,7 +83,7 @@ final class ProductsVCCollectionViewCell: UICollectionViewCell {
     
     @objc private func addToBasketButtonTapped(sender: UIView) {
         animateButtonView(sender)
-        NetworkManager.shared.addProductToBasket(for: currentUser, with: product, howMany: count) { (error) in
+        FireManager.shared.addProductToBasket(for: currentUser, with: product, howMany: count) { (error) in
             if let error = error {
                 print(error.localizedDescription)
             }
@@ -127,7 +127,7 @@ final class ProductsVCCollectionViewCell: UICollectionViewCell {
     
     
     private func downloadImage(from category: String) {
-        NetworkManager.shared.retrieveImageWithPathReferenceFromDocument(from: category, categoryOrProduct: .product) { [weak self] (image) in
+        FireManager.shared.retrieveImageWithPathReferenceFromDocument(from: category, categoryOrProduct: .product) { [weak self] (image) in
             guard let self = self else { return }
             DispatchQueue.main.async { self.productImageView.image = image }
         }

@@ -50,7 +50,7 @@ final class BrowseByCategoryTableViewCell: UITableViewCell {
     
     
     private func downloadImage(from category: String) {
-        NetworkManager.shared.retrieveImageWithPathReferenceFromDocument(from: category, categoryOrProduct: .category) { [weak self] (image) in
+        FireManager.shared.retrieveImageWithPathReferenceFromDocument(from: category, categoryOrProduct: .category) { [weak self] (image) in
             guard let self = self else { return }
             DispatchQueue.main.async { self.categoryImageView.image = image }
         }

@@ -8,7 +8,7 @@
 import Foundation
 
 struct Order: Codable, Hashable {
-    let orderNumber: String
-    let date: String
-    let products: [ProductLocal]
+    let orderNumber:        String
+    let date:               String
+    let products:           [ProductLocal]
 }
