@@ -20,6 +20,7 @@ enum imageAsUIImage {
     static let smilingBlackGirlR065     = UIImage(named: "smilingBlackGirlR065")
     static let wavingBlackGirlR056      = UIImage(named: "wavingBlackGirlR056")
     static let foodPlaceholder          = UIImage(named: "foodPlaceholder")
+    static let xmark                    = UIImage(named: "xmark")
 }
 
 enum colorAsString {

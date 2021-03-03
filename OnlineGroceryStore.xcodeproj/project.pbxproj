@@ -53,6 +53,7 @@
 		EFE6708025EEAE3D00FB16CD /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE6707F25EEAE3D00FB16CD /* Order.swift */; };
 		EFE6709F25EFEE6700FB16CD /* OrdersVCTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE6709E25EFEE6700FB16CD /* OrdersVCTableViewCell.swift */; };
 		EFE670A525EFF10A00FB16CD /* LastOrderVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE670A425EFF10A00FB16CD /* LastOrderVC.swift */; };
+		EFE670A925EFF51500FB16CD /* LastOrderVCCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE670A825EFF51500FB16CD /* LastOrderVCCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -106,6 +107,7 @@
 		EFE6707F25EEAE3D00FB16CD /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
 		EFE6709E25EFEE6700FB16CD /* OrdersVCTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdersVCTableViewCell.swift; sourceTree = "<group>"; };
 		EFE670A425EFF10A00FB16CD /* LastOrderVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastOrderVC.swift; sourceTree = "<group>"; };
+		EFE670A825EFF51500FB16CD /* LastOrderVCCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastOrderVCCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -320,6 +322,7 @@
 			children = (
 				EF8A6F5725E921640029EB00 /* FavoritesCollectionViewCell.swift */,
 				EF526CED25EAD060008C273C /* ProductsVCCollectionViewCell.swift */,
+				EFE670A825EFF51500FB16CD /* LastOrderVCCollectionViewCell.swift */,
 			);
 			path = "CollectionView Cell";
 			sourceTree = "<group>";
@@ -523,6 +526,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EFB774BF25EBFED600BF4B74 /* FireManager.swift in Sources */,
+				EFE670A925EFF51500FB16CD /* LastOrderVCCollectionViewCell.swift in Sources */,
 				EFA9825025E823CE002EB81E /* UIView+Ext.swift in Sources */,
 				EFE6708025EEAE3D00FB16CD /* Order.swift in Sources */,
 				EFA9821625E7E93C002EB81E /* RegisterTextField.swift in Sources */,
