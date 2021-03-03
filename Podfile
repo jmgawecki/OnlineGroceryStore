@@ -11,5 +11,5 @@ target 'OnlineGroceryStore' do
 	pod 'Firebase/Core'
 	pod 'Firebase/Firestore'
 	pod 'FirebaseUI/Storage'
-	pod 'FirebaseFirestoreSwift'
+	pod 'FirebaseFirestoreSwift', '~> 7.0-beta'
 end
