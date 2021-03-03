@@ -34,6 +34,7 @@ final class BasketVC: UIViewController {
         getCurrentUser()
         configureVC()
         configureUIElements()
+        configureOrderButton()
 
         // Do any additional setup after loading the view.
     }
@@ -46,6 +47,11 @@ final class BasketVC: UIViewController {
     // MARK: - @Objectives
     
     
+    @objc private func orderButtonTapped(sender: UIView) {
+        animateButtonView(sender)
+        NetworkManager.shared.confirmOrder(for: currentUser, products: basketProducts, date: createTodaysDate(), idOrder: UUID().uuidString)
+    }
+    
     
     
     //MARK: - Private Function
@@ -55,6 +61,20 @@ final class BasketVC: UIViewController {
         view.backgroundColor = UIColor(named: colorAsString.storeBackground)
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.prefersLargeTitles = true
+    }
+    
+    
+    private func createTodaysDate() -> String {
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.yyyy"
+        let dateString = formatter.string(from: date)
+        return dateString
+    }
+    
+    
+    private func configureOrderButton() {
+        orderButton.addTarget(self, action: #selector(orderButtonTapped), for: .touchUpInside)
     }
     
     
@@ -147,6 +167,20 @@ final class BasketVC: UIViewController {
             basketTableView.trailingAnchor.constraint   (equalTo: view.trailingAnchor, constant: 0),
             basketTableView.bottomAnchor.constraint     (equalTo: orderButton.topAnchor, constant: 0),
         ])
+    }
+    
+    
+    // MARK: - Animation
+    
+    private func animateButtonView(_ viewToAnimate: UIView) {
+        UIView.animate(withDuration: 0.2, animations: {viewToAnimate.alpha = 0.3}) { (true) in
+            switch true {
+            case true:
+                UIView.animate(withDuration: 0.2, animations: {viewToAnimate.alpha = 1} )
+            case false:
+                return
+            }
+        }
     }
     
 }

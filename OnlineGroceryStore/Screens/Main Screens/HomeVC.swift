@@ -118,6 +118,7 @@ final class HomeVC: UIViewController {
             case .success(let currentUser):
                 self.currentUser = currentUser
                 DispatchQueue.main.async { self.hiNameLabel.text = "Hi \(currentUser.firstName)" }
+                NetworkManager.shared.getLastOrders(for: currentUser)
                 
             case .failure(let error):
                 print(error.localizedDescription)

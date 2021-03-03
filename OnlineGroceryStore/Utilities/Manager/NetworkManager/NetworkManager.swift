@@ -58,7 +58,7 @@ class NetworkManager {
                 completed(.failure(error))
             } else {
                 for document in querySnapshot!.documents {
-                    print("\(document.documentID) => \(document.data())")
+//                    print("\(document.documentID) => \(document.data())")
                     products.append(ProductLocal(name:        document.data()["name"]             as! String,
                                             description:      document.data()["description"]      as! String?,
                                             price:            document.data()["price"]            as! Double,
@@ -85,7 +85,7 @@ class NetworkManager {
                 completed(.failure(error))
             } else {
                 for document in snapshot!.documents {
-                    print("\(document.documentID) => \(document.data())")
+//                    print("\(document.documentID) => \(document.data())")
                     products.append(ProductLocal(name:             document.data()["name"]             as! String,
                                                  description:      document.data()["description"]      as! String?,
                                                  price:            document.data()["price"]            as! Double,
@@ -112,7 +112,7 @@ class NetworkManager {
                 completed(.failure(error))
             } else {
                 for document in querySnapshot!.documents {
-                    print("\(document.documentID) => \(document.data())")
+//                    print("\(document.documentID) => \(document.data())")
                     products.append(ProductLocal(name:             document.data()["name"]             as! String,
                                                  description:      document.data()["description"]      as! String?,
                                                  price:            document.data()["price"]            as! Double,
@@ -217,16 +217,97 @@ class NetworkManager {
         }
     }
     
-    
-    func confirmOrder(for user: UserLocal, order: Order) {
-        Firestore.firestore().collection("userPersistence")
-                            .document(user.email)
-                            .collection("lastOrders")
-                            .addDocument(data: ["order":    order.orderNumber,
-                                                "date" :    order.date,
-                                                "products": order.products]) { (error) in
-            //
+
+    func confirmOrder2(for user: UserLocal, products: [ProductLocal], date: String, idOrder: String) {
+        
+        for product in products {
+            Firestore.firestore().collection("userPersistence")
+                .document(user.email)
+                .collection("lastOrders")
+                .document(date)
+                .collection(idOrder)
+                .addDocument(data: ["id":             product.id,
+                                    "name":           product.name,
+                                    "imageReference": product.imageReference,
+                                    "price":          product.price,
+                                    "discountMlt":    product.discountMlt,
+                                    "quantity":       product.quantity,
+                                    "category":       product.category,
+                                    "description":    product.description ?? "No product's description",
+                                    "favorite":       product.favorite,
+                                    "topOffer":       product.topOffer,
+                                    "tag":            product.tag]) { (error) in
+                    if let error = error {
+                        print(error.localizedDescription)
+                    }
+                }
         }
     }
     
+    func confirmOrder(for user: UserLocal, products: [ProductLocal], date: String, idOrder: String) {
+        
+        for product in products {
+            Firestore.firestore().collection("userPersistence")
+                .document(user.email)
+                .collection("lastOrders")
+                .document(date)
+                .collection(idOrder)
+                .document(product.id)
+                .setData(["id":             product.id,
+                          "name":           product.name,
+                          "imageReference": product.imageReference,
+                          "price":          product.price,
+                          "discountMlt":    product.discountMlt,
+                          "quantity":       product.quantity,
+                          "category":       product.category,
+                          "description":    product.description ?? "No product's description",
+                          "favorite":       product.favorite,
+                          "topOffer":       product.topOffer,
+                          "tag":            product.tag]) { (error) in
+                    if let error = error {
+                        print(error.localizedDescription)
+                    }
+                }
+        }
+    }
+    
+    func confirmOrder3(for user: UserLocal, products: [ProductLocal], date: String, idOrder: String) {
+        
+        Firestore.firestore().collection("userPersistence")
+            .document(user.email)
+            .collection("lastOrders")
+            .document(idOrder)
+            .setData(["orderNumber":    idOrder,
+                      "date":           date,
+                      "products":       ["product1": products[0]]]) { (error) in
+                if let error = error {
+                    print(error.localizedDescription)
+                }
+                
+            }
+    }
+    
+    func getLastOrders(for user: UserLocal) {
+        Firestore.firestore().collection("userPersistence")
+                            .document(user.email)
+                            .collection("lastOrders")
+                            .getDocuments { (snapshot, error) in
+                                print(user.email)
+                                print(error)
+                                print("Tralalalal")
+                                print(snapshot?.documents)
+                                for document in snapshot!.documents {
+                                    print("tralalala")
+                                    print(document.documentID)
+                                }
+                            }
+        Firestore.firestore().document("/userPersistence/jmgawecki@icloud.com/lastOrders").getDocument {  (snapshot, error) in
+            print(user.email)
+            print(error)
+            print("Tralalalal")
+            print(snapshot)
+            
+        }
+        
+    }
 }
