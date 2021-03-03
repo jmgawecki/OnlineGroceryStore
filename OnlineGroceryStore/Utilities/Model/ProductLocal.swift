@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ProductLocal: Hashable {
+struct ProductLocal: Codable, Hashable {
     let name: String
     let description: String?
     let price: Double

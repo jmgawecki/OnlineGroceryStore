@@ -74,10 +74,9 @@ final class ProductsVC: UIViewController {
     
     // MARK: - Firebase
     
+    
     private func getProducts() {
-        NetworkManager.shared.retrieveProductsFromFirestoreBasedOnField(collection: "products",
-                                                                        uponField: "category",
-                                                                        withCondition: currentCategory.lowercased()) { [weak self] (result) in
+        NetworkManager.shared.fetchProductsBasedOnField(collection: "products", uponField: "category", withCondition: currentCategory.lowercased()) { [weak self] (result) in
             guard let self = self else { return }
             switch result {
             case .success(let products):
@@ -88,6 +87,7 @@ final class ProductsVC: UIViewController {
             }
         }
     }
+    
     
     // MARK: - Collection View Configuration
     

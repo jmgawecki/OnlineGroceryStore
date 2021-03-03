@@ -8,6 +8,7 @@
 import UIKit
 import Firebase
 import FirebaseUI
+import FirebaseFirestoreSwift
 
 
 enum userPersistenceSubCollection: String {
@@ -27,7 +28,7 @@ class NetworkManager {
     
     static let shared   = NetworkManager()
     let cache           = NSCache<NSString, UIImage>()
-    
+    let db = Firestore.firestore()
     private init() {}
     
     // MARK: - Firebase / Firestore
@@ -50,60 +51,40 @@ class NetworkManager {
         })
     }
     
-    
-    func retrieveProductsFromFirestoreBasedOnField(collection: String, uponField: String, withCondition: Any, completed: @escaping(Result<[ProductLocal], Error>) -> Void) {
+    func fetchProductsBasedOnField(collection: String, uponField: String, withCondition: Any, completed: @escaping(Result<[ProductLocal], Error>) -> Void) {
         var products: [ProductLocal] = []
-        Firestore.firestore().collection(collection).whereField(uponField, isEqualTo: withCondition).getDocuments { (querySnapshot, error) in
-            if let error = error {
-                completed(.failure(error))
-            } else {
-                for document in querySnapshot!.documents {
-//                    print("\(document.documentID) => \(document.data())")
-                    products.append(ProductLocal(name:        document.data()["name"]             as! String,
-                                            description:      document.data()["description"]      as! String?,
-                                            price:            document.data()["price"]            as! Double,
-                                            favorite:         document.data()["favorite"]         as! Bool,
-                                            category:         document.data()["category"]         as! String,
-                                            imageReference:   document.data()["imageReference"]   as! String,
-                                            id:               document.data()["id"]               as! String,
-                                            discountMlt:      document.data()["discountMlt"]      as! Double,
-                                            tag:              document.data()["tag"]              as! [String],
-                                            topOffer:         document.data()["topOffer"]         as! Bool,
-                                            quantity:         document.data()["quantity"]         as! Int))
-                }
-                completed(.success(products))
-            }
-        }
         
-    }
-    
-    
-    func retrieveProductsFromUserPersistenceSubCollection(for user: UserLocal, for userPersistenceSubCollectionType: userPersistenceSubCollection, completed: @escaping(Result<[ProductLocal], Error>) -> Void) {
-        var products: [ProductLocal] = []
-        Firestore.firestore().collection("userPersistence").document(user.email).collection(userPersistenceSubCollectionType.rawValue).getDocuments { (snapshot, error) in
-            if let error = error {
-                completed(.failure(error))
-            } else {
-                for document in snapshot!.documents {
-//                    print("\(document.documentID) => \(document.data())")
-                    products.append(ProductLocal(name:             document.data()["name"]             as! String,
-                                                 description:      document.data()["description"]      as! String?,
-                                                 price:            document.data()["price"]            as! Double,
-                                                 favorite:         document.data()["favorite"]         as! Bool,
-                                                 category:         document.data()["category"]         as! String,
-                                                 imageReference:   document.data()["imageReference"]   as! String,
-                                                 id:               document.data()["id"]               as! String,
-                                                 discountMlt:      document.data()["discountMlt"]      as! Double,
-                                                 tag:              document.data()["tag"]              as! [String],
-                                                 topOffer:         document.data()["topOffer"]         as! Bool,
-                                                 quantity:         document.data()["quantity"]         as! Int))
-                }
-                completed(.success(products))
+        db.collection(collection).whereField(uponField, isEqualTo: withCondition).addSnapshotListener { (querySnapshot, error) in
+            guard let documents = querySnapshot?.documents else {
+                completed(.failure(error!))
+                return
             }
             
+            products = documents.compactMap({ (queryDocumentSnapshot) -> ProductLocal? in
+                return try? queryDocumentSnapshot.data(as: ProductLocal.self)
+            })
+            completed(.success(products))
+        }
+    }
+
+    
+    func fetchProductsFromUserPersistenceSubCollection(for user: UserLocal, usualOrCurrentOrFavorites: userPersistenceSubCollection, completed: @escaping(Result<[ProductLocal], Error>) -> Void) {
+        var products: [ProductLocal] = []
+        db.collection("userPersistence").document(user.email).collection(usualOrCurrentOrFavorites.rawValue).addSnapshotListener { (querySnapshot, error) in
+            guard let documents = querySnapshot?.documents else {
+                completed(.failure(error!))
+                return
+            }
+            
+            products = documents.compactMap({ (queryDocumentSnapshot) -> ProductLocal? in
+                return try? queryDocumentSnapshot.data(as: ProductLocal.self)
+            })
+            completed(.success(products))
         }
     }
     
+
+
     
     func retrieveProductsFromFirestoreBasedOnTag(withTag: String, completed: @escaping(Result<[ProductLocal], Error>) -> Void) {
         var products: [ProductLocal] = []

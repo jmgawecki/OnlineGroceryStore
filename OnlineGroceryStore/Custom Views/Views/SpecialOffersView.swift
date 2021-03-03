@@ -44,7 +44,7 @@ final class SpecialOffersView: UIViewController {
         configureSegmentedControlSwitch()
         layoutUI()
         configureDataSource()
-        configureSnapshot()
+        updateDataOnCollection()
     }
 
 //
@@ -78,18 +78,31 @@ final class SpecialOffersView: UIViewController {
     // MARK: - Firebase / Firestore
     
     private func getProducts(uponField: String, withCondition: Any) {
-        NetworkManager.shared.retrieveProductsFromFirestoreBasedOnField(collection: "products", uponField: uponField, withCondition: withCondition) { [weak self] (result) in
+        NetworkManager.shared.fetchProductsBasedOnField(collection: "products", uponField: uponField, withCondition: withCondition) { [weak self] (result) in
             guard let self = self else { return }
             switch result {
             case .success(let products):
-                self.products.removeAll()
-                self.products.append(contentsOf: products)
-                self.configureSnapshot()
+                self.products = products
+                self.updateDataOnCollection()
             case .failure(let error):
-                print(error)
+                print(error.localizedDescription)
             }
         }
     }
+//    
+//    private func getProducts(uponField: String, withCondition: Any) {
+//        NetworkManager.shared.retrieveProductsFromFirestoreBasedOnField(collection: "products", uponField: uponField, withCondition: withCondition) { [weak self] (result) in
+//            guard let self = self else { return }
+//            switch result {
+//            case .success(let products):
+//                self.products.removeAll()
+//                self.products.append(contentsOf: products)
+//                self.configureSnapshot()
+//            case .failure(let error):
+//                print(error)
+//            }
+//        }
+//    }
     
     
     // MARK: - Collection View Configuration
@@ -113,7 +126,7 @@ final class SpecialOffersView: UIViewController {
     }
     
     
-    private func configureSnapshot() {
+    private func updateDataOnCollection() {
         var snapshot = NSDiffableDataSourceSnapshot<Section, ProductLocal>()
         snapshot.appendSections([.main])
         snapshot.appendItems(products, toSection: .main)

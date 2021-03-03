@@ -87,7 +87,7 @@ final class BasketVC: UIViewController {
             switch result {
             case .success(let currentUser):
                 self.currentUser = currentUser
-                self.getBasketProducts()
+                self.fetchBasketProducts()
                 
             case .failure(let error):
                 print(error.localizedDescription)
@@ -95,9 +95,8 @@ final class BasketVC: UIViewController {
         }
     }
     
-    
-    func getBasketProducts() {
-        NetworkManager.shared.retrieveProductsFromUserPersistenceSubCollection(for: currentUser, for: .currentOrder) { [weak self] (result) in
+    func fetchBasketProducts() {
+        NetworkManager.shared.fetchProductsFromUserPersistenceSubCollection(for: currentUser, usualOrCurrentOrFavorites: .currentOrder) { [weak self] (result) in
             guard let self = self else { return }
             switch result {
             case .success(let basketProducts):
@@ -108,7 +107,7 @@ final class BasketVC: UIViewController {
             }
         }
     }
-    
+
     
     //MARK: - UITableView Configuration
 

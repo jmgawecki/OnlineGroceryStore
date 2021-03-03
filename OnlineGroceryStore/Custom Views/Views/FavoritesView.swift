@@ -36,7 +36,7 @@ final class FavoritesView: UIView {
         configureSegmentedControl()
         layoutUI()
         configureDataSource()
-        configureSnapshot()
+        updateDataOnCollection()
         
         configureSegmentedControlSwitch()
     }
@@ -62,16 +62,16 @@ final class FavoritesView: UIView {
     
     // MARK: - Firebase / Firestore
     
+    
     private func getProducts(uponField: String, withCondition: Any) {
-        NetworkManager.shared.retrieveProductsFromFirestoreBasedOnField(collection: "products", uponField: uponField, withCondition: withCondition) { [weak self] (result) in
+        NetworkManager.shared.fetchProductsBasedOnField(collection: "products", uponField: uponField, withCondition: withCondition) { [weak self] (result) in
             guard let self = self else { return }
             switch result {
             case .success(let products):
-                self.products.removeAll()
-                self.products.append(contentsOf: products)
-                self.configureSnapshot()
+                self.products = products
+                self.updateDataOnCollection()
             case .failure(let error):
-                print(error)
+                print(error.localizedDescription)
             }
         }
     }
@@ -104,7 +104,7 @@ final class FavoritesView: UIView {
         })
     }
     
-    private func configureSnapshot() {
+    private func updateDataOnCollection() {
         var snapshot = NSDiffableDataSourceSnapshot<Section, ProductLocal>()
         snapshot.appendSections([.main])
         snapshot.appendItems(products, toSection: .main)

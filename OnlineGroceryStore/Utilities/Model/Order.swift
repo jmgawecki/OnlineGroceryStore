@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Order: Hashable {
+struct Order: Codable, Hashable {
     let orderNumber: String
     let date: String
     let products: [ProductLocal]

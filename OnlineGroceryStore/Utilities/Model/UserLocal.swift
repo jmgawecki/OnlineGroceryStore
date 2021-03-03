@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UserLocal: Encodable {
+struct UserLocal: Codable, Hashable {
     let uid:        String
     let firstName:  String
     let lastName:   String
