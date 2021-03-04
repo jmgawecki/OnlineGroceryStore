@@ -2,17 +2,17 @@
 Online Grocery Store built with UIKit framework.
 
 
-Online Grocery Store App is my forth and by far most complicated project. So far application has fully integrated logic. Application fetch the data from Google Firebase, application is fully dynamic. Any changes performed from the admin site on the data base are automatically updated for the user. Login session pass the app's lifecyce. Users can add products to the basket, fully edit a basket, see their previous orders, add the previous orders to the basket again. Users can query products based on a keywoards.  
+Online Grocery Store App is my forth project. So far application has fully integrated logic. Application fetch the data from Google Firebase, application is fully dynamic. Any changes performed from the admin site on the data base are automatically updated for the user. Login session pass the app's lifecyce. Users can add products to the basket, fully edit a basket, see their previous orders, add the previous orders to the basket again. Users can query products based on a keywoards.  
 
 Technology used:
 
-UIKit
-Firebase 
-Firestore
-Fetching data from JSON
-CocoaPods integration
-Collection Views with Diffable Data Source with Compositional Layouts
-Table Views with Diffable Data Source
+- UIKit
+- Firebase 
+- Firestore
+- Fetching data from JSON
+- CocoaPods integration
+- Collection Views with Diffable Data Source with Compositional Layouts
+- Table Views with Diffable Data Source
 
 I am attaching some screenshots of the app. Perfecting UI is the last stage of my project so please forgive that is not done yet:))
 
