@@ -14,7 +14,7 @@ Technology used:
 - Collection Views with Diffable Data Source with Compositional Layouts
 - Table Views with Diffable Data Source
 
-I am attaching some screenshots of the app. Perfecting UI is the last stage of my project so please forgive that is not done yet:))
+I am attaching some screenshots of the app. Perfecting UI is the last stage of my project so please forgive me that is not done yet:))
 
 Entry View Controller:
 <img src="https://user-images.githubusercontent.com/71930261/109963260-1c0e0280-7ce4-11eb-906a-12720ffa7b27.png" width="225">
