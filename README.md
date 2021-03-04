@@ -44,7 +44,7 @@ Products categories View Controller:
 <img src="https://user-images.githubusercontent.com/71930261/109963037-d94c2a80-7ce3-11eb-8b8c-d5c77819acb5.png" width="225">
 
 Log out View Controller
-<img src="https://user-images.githubusercontent.com/71930261/109963272-1f08f300-7ce4-11eb-9e97-d17c9111b1ab.png" width="225">
+<img src="https://user-images.githubusercontent.com/71930261/109970581-241e7000-7ced-11eb-9465-e60751508580.png" width="225">
 
 
 
