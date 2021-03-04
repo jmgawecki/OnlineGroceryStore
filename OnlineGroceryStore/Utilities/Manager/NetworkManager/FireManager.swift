@@ -138,6 +138,45 @@ class FireManager {
     }
     
     
+    func addOrderToBasket(for currentUser: UserLocal, order: Order, completed: @escaping(Error?) -> Void) {
+        for product in order.products {
+            var currentQuantity = 0
+            db.collection("userPersistence")
+                .document(currentUser.email)
+                .collection("currentOrder")
+                .document(product.id)
+                .getDocument { [weak self] (documentSnapshot, error) in
+                    guard let self = self else { return }
+                    if let _ = error { print("no product") }
+                    
+                    if ((documentSnapshot?.exists) != nil) {
+                        currentQuantity = documentSnapshot?["quantity"] as? Int ?? 0
+                    }
+                    self.db.collection("userPersistence")
+                        .document(currentUser.email)
+                        .collection("currentOrder")
+                        .document(product.id)
+                        .setData(["id":             product.id,
+                                  "name":           product.name,
+                                  "imageReference": product.imageReference,
+                                  "price":          product.price,
+                                  "discountMlt":    product.discountMlt,
+                                  "quantity":       currentQuantity + product.quantity,
+                                  "category":       product.category,
+                                  "description":    product.description ?? "No product's description",
+                                  "favorite":       product.favorite,
+                                  "topOffer":       product.topOffer,
+                                  "tag":            product.tag]) { error in
+                            if let error = error {
+                                completed(error)
+                            }
+                        }
+                }
+        }
+        
+    }
+    
+    
     func addProductToBasket(for user: UserLocal, with product: ProductLocal, howMany quantity: Int, completed: @escaping(Error?) -> Void) {
         var currentQuantity = 0
         Firestore.firestore().collection("userPersistence")
@@ -209,6 +248,8 @@ class FireManager {
         }
     }
     
+    func clearCache() { cache.removeAllObjects() }
+    
     
     func addOrder(for user: UserLocal, products: [ProductLocal], date: String, idOrder: String) {
         var order: Order?
@@ -234,5 +275,12 @@ class FireManager {
             })
             completed(.success(orders))
         }
+    }
+    
+    func clearBasket(for user: UserLocal, from basket: [ProductLocal] ,completed: @escaping(Error?) -> Void) {
+        for product in basket {
+            db.collection("userPersistence").document(user.email).collection("currentOrder").document(product.id).delete()
+        }
+        
     }
 }

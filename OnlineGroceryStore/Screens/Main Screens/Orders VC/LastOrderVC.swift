@@ -31,7 +31,12 @@ class LastOrderVC: UIViewController {
         layoutUI()
         configureDataSource()
         updateDataOnCollection()
+        configureAddToBasketButton()
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        FireManager.shared.clearCache()
     }
     
     init(with order: Order) {
@@ -46,15 +51,36 @@ class LastOrderVC: UIViewController {
     // MARK: - @Objectives
     
     
+    @objc private func addToBasketButtonTapped(sender: UIView) {
+        animateButtonView(sender)
+        addOrderToBasket()
+    }
     
     
-    //MARK: - Private Function
+    // MARK: - Firebase
+    
+    private func addOrderToBasket() {
+        #warning("do a check on current user")
+        FireManager.shared.addOrderToBasket(for: currentUser, order: order) { (error) in
+            if let error = error {
+                print(error)
+            }
+        }
+    }
+    
+    
+    // MARK: - Private Function
     
     
     private func configureVC() {
         view.backgroundColor = UIColor(named: colorAsString.storeBackground)
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.prefersLargeTitles = true
+    }
+    
+    
+    private func configureAddToBasketButton() {
+        addToBasketButton.addTarget(self, action: #selector(addToBasketButtonTapped), for: .touchUpInside)
     }
     
     
@@ -115,6 +141,20 @@ class LastOrderVC: UIViewController {
             collectionView.trailingAnchor.constraint    (equalTo: view.trailingAnchor, constant: 0),
             collectionView.bottomAnchor.constraint      (equalTo: addToBasketButton.topAnchor, constant: 0),
         ])
+    }
+    
+    
+    // MARK: - Animation
+    
+    private func animateButtonView(_ viewToAnimate: UIView) {
+        UIView.animate(withDuration: 0.2, animations: {viewToAnimate.alpha = 0.3}) { (true) in
+            switch true {
+            case true:
+                UIView.animate(withDuration: 0.2, animations: {viewToAnimate.alpha = 1} )
+            case false:
+                return
+            }
+        }
     }
     
     

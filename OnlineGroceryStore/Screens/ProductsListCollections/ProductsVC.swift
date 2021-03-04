@@ -34,7 +34,7 @@ final class ProductsVC: UIViewController {
     
     
     override func viewWillDisappear(_ animated: Bool) {
-        print("tralala")
+        FireManager.shared.clearCache()
     }
     
     

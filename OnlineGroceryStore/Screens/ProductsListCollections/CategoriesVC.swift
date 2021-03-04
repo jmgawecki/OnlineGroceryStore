@@ -15,11 +15,11 @@ final class CategoriesVC: UIViewController {
     
     var categoriesTableView: UITableView!
     
-    var categories: [String] = []
-    var currentUser: UserLocal!
+    var categories:     [String] = []
+    var currentUser:    UserLocal!
     
-    var dataSource: UITableViewDiffableDataSource<Section, String>!
-    var snapshot: NSDiffableDataSourceSnapshot<Section, String>!
+    var dataSource:     UITableViewDiffableDataSource<Section, String>!
+    var snapshot:       NSDiffableDataSourceSnapshot<Section, String>!
     
     
     
@@ -33,6 +33,11 @@ final class CategoriesVC: UIViewController {
         configureTableView()
         configureDataSource()
         getCategories()
+    }
+    
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        FireManager.shared.clearCache()
     }
     
     

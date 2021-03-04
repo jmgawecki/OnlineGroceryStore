@@ -39,6 +39,12 @@ final class SearchVC: UIViewController {
         getCurrentUser()
     }
     
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        FireManager.shared.clearCache()
+    }
+    
+    
     // MARK: - @Objectives
     
     
