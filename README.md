@@ -31,8 +31,11 @@ Home View Controller:
 View Controller with the search engine:
 <img src="https://user-images.githubusercontent.com/71930261/109970142-9f335680-7cec-11eb-826c-55093c046238.png" width="225">
 
-View Controller with previous orders:
+View Controller with previous orders list:
 <img src="https://user-images.githubusercontent.com/71930261/109963023-d6513a00-7ce3-11eb-8119-020420bf548e.png" width="225">
+
+View Controller with the previous order's details:
+<img src="https://user-images.githubusercontent.com/71930261/109970756-57f99580-7ced-11eb-894f-1f2adee5fe1f.png" width="225">
 
 View Controller with the basket:
 <img src="https://user-images.githubusercontent.com/71930261/109963027-d6e9d080-7ce3-11eb-8919-7789df337055.png" width="225">
