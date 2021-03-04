@@ -29,7 +29,7 @@ Home View Controller:
 <img src="https://user-images.githubusercontent.com/71930261/109963031-d81afd80-7ce3-11eb-81c7-c8117f732dcf.png" width="225">
 
 View Controller with the search engine:
-<img src="https://user-images.githubusercontent.com/71930261/109963006-d2251c80-7ce3-11eb-8cf8-2d6d96afac59.png" width="225">
+<img src="https://user-images.githubusercontent.com/71930261/109970142-9f335680-7cec-11eb-826c-55093c046238.png" width="225">
 
 View Controller with previous orders:
 <img src="https://user-images.githubusercontent.com/71930261/109963023-d6513a00-7ce3-11eb-8119-020420bf548e.png" width="225">
