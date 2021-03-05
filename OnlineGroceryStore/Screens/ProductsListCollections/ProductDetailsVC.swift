@@ -19,16 +19,16 @@ final class ProductDetailsVC: UIViewController {
                                              color: UIColor(named: colorAsString.storePrimaryText) ?? .orange)
     
     var descriptionTextView = GroceryTextView(with: "Product's Description")
-    var currentUser: UserLocal!
-    var currentProduct: ProductLocal!
+    var currentUser:        UserLocal!
+    var currentProduct:     ProductLocal!
     
-    var addToBasketButton = StoreButton(fontSize: 20, label: "Add")
+    var addToBasketButton   = StoreButton(fontSize: 20, label: "Add")
     
-    var productCounter: UIStackView!
-    let plusButton = UIButton()
-    let minusButton = UIButton()
-    let counter = UITextField()
-    var count = 0
+    var productCounter:     UIStackView!
+    let plusButton          = UIButton()
+    let minusButton         = UIButton()
+    let counter             = UITextField()
+    var count               = 0
     
     
     // MARK: - Override and Initialise
@@ -37,24 +37,29 @@ final class ProductDetailsVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureVC()
+        configureUIStackView()
         configureUIElements()
         layoutUI()
+        configureStackViewButtons()
         // Do any additional setup after loading the view.
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        FireManager.shared.clearCache()
-    }
+    
+    override func viewWillDisappear(_ animated: Bool) { FireManager.shared.clearCache() }
+    
     
     init(currentProduct: ProductLocal, currentUser: UserLocal) {
         super.init(nibName: nil, bundle: nil)
-        self.currentUser        = currentUser
-        self.currentProduct     = currentProduct
+        self.currentUser            = currentUser
+        self.currentProduct         = currentProduct
+        productTitleLabel.text      = currentProduct.name
+        descriptionTextView.text    = currentProduct.description
+        counter.text                = String(currentProduct.quantity)
+        count                       = currentProduct.quantity
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     
     // MARK: - @Objectives
@@ -63,9 +68,7 @@ final class ProductDetailsVC: UIViewController {
     @objc private func plusButtonTapped() {
         animateCounterView(counter)
         count += 1
-        DispatchQueue.main.async {
-            self.counter.text = String(self.count)
-        }
+        DispatchQueue.main.async { self.counter.text = String(self.count) }
     }
     
     
@@ -75,16 +78,13 @@ final class ProductDetailsVC: UIViewController {
             count -= 1
             DispatchQueue.main.async { self.counter.text = String(self.count) }
         }
-        
     }
     
     
     @objc private func addToBasketButtonTapped(sender: UIView) {
         animateButtonView(sender)
         FireManager.shared.addProductToBasket(for: currentUser, with: currentProduct, howMany: count) { (error) in
-            if let error = error {
-                print(error.localizedDescription)
-            }
+            if let error = error { print(error.localizedDescription) }
         }
 
         self.count = 0
@@ -92,7 +92,14 @@ final class ProductDetailsVC: UIViewController {
     }
     
     
+    // MARK: - Firebase
     
+    func getProductImage(for productId: String) {
+        FireManager.shared.retrieveImageWithPathReferenceFromDocument(from: productId, categoryOrProduct: .product) { [weak self] (image) in
+            guard let self = self else { return }
+            DispatchQueue.main.async { self.productImageView.image = image }
+        }
+    }
     
     
     
@@ -146,7 +153,7 @@ final class ProductDetailsVC: UIViewController {
         productCounter.axis              = .horizontal
         productCounter.distribution      = .fillEqually
         productCounter.alignment         = .center
-        productCounter.translatesAutoresizingMaskIntoConstraints = false
+        
         minusButton.layer.borderWidth = 2
         counter.layer.borderWidth = 2
         productCounter.addArrangedSubview(minusButton)
@@ -157,7 +164,8 @@ final class ProductDetailsVC: UIViewController {
     
     
     private func layoutUI() {
-        addSubviews(productImageView, productTitleLabel, descriptionTextView)
+        productCounter.translatesAutoresizingMaskIntoConstraints = false
+        addSubviews(productImageView, productTitleLabel, descriptionTextView, productCounter)
         
         NSLayoutConstraint.activate([
             productImageView.topAnchor.constraint           (equalTo: view.topAnchor, constant: -20),

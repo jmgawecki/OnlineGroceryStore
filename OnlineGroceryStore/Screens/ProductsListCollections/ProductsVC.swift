@@ -136,6 +136,7 @@ final class ProductsVC: UIViewController {
 extension ProductsVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let destVC = ProductDetailsVC(currentProduct: products[indexPath.item], currentUser: currentUser)
+        destVC.getProductImage(for: products[indexPath.item].id)
         #warning("do a check if current user exists")
         navigationController?.present(destVC, animated: true)
     }

@@ -185,6 +185,7 @@ final class BasketVC: UIViewController {
 extension BasketVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let destVC = ProductDetailsVC(currentProduct: basketProducts[indexPath.row], currentUser: currentUser)
+        destVC.getProductImage(for: basketProducts[indexPath.item].id)
         navigationController?.present(destVC, animated: true)
     }
 }

@@ -143,6 +143,7 @@ extension SearchVC: UISearchResultsUpdating, UISearchBarDelegate {
 extension SearchVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let destVC = ProductDetailsVC(currentProduct: products[indexPath.item], currentUser: currentUser)
+        destVC.getProductImage(for: products[indexPath.item].id)
         navigationController?.present(destVC, animated: true)
     }
 }
