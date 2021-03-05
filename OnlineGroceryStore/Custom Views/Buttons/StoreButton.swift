@@ -8,8 +8,6 @@
 import UIKit
 
 final class StoreButton: UIButton {
-    
-    
     // MARK: - Override and Initialiser
     
     
@@ -19,9 +17,7 @@ final class StoreButton: UIButton {
     }
     
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     
     convenience init(fontSize: CGFloat, label: String) {

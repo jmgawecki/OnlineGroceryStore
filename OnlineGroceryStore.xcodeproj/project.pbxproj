@@ -37,7 +37,6 @@
 		EFA9820025E7C9CB002EB81E /* ShopImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA981FF25E7C9CB002EB81E /* ShopImageView.swift */; };
 		EFA9820325E7CA2C002EB81E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA9820225E7CA2C002EB81E /* Constants.swift */; };
 		EFA9820625E7CBC7002EB81E /* UIViewController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA9820525E7CBC7002EB81E /* UIViewController+Ext.swift */; };
-		EFA9820B25E7CD76002EB81E /* EntryVCStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA9820A25E7CD76002EB81E /* EntryVCStackView.swift */; };
 		EFA9821125E7CF6E002EB81E /* StoreButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA9821025E7CF6E002EB81E /* StoreButton.swift */; };
 		EFA9821625E7E93C002EB81E /* RegisterTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA9821525E7E93C002EB81E /* RegisterTextField.swift */; };
 		EFA9821C25E7F4E6002EB81E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EFA9821B25E7F4E6002EB81E /* GoogleService-Info.plist */; };
@@ -91,7 +90,6 @@
 		EFA981FF25E7C9CB002EB81E /* ShopImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopImageView.swift; sourceTree = "<group>"; };
 		EFA9820225E7CA2C002EB81E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		EFA9820525E7CBC7002EB81E /* UIViewController+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Ext.swift"; sourceTree = "<group>"; };
-		EFA9820A25E7CD76002EB81E /* EntryVCStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryVCStackView.swift; sourceTree = "<group>"; };
 		EFA9821025E7CF6E002EB81E /* StoreButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreButton.swift; sourceTree = "<group>"; };
 		EFA9821525E7E93C002EB81E /* RegisterTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterTextField.swift; sourceTree = "<group>"; };
 		EFA9821B25E7F4E6002EB81E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -160,7 +158,6 @@
 				EFA9824925E81D97002EB81E /* Labels */,
 				EFA9821425E7E930002EB81E /* Text Fields */,
 				EFA9820F25E7CF56002EB81E /* Buttons */,
-				EFA9820825E7CD68002EB81E /* Stack Views */,
 				EFA981FE25E7C9B8002EB81E /* Image Views */,
 			);
 			path = "Custom Views";
@@ -349,14 +346,6 @@
 				EFA981FF25E7C9CB002EB81E /* ShopImageView.swift */,
 			);
 			path = "Image Views";
-			sourceTree = "<group>";
-		};
-		EFA9820825E7CD68002EB81E /* Stack Views */ = {
-			isa = PBXGroup;
-			children = (
-				EFA9820A25E7CD76002EB81E /* EntryVCStackView.swift */,
-			);
-			path = "Stack Views";
 			sourceTree = "<group>";
 		};
 		EFA9820F25E7CF56002EB81E /* Buttons */ = {
@@ -553,7 +542,6 @@
 				EFA9821125E7CF6E002EB81E /* StoreButton.swift in Sources */,
 				EFA981FC25E7C820002EB81E /* Links.swift in Sources */,
 				EF51091E25E6E54E007A459F /* SignUpVC.swift in Sources */,
-				EFA9820B25E7CD76002EB81E /* EntryVCStackView.swift in Sources */,
 				EFA9824725E81898002EB81E /* logOutVC.swift in Sources */,
 				EF8A6F7225E93FA50029EB00 /* FavoritesVC.swift in Sources */,
 				EF8A6F5825E921640029EB00 /* FavoritesCollectionViewCell.swift in Sources */,

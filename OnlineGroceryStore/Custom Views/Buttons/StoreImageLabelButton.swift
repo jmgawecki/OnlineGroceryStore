@@ -58,6 +58,7 @@ final class StoreImageLabelButton: UIButton {
         layer.masksToBounds = false
     }
     
+    
     private func layoutUI() {
         addSubview(buttonImageView)
         addSubview(buttonLabel)
@@ -74,8 +75,6 @@ final class StoreImageLabelButton: UIButton {
             buttonImageView.bottomAnchor.constraint     (equalTo: bottomAnchor, constant: -5),
             buttonImageView.trailingAnchor.constraint   (equalTo: buttonLabel.leadingAnchor, constant: -10),
             buttonImageView.widthAnchor.constraint      (lessThanOrEqualTo: heightAnchor, multiplier: 1.33, constant: -10),
-            
-            
         ])
     }
 }

@@ -11,17 +11,18 @@ import PassKit
 final class BasketVC: UIViewController {
     // MARK: - Declaration
     
+    
     enum Section { case main }
     
+    var basketTableView:    UITableView!
     var dataSource:         UITableViewDiffableDataSource<Section, ProductLocal>!
     var snapshot:           NSDiffableDataSourceSnapshot<Section, ProductLocal>!
 
-    var basketTableView:    UITableView!
+    var orderButton = StoreImageLabelButton(fontSize: 20, message: "Proceed with Order", image: imageAsUIImage.foodPlaceholder!, textColor: UIColor(named: colorAsString.storeTertiary) ?? .green)
+  
     var currentUser:        UserLocal!
-    
     var basketProducts:     [ProductLocal] = []
     
-    var orderButton = StoreImageLabelButton(fontSize: 20, message: "Proceed with Order", image: imageAsUIImage.foodPlaceholder!, textColor: UIColor(named: colorAsString.storeTertiary) ?? .green)
     
     // MARK: - Override and Initialise
     
@@ -31,15 +32,8 @@ final class BasketVC: UIViewController {
         configureTableView()
         configureDataSource()
         layoutUI()
-        getCurrentUser()
         configureVC()
-        configureUIElements()
         configureOrderButton()
-    }
-    
-    
-    override func viewWillAppear(_ animated: Bool) {
-        getCurrentUser()
     }
     
     
@@ -48,10 +42,8 @@ final class BasketVC: UIViewController {
         self.currentUser = currentUser
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     
     // MARK: - @Objectives
@@ -72,8 +64,7 @@ final class BasketVC: UIViewController {
     }
     
     
-    
-    //MARK: - Private Function
+    // MARK: - VC Configuration
     
     
     private func configureVC() {
@@ -81,6 +72,9 @@ final class BasketVC: UIViewController {
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.prefersLargeTitles = true
     }
+    
+    
+    //MARK: - Private Function
     
     
     private func createTodaysDate() -> String {
@@ -92,6 +86,9 @@ final class BasketVC: UIViewController {
     }
     
     
+    // MARK: - Button configuration
+    
+    
     private func configureOrderButton() {
         orderButton.addTarget(self, action: #selector(orderButtonTapped), for: .touchUpInside)
     }
@@ -99,20 +96,6 @@ final class BasketVC: UIViewController {
     
     // MARK: - Firebase
     
-    
-    func getCurrentUser() {
-        FireManager.shared.getCurrentUserData { [weak self] (result) in
-            guard let self = self else { return }
-            switch result {
-            case .success(let currentUser):
-                self.currentUser = currentUser
-                self.fetchBasketProducts()
-                
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-    }
     
     func fetchBasketProducts() {
         FireManager.shared.fetchProductsFromUserPersistenceSubCollection(for: currentUser, usualOrCurrentOrFavorites: .currentOrder) { [weak self] (result) in
@@ -157,16 +140,7 @@ final class BasketVC: UIViewController {
     }
     
     
-    //MARK: - VC Configuration
-    
-    
-    private func configureUIElements() {
-        
-        
-    }
-    
-    
-    //MARK: - Layout configuration
+    //MARK: - Layout UI
     
     
     private func layoutUI() {
@@ -190,6 +164,7 @@ final class BasketVC: UIViewController {
     
     // MARK: - Animation
     
+    
     private func animateButtonView(_ viewToAnimate: UIView) {
         UIView.animate(withDuration: 0.2, animations: {viewToAnimate.alpha = 0.3}) { (true) in
             switch true {
@@ -200,7 +175,6 @@ final class BasketVC: UIViewController {
             }
         }
     }
-    
 }
 
 
@@ -208,10 +182,7 @@ final class BasketVC: UIViewController {
 
 extension BasketVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        #warning("do a check for current user")
         let destVC = ProductDetailsVC(currentProduct: basketProducts[indexPath.row], currentUser: currentUser)
-        #warning("how to add category's title?")
-        
         navigationController?.present(destVC, animated: true)
     }
 }

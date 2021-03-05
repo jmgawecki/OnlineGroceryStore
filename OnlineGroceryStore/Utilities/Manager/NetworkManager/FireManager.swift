@@ -11,6 +11,9 @@ import FirebaseUI
 import FirebaseFirestoreSwift
 
 
+// MARK: - Enum
+
+
 enum userPersistenceSubCollection: String {
     case usual          = "usual"
     case currentOrder   = "currentOrder"
@@ -24,12 +27,16 @@ enum categoryOrProduct: String {
 }
 
 
-class FireManager {
+final class FireManager {
+    // MARK: - Declaration
+    
     
     static let shared   = FireManager()
-    let cache           = NSCache<NSString, UIImage>()
-    let db = Firestore.firestore()
     private init() {}
+    
+    let cache           = NSCache<NSString, UIImage>()
+    let db              = Firestore.firestore()
+    
     
     // MARK: - Firebase / Firestore
     
@@ -54,6 +61,9 @@ class FireManager {
 //    }
     
     
+    // MARK: - User
+    
+    
     func getCurrentUserData(completed: @escaping(Result<UserLocal, Error>) -> Void) {
         let userEmail = (Auth.auth().currentUser?.email)!
         Firestore.firestore().collection("usersData").document(userEmail).getDocument(completion: { (user, error) in
@@ -70,6 +80,9 @@ class FireManager {
             }
         })
     }
+    
+    
+    // MARK: - Product
     
     
     func fetchProductsBasedOnField(collection: String, uponField: String, withCondition: Any, completed: @escaping(Result<[ProductLocal], Error>) -> Void) {
@@ -122,6 +135,8 @@ class FireManager {
     }
 
     
+    // MARK: - Category
+    
     
     func retrieveDocumentsNameAsString(collection: String, completed: @escaping(Result<[String], Error>) -> Void) {
         var documents: [String] = []
@@ -136,6 +151,9 @@ class FireManager {
             }
         }
     }
+    
+    
+    // MARK: - Basket
     
     
     func addOrderToBasket(for currentUser: UserLocal, order: Order, completed: @escaping(Error?) -> Void) {
@@ -213,6 +231,16 @@ class FireManager {
     }
     
     
+    func clearBasket(for user: UserLocal, from basket: [ProductLocal] ,completed: @escaping(Error?) -> Void) {
+        for product in basket {
+            db.collection("userPersistence").document(user.email).collection("currentOrder").document(product.id).delete()
+        }
+    }
+    
+    
+    // MARK: - Image, Cache
+    
+    
     func retrieveImageWithPathReferenceFromDocument(from category: String, categoryOrProduct: categoryOrProduct ,completed: @escaping(UIImage?) -> Void) {
         let cacheKey = NSString(string: category)
         if let image = cache.object(forKey: cacheKey) { completed(image) }
@@ -251,6 +279,9 @@ class FireManager {
     func clearCache() { cache.removeAllObjects() }
     
     
+    // MARK: - Order
+    
+    
     func addOrder(for user: UserLocal, products: [ProductLocal], date: String, idOrder: String, completed: @escaping(Error?) -> Void) {
         var order: Order?
         order = Order(orderNumber: idOrder, date: date, products: products)
@@ -277,11 +308,4 @@ class FireManager {
             completed(.success(orders))
         }
     }
-    
-    func clearBasket(for user: UserLocal, from basket: [ProductLocal] ,completed: @escaping(Error?) -> Void) {
-        for product in basket {
-            db.collection("userPersistence").document(user.email).collection("currentOrder").document(product.id).delete()
-        }
-    }
-    
 }

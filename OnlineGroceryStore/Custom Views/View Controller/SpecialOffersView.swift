@@ -9,14 +9,17 @@ import UIKit
 
     // MARK: - Protocol & Delegate
 
-protocol SpecialOffersViewDelegate: class {
-    func presentProductDetailModally()
-}
+protocol SpecialOffersViewDelegate: class { func presentProductDetailModally() }
+
 
 final class SpecialOffersView: UIViewController {
     // MARK: - Declaration
     
     enum Section { case main }
+    
+    var collectionView:         UICollectionView!
+    var dataSource:             UICollectionViewDiffableDataSource<Section, ProductLocal>!
+    var snapshot:               NSDiffableDataSourceSnapshot<Section, ProductLocal>!
     
     let hiNameLabel             = StoreBoldLabel(with: "Special Offers",
                                                  from: .left,
@@ -24,14 +27,10 @@ final class SpecialOffersView: UIViewController {
                                                  ofweight: .bold,
                                                  alpha: 1,
                                                  color: UIColor(named: colorAsString.storePrimaryText) ?? .orange)
-    var collectionView: UICollectionView!
-    var dataSource:     UICollectionViewDiffableDataSource<Section, ProductLocal>!
-    var snapshot:       NSDiffableDataSourceSnapshot<Section, ProductLocal>!
+    var segmentedControl:       UISegmentedControl!
     
-    var products: [ProductLocal] = []
-    var currentUser: UserLocal!
-    
-    var segmentedControl: UISegmentedControl!
+    var products:               [ProductLocal] = []
+    var currentUser:            UserLocal!
     
     weak var specialOffersViewDelegate: SpecialOffersViewDelegate!
     
@@ -51,17 +50,18 @@ final class SpecialOffersView: UIViewController {
         updateDataOnCollection()
     }
     
+    
     init(currentUser: UserLocal) {
         super.init(nibName: nil, bundle: nil)
         self.currentUser = currentUser
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     
     // MARK: - @Objectives
+    
     
     @objc private func segmentedControlSwitched() {
         if segmentedControl.selectedSegmentIndex == 0 {
@@ -72,16 +72,7 @@ final class SpecialOffersView: UIViewController {
             getProducts(uponField: "price", withCondition: Double(1))
         }
     }
-    
-    
-    // MARK: - Private functions
-    
-    
-    private func configureSegmentedControlSwitch() {
-        segmentedControl.addTarget(self, action: #selector(segmentedControlSwitched), for: .valueChanged)
-    }
-    
-    
+
     
     // MARK: - Firebase / Firestore
     
@@ -144,6 +135,9 @@ final class SpecialOffersView: UIViewController {
     
     
     // MARK: - UI Configuration
+    
+    
+    private func configureSegmentedControlSwitch() { segmentedControl.addTarget(self, action: #selector(segmentedControlSwitched), for: .valueChanged) }
     
     
     private func configureSegmentedControl() {

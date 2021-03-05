@@ -12,36 +12,39 @@ import FirebaseUI
 final class ProductsVCCollectionViewCell: UICollectionViewCell {
     // MARK: - Declaration
     
-    let cache = NSCache<NSString, UIImage>()
     
-    static let reuseId = "SpeicificCellName"
+    static let reuseId          = "SpeicificCellName"
     
-    var productImageView = ShopImageView(frame: .zero)
-    var productTitleLabel = StoreBoldLabel(with: "Product's name",
-                                           from: .left,
-                                           ofsize: 20,
-                                           ofweight: .bold,
-                                           alpha: 1,
-                                           color: UIColor(named: colorAsString.storePrimaryText) ?? .orange)
-    var priceLabel = StoreBoldLabel(with: "$3.50",
-                                    from: .center,
-                                    ofsize: 18,
-                                    ofweight: .semibold,
-                                    alpha: 1,
-                                    color: UIColor(named: colorAsString.storeTertiary) ?? .orange)
-    
-    var favoriteSystemButton = UIButton()
-    var addToBasketButton = StoreButton(fontSize: 20, label: "Add")
-    var product: ProductLocal!
-    var currentUser: UserLocal!
-    
-    var productCounter: UIStackView!
-    let plusButton = UIButton()
-    let minusButton = UIButton()
-    let counter = UITextField()
-    var count = 0
+    let cache                   = NSCache<NSString, UIImage>()
     
     
+    
+    var productImageView        = ShopImageView(frame: .zero)
+    var productTitleLabel       = StoreBoldLabel(with: "Product's name",
+                                                from: .left,
+                                                ofsize: 20,
+                                                ofweight: .bold,
+                                                alpha: 1,
+                                                color: UIColor(named: colorAsString.storePrimaryText) ?? .orange)
+    var priceLabel              = StoreBoldLabel(with: "$3.50",
+                                                 from: .center,
+                                                 ofsize: 18,
+                                                 ofweight: .semibold,
+                                                 alpha: 1,
+                                                 color: UIColor(named: colorAsString.storeTertiary) ?? .orange)
+    
+    var favoriteSystemButton    = UIButton()
+    var addToBasketButton       = StoreButton(fontSize: 20, label: "Add")
+    
+    var productCounter:         UIStackView!
+    let plusButton              = UIButton()
+    let minusButton             = UIButton()
+    let counter                 = UITextField()
+    
+    var product:                ProductLocal!
+    var currentUser:            UserLocal!
+
+    var count                   = 0
     
     
     // MARK: - Override and Initialise
@@ -94,7 +97,7 @@ final class ProductsVCCollectionViewCell: UICollectionViewCell {
     }
     
     
-    // MARK: - Private function
+    // MARK: - Button Configuration
     
     private func configureStackViewButtons() {
         plusButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
@@ -105,6 +108,7 @@ final class ProductsVCCollectionViewCell: UICollectionViewCell {
     private func configureAddToBasketButton() {
         addToBasketButton.addTarget(self, action: #selector(addToBasketButtonTapped), for: .touchUpInside)
     }
+    
     
     // MARK: - Called Outside
     
@@ -126,6 +130,9 @@ final class ProductsVCCollectionViewCell: UICollectionViewCell {
     }
     
     
+    // MARK: - Firebase
+    
+    
     private func downloadImage(from category: String) {
         FireManager.shared.retrieveImageWithPathReferenceFromDocument(from: category, categoryOrProduct: .product) { [weak self] (image) in
             guard let self = self else { return }
@@ -133,9 +140,6 @@ final class ProductsVCCollectionViewCell: UICollectionViewCell {
         }
     }
 
-    
-    // MARK: - Firebase
-    
     
     // MARK: - Cell configuration
     
@@ -184,37 +188,38 @@ final class ProductsVCCollectionViewCell: UICollectionViewCell {
         debugConfiguration(productImageView, productTitleLabel, priceLabel, favoriteSystemButton, addToBasketButton, productCounter)
         
         NSLayoutConstraint.activate([
-            productImageView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
-            productImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
-            productImageView.heightAnchor.constraint(equalToConstant: 175),
-            productImageView.widthAnchor.constraint(equalTo: productImageView.heightAnchor),
+            productImageView.topAnchor.constraint           (equalTo: topAnchor, constant: 0),
+            productImageView.leadingAnchor.constraint       (equalTo: leadingAnchor, constant: 0),
+            productImageView.heightAnchor.constraint        (equalToConstant: 175),
+            productImageView.widthAnchor.constraint         (equalTo: productImageView.heightAnchor),
             
-            priceLabel.topAnchor.constraint(equalTo: topAnchor, constant: 0),
-            priceLabel.leadingAnchor.constraint(equalTo: productImageView.trailingAnchor, constant: 0),
-            priceLabel.widthAnchor.constraint(equalToConstant: 80),
-            priceLabel.heightAnchor.constraint(equalToConstant: 40),
+            priceLabel.topAnchor.constraint                 (equalTo: topAnchor, constant: 0),
+            priceLabel.leadingAnchor.constraint             (equalTo: productImageView.trailingAnchor, constant: 0),
+            priceLabel.widthAnchor.constraint               (equalToConstant: 80),
+            priceLabel.heightAnchor.constraint              (equalToConstant: 40),
             
-            favoriteSystemButton.topAnchor.constraint(equalTo: priceLabel.topAnchor, constant: 0),
-            favoriteSystemButton.leadingAnchor.constraint(equalTo: priceLabel.trailingAnchor, constant: 10),
-            favoriteSystemButton.heightAnchor.constraint(equalTo: priceLabel.heightAnchor),
-            favoriteSystemButton.widthAnchor.constraint(equalTo: favoriteSystemButton.heightAnchor),
+            favoriteSystemButton.topAnchor.constraint       (equalTo: priceLabel.topAnchor, constant: 0),
+            favoriteSystemButton.leadingAnchor.constraint   (equalTo: priceLabel.trailingAnchor, constant: 10),
+            favoriteSystemButton.heightAnchor.constraint    (equalTo: priceLabel.heightAnchor),
+            favoriteSystemButton.widthAnchor.constraint     (equalTo: favoriteSystemButton.heightAnchor),
             
-            productCounter.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 0),
-            productCounter.leadingAnchor.constraint(equalTo: productImageView.trailingAnchor, constant: 0),
-            productCounter.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
-            productCounter.heightAnchor.constraint(equalToConstant: 50),
+            productCounter.topAnchor.constraint             (equalTo: priceLabel.bottomAnchor, constant: 0),
+            productCounter.leadingAnchor.constraint         (equalTo: productImageView.trailingAnchor, constant: 0),
+            productCounter.trailingAnchor.constraint        (equalTo: trailingAnchor, constant: 0),
+            productCounter.heightAnchor.constraint          (equalToConstant: 50),
             
-            addToBasketButton.leadingAnchor.constraint(equalTo: productImageView.trailingAnchor, constant: 0),
-            addToBasketButton.topAnchor.constraint(equalTo: productCounter.bottomAnchor, constant: 10),
-            addToBasketButton.widthAnchor.constraint(equalToConstant: 150),
-            addToBasketButton.heightAnchor.constraint(equalToConstant: 50),
+            addToBasketButton.leadingAnchor.constraint      (equalTo: productImageView.trailingAnchor, constant: 0),
+            addToBasketButton.topAnchor.constraint          (equalTo: productCounter.bottomAnchor, constant: 10),
+            addToBasketButton.widthAnchor.constraint        (equalToConstant: 150),
+            addToBasketButton.heightAnchor.constraint       (equalToConstant: 50),
             
-            productTitleLabel.topAnchor.constraint(equalTo: productImageView.bottomAnchor, constant: 0),
-            productTitleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
-            productTitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
-            productTitleLabel.heightAnchor.constraint(equalToConstant: 60),
+            productTitleLabel.topAnchor.constraint          (equalTo: productImageView.bottomAnchor, constant: 0),
+            productTitleLabel.leadingAnchor.constraint      (equalTo: leadingAnchor, constant: 0),
+            productTitleLabel.trailingAnchor.constraint     (equalTo: trailingAnchor, constant: 0),
+            productTitleLabel.heightAnchor.constraint       (equalToConstant: 60),
         ])
     }
+    
     
     // MARK: - Animation
     
@@ -229,6 +234,7 @@ final class ProductsVCCollectionViewCell: UICollectionViewCell {
             }
         }
     }
+    
     
     private func animateCounterView(_ viewToAnimate: UIView) {
         UIView.animate(withDuration: 0.1, animations: {viewToAnimate.alpha = 0.3}) { (true) in

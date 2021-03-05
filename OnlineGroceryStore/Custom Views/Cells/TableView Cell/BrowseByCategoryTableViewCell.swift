@@ -12,9 +12,12 @@ import FirebaseUI
 final class BrowseByCategoryTableViewCell: UITableViewCell {
     // MARK: - Declaration
     
-    let cache = NSCache<NSString, UIImage>()
     
-    var categoryImageView = ShopImageView(frame: .zero)
+    static let reuseID      = "BrowseByCategoryCell"
+    
+    let cache               = NSCache<NSString, UIImage>()
+    
+    var categoryImageView   = ShopImageView(frame: .zero)
     #warning("Refactor later so its initialised in a function set")
     var categoryLabel       = StoreBoldLabel(with: "",
                                              from: .left,
@@ -22,8 +25,6 @@ final class BrowseByCategoryTableViewCell: UITableViewCell {
                                              ofweight: .medium,
                                              alpha: 1,
                                              color: UIColor(named: colorAsString.storePrimaryText) ?? .orange)
-    
-    static let reuseID = "BrowseByCategoryCell"
     
     var currentCategory: String!
     
@@ -37,16 +38,20 @@ final class BrowseByCategoryTableViewCell: UITableViewCell {
         configure()
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    
     
     // MARK: - Called Outside
+    
     
     func set(with categoryTitle: String) {
         categoryLabel.text = categoryTitle
         downloadImage(from: categoryTitle)
     }
+    
+    
+    // MARK: - Firebase
     
     
     private func downloadImage(from category: String) {
@@ -59,9 +64,9 @@ final class BrowseByCategoryTableViewCell: UITableViewCell {
     
     // MARK: - Cell configuration
     
-    private func configureCell() {
-        backgroundColor = UIColor(named: colorAsString.storeBackground)
-    }
+    
+    private func configureCell() { backgroundColor = UIColor(named: colorAsString.storeBackground) }
+    
     
     private func configure() {
         addSubviews(categoryImageView, categoryLabel)
@@ -69,15 +74,15 @@ final class BrowseByCategoryTableViewCell: UITableViewCell {
         let padding: CGFloat    = 12
         
         NSLayoutConstraint.activate([
-            categoryImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            categoryImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
-            categoryImageView.heightAnchor.constraint(equalToConstant: 60),
-            categoryImageView.widthAnchor.constraint(equalToConstant: 60),
+            categoryImageView.centerYAnchor.constraint  (equalTo: self.centerYAnchor),
+            categoryImageView.leadingAnchor.constraint  (equalTo: self.leadingAnchor, constant: padding),
+            categoryImageView.heightAnchor.constraint   (equalToConstant: 60),
+            categoryImageView.widthAnchor.constraint    (equalToConstant: 60),
             
-            categoryLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            categoryLabel.leadingAnchor.constraint(equalTo: categoryImageView.trailingAnchor, constant: 24),
-            categoryLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
-            categoryLabel.heightAnchor.constraint(equalToConstant: 40)
+            categoryLabel.centerYAnchor.constraint      (equalTo: self.centerYAnchor),
+            categoryLabel.leadingAnchor.constraint      (equalTo: categoryImageView.trailingAnchor, constant: 24),
+            categoryLabel.trailingAnchor.constraint     (equalTo: self.trailingAnchor, constant: -padding),
+            categoryLabel.heightAnchor.constraint       (equalToConstant: 40)
         ])
     }
 }

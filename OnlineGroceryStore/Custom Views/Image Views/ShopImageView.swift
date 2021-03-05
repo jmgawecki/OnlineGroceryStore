@@ -8,9 +8,6 @@
 import UIKit
 
 final class ShopImageView: UIImageView {
-    // MARK: - Declaration
-
-    
     // MARK: - Override and Initialiser
     
     
@@ -19,11 +16,12 @@ final class ShopImageView: UIImageView {
         configure()
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    
     
     // MARK: - Configuration
+    
     
     private func configure() {
         image = imageAsUIImage.foodPlaceholder

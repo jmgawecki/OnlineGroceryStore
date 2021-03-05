@@ -8,6 +8,8 @@
 import UIKit
 
 struct CollectionLayouts {
+    
+    
     static func favoriteCollectionViewLayout() -> UICollectionViewLayout {
         let itemSize        = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                                      heightDimension: .fractionalHeight(1.0))
@@ -30,6 +32,7 @@ struct CollectionLayouts {
         return layout
     }
     
+    
     static func productsVCCollectionViewLayout() -> UICollectionViewLayout {
         let itemSize        = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                                      heightDimension: .fractionalHeight(1.0))
@@ -50,6 +53,7 @@ struct CollectionLayouts {
         
         return layout
     }
+    
     
     static func searchVCCollectionViewLayout() -> UICollectionViewLayout {
         let itemSize        = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),

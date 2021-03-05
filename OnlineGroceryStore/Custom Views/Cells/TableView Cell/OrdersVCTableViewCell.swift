@@ -12,7 +12,10 @@ import FirebaseUI
 class OrdersVCTableViewCell: UITableViewCell {
     // MARK: - Declaration
     
-    let cache = NSCache<NSString, UIImage>()
+    
+    static let reuseID   = "BrowseByCategoryCell"
+    
+    let cache            = NSCache<NSString, UIImage>()
     
     #warning("Refactor later so its initialised in a function set")
     var orderLabel       = StoreBoldLabel(with: "",
@@ -21,15 +24,12 @@ class OrdersVCTableViewCell: UITableViewCell {
                                           ofweight: .bold,
                                           alpha: 1,
                                           color: UIColor(named: colorAsString.storePrimaryText) ?? .orange)
-    
     var dateLabel        = StoreBoldLabel(with: "",
                                           from: .left,
                                           ofsize: 15,
                                           ofweight: .medium,
                                           alpha: 1,
                                           color: UIColor(named: colorAsString.storePrimaryText) ?? .orange )
-    
-    static let reuseID = "BrowseByCategoryCell"
     
     var product: Order!
     
@@ -43,11 +43,12 @@ class OrdersVCTableViewCell: UITableViewCell {
         configure()
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    
     
     // MARK: - Called Outside
+    
     
     func set(with order: Order) {
         orderLabel.text = "Order: \(order.orderNumber)"
@@ -57,9 +58,8 @@ class OrdersVCTableViewCell: UITableViewCell {
     
     // MARK: - Cell configuration
     
-    private func configureCell() {
-        backgroundColor = UIColor(named: colorAsString.storeBackground)
-    }
+    
+    private func configureCell() { backgroundColor = UIColor(named: colorAsString.storeBackground) }
     
     private func configure() {
         addSubviews(orderLabel, dateLabel)

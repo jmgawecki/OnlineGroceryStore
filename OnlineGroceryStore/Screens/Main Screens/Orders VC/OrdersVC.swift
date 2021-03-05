@@ -26,8 +26,6 @@ final class OrdersVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureVC()
-        configureUIElements()
-        layoutUI()
         configureTableView()
         configureDataSource()
     }
@@ -107,24 +105,6 @@ final class OrdersVC: UIViewController {
         snapshot.appendItems(orders, toSection: .main)
         DispatchQueue.main.async { self.dataSource.apply(self.snapshot, animatingDifferences: true) }
     }
-
-    
-    //MARK: - VC Configuration
-    
-    
-    private func configureUIElements() {
-       
-    }
-    
-    
-    //MARK: - Layout configuration
-    
-    
-    private func layoutUI() {
-        
-    }
-    
-    
 }
 
 
@@ -133,8 +113,7 @@ final class OrdersVC: UIViewController {
 
 extension OrdersVC: UITableViewDelegate {
 func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    #warning("do a check for current user")
-    let destVC = LastOrderVC(with: orders[indexPath.item])
+    let destVC = LastOrderVC(with: orders[indexPath.item], for: currentUser)
     destVC.currentUser = currentUser
     
     navigationController?.pushViewController(destVC, animated: true)

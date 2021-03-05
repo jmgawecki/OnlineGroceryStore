@@ -10,14 +10,14 @@ import Firebase
 import FirebaseUI
 
 class BasketVCTableViewCell: UITableViewCell {
-    
-    
-    
     // MARK: - Declaration
     
-    let cache = NSCache<NSString, UIImage>()
     
-    var categoryImageView = ShopImageView(frame: .zero)
+    static let reuseID      = "BrowseByCategoryCell"
+    
+    let cache               = NSCache<NSString, UIImage>()
+    
+    var categoryImageView   = ShopImageView(frame: .zero)
     #warning("Refactor later so its initialised in a function set")
     var categoryLabel       = StoreBoldLabel(with: "",
                                              from: .left,
@@ -25,8 +25,6 @@ class BasketVCTableViewCell: UITableViewCell {
                                              ofweight: .medium,
                                              alpha: 1,
                                              color: UIColor(named: colorAsString.storePrimaryText) ?? .orange)
-    
-    static let reuseID = "BrowseByCategoryCell"
     
     var product: ProductLocal!
     
@@ -40,17 +38,22 @@ class BasketVCTableViewCell: UITableViewCell {
         configure()
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    
     
     // MARK: - Called Outside
+    
     
     func set(with basketProduct: ProductLocal) {
         self.product = basketProduct
         categoryLabel.text = basketProduct.name
         downloadImage(from: basketProduct.id)
     }
+    
+    
+    // MARK: - Firebase
+    
     
     private func downloadImage(from category: String) {
         FireManager.shared.retrieveImageWithPathReferenceFromDocument(from: category, categoryOrProduct: .product) { [weak self] (image) in
@@ -62,9 +65,9 @@ class BasketVCTableViewCell: UITableViewCell {
     
     // MARK: - Cell configuration
     
-    private func configureCell() {
-        backgroundColor = UIColor(named: colorAsString.storeBackground)
-    }
+    
+    private func configureCell() { backgroundColor = UIColor(named: colorAsString.storeBackground) }
+    
     
     private func configure() {
         addSubviews(categoryImageView, categoryLabel)

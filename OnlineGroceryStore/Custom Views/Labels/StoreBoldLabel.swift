@@ -8,7 +8,7 @@
 import UIKit
 
 final class StoreBoldLabel: UILabel {
-    //MARK: - Initialisers
+    //MARK: - Override and Initialise
     
     
     override init(frame: CGRect) {
@@ -16,9 +16,8 @@ final class StoreBoldLabel: UILabel {
         configure()
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     
     convenience init(with text: String, from textAlignment: NSTextAlignment, ofsize font: CGFloat, ofweight weight: UIFont.Weight, alpha: CGFloat, color: UIColor) {
@@ -31,7 +30,7 @@ final class StoreBoldLabel: UILabel {
     }
 
 
-    //MARK: - Configurations
+    //MARK: - Configuration
     
     private func configure() {
         translatesAutoresizingMaskIntoConstraints = false

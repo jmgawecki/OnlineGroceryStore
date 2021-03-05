@@ -19,9 +19,7 @@ final class RegisterTextField: UITextField {
     }
     
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     
     convenience init(placeholder: String, capitalised: UITextAutocapitalizationType, isPassword: Bool) {
@@ -35,9 +33,7 @@ final class RegisterTextField: UITextField {
     //MARK:- Objectives
     
     
-    @objc private func barButtonTapped() {
-        resignFirstResponder()
-    }
+    @objc private func barButtonTapped() { resignFirstResponder() }
     
     
     //MARK: - Configurations
@@ -55,6 +51,7 @@ final class RegisterTextField: UITextField {
         autocorrectionType      = .no
         autocapitalizationType  = .none
     }
+    
     
     private func configureKeyboardToolbar() {
         let toolbar         = UIToolbar()

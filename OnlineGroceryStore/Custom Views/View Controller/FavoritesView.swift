@@ -12,32 +12,33 @@ final class FavoritesView: UIViewController {
     
     enum Section { case main }
     
+    var collectionView:         UICollectionView!
+    var dataSource:             UICollectionViewDiffableDataSource<Section, ProductLocal>!
+    var snapshot:               NSDiffableDataSourceSnapshot<Section, ProductLocal>!
+    
     let hiNameLabel             = StoreBoldLabel(with: "Favorites",
                                                  from: .left,
                                                  ofsize: 20,
                                                  ofweight: .bold,
                                                  alpha: 1,
                                                  color: UIColor(named: colorAsString.storePrimaryText) ?? .orange)
-    var collectionView: UICollectionView!
-    var dataSource:     UICollectionViewDiffableDataSource<Section, ProductLocal>!
-    var snapshot:       NSDiffableDataSourceSnapshot<Section, ProductLocal>!
-    
-    var products: [ProductLocal] = []
-    var currentUser: UserLocal!
-    var segmentedControl: UISegmentedControl!
+    var segmentedControl:       UISegmentedControl!
+   
+    var products:               [ProductLocal] = []
+    var currentUser:            UserLocal!
+
     
     
     // MARK: - Override and Initialise
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        getCurrentUser()
         configureCollectionView()
         configureSegmentedControl()
         layoutUI()
         configureDataSource()
         updateDataOnCollection()
-        
         configureSegmentedControlSwitch()
     }
     
@@ -47,12 +48,12 @@ final class FavoritesView: UIViewController {
         self.currentUser = currentUser
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
    
 
     // MARK: - @Objectives
+    
     
     @objc private func segmentedControlSwitched() {
         if segmentedControl.selectedSegmentIndex == 0 {
@@ -81,12 +82,8 @@ final class FavoritesView: UIViewController {
         }
     }
     
+    
     private func getLastOrders() {
-        guard let currentUser = currentUser else {
-            getCurrentUser()
-            print("no current user try again!")
-            return
-        }
         FireManager.shared.fetchOrders(for: currentUser) { (result) in
             switch result {
             case .success(let orders):
@@ -105,30 +102,7 @@ final class FavoritesView: UIViewController {
             }
         }
     }
-    
-    
-    func getCurrentUser() {
-        FireManager.shared.getCurrentUserData { [weak self] (result) in
-            guard let self = self else { return }
-            switch result {
-            case .success(let currentUser):
-                self.currentUser = currentUser
-                self.getLastOrders()
-                
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-    }
-    
-    
-    // MARK: - Private functions
-    
-    
-    private func configureSegmentedControlSwitch() {
-        segmentedControl.addTarget(self, action: #selector(segmentedControlSwitched), for: .valueChanged)
-    }
-    
+
     
     // MARK: - Collection View Configuration
     
@@ -161,6 +135,10 @@ final class FavoritesView: UIViewController {
     
     // MARK: - UI Configuration
     
+    
+    private func configureSegmentedControlSwitch() { segmentedControl.addTarget(self, action: #selector(segmentedControlSwitched), for: .valueChanged) }
+    
+    
     private func configureSegmentedControl() {
         let items        = ["Favorite", "Last orders", "Usual"]
         segmentedControl = UISegmentedControl(items: items)
@@ -168,8 +146,6 @@ final class FavoritesView: UIViewController {
         segmentedControl.selectedSegmentIndex       = 0
         segmentedControl.selectedSegmentTintColor   = UIColor(named: colorAsString.storeTertiary)
     }
-    
-    
     
     
     // MARK: - Layout UI
@@ -201,7 +177,9 @@ final class FavoritesView: UIViewController {
     }
 }
 
+
     // MARK: - Extension
+
 
 extension FavoritesView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
