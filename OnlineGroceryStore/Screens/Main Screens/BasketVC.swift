@@ -18,7 +18,10 @@ final class BasketVC: UIViewController {
     var dataSource:         UITableViewDiffableDataSource<Section, ProductLocal>!
     var snapshot:           NSDiffableDataSourceSnapshot<Section, ProductLocal>!
 
-    var orderButton = StoreImageLabelButton(fontSize: 20, message: "Proceed with Order", image: imageAsUIImage.foodPlaceholder!, textColor: UIColor(named: colorAsString.storeTertiary) ?? .green)
+    var orderButton         = StoreImageLabelButton(fontSize: 20,
+                                                    message: "Proceed with Order",
+                                                    image: imageAsUIImage.foodPlaceholder!,
+                                                    textColor: UIColor(named: colorAsString.storeTertiary) ?? .green)
   
     var currentUser:        UserLocal!
     var basketProducts:     [ProductLocal] = []
@@ -29,6 +32,7 @@ final class BasketVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        fetchBasketProducts()
         configureTableView()
         configureDataSource()
         layoutUI()
@@ -89,9 +93,7 @@ final class BasketVC: UIViewController {
     // MARK: - Button configuration
     
     
-    private func configureOrderButton() {
-        orderButton.addTarget(self, action: #selector(orderButtonTapped), for: .touchUpInside)
-    }
+    private func configureOrderButton() { orderButton.addTarget(self, action: #selector(orderButtonTapped), for: .touchUpInside) }
     
     
     // MARK: - Firebase

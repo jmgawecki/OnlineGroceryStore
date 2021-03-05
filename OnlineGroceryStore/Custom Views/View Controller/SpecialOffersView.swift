@@ -88,21 +88,7 @@ final class SpecialOffersView: UIViewController {
             }
         }
     }
-//    
-//    private func getProducts(uponField: String, withCondition: Any) {
-//        NetworkManager.shared.retrieveProductsFromFirestoreBasedOnField(collection: "products", uponField: uponField, withCondition: withCondition) { [weak self] (result) in
-//            guard let self = self else { return }
-//            switch result {
-//            case .success(let products):
-//                self.products.removeAll()
-//                self.products.append(contentsOf: products)
-//                self.configureSnapshot()
-//            case .failure(let error):
-//                print(error)
-//            }
-//        }
-//    }
-    
+
     
     // MARK: - Collection View Configuration
     

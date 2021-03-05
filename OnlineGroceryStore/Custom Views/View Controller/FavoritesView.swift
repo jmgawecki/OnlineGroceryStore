@@ -59,7 +59,7 @@ final class FavoritesView: UIViewController {
         if segmentedControl.selectedSegmentIndex == 0 {
 //            getProducts(uponField: <#T##String#>, withCondition: <#T##Any#>)
         } else if segmentedControl.selectedSegmentIndex == 1 {
-//            getLastOrders()
+            getLastOrdersID()
         } else if segmentedControl.selectedSegmentIndex == 2 {
             print("third")
         }
@@ -81,24 +81,48 @@ final class FavoritesView: UIViewController {
             }
         }
     }
+
     
-    
-    private func getLastOrders() {
+    private func getLastOrdersID() {
+        var idsArray: [String] = []
         FireManager.shared.fetchOrders(for: currentUser) { (result) in
             switch result {
             case .success(let orders):
-                self.products.removeAll()
+                var tempProducts: [ProductLocal] = []
                 for order in orders {
                     for product in order.products {
-                        if self.products.contains(product) { } else {
-                            self.products.append(contentsOf: order.products)
-                        }
+                        tempProducts.append(product)
                     }
                 }
-                self.updateDataOnCollection()
+                var set1: Set<String> = []
+                
+                for product in tempProducts { set1.insert(product.id) }
+                idsArray = Array(set1)
+                
+                self.getLastOrdersProducts(with: idsArray)
                 
             case .failure(let error):
                 print(error)
+            }
+        }
+    }
+    
+    
+    private func getLastOrdersProducts(with ids: [String]) {
+        var lastOrdersProducts: [ProductLocal] = []
+        FireManager.shared.fetchAllProducts { [weak self] (result) in
+            guard let self = self else { return }
+            switch result {
+            case .success(let products):
+                for id in ids {
+                    let foundProduct = products.filter { $0.id == id}
+                    lastOrdersProducts.append(foundProduct[0])
+                }
+                self.products = lastOrdersProducts
+                self.updateDataOnCollection()
+                
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
     }

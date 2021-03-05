@@ -117,6 +117,22 @@ final class FireManager {
         }
     }
     
+    
+    func fetchAllProducts(completed: @escaping(Result<[ProductLocal], Error>) -> Void) {
+        var products: [ProductLocal] = []
+        db.collection("products").addSnapshotListener { (querySnapshot, error) in
+            guard let documents = querySnapshot?.documents else {
+                completed(.failure(error!))
+                return
+            }
+            
+            products = documents.compactMap({ (queryDocumentSnapshot) -> ProductLocal? in
+                return try? queryDocumentSnapshot.data(as: ProductLocal.self)
+            })
+            completed(.success(products))
+        }
+    }
+    
 
     func fetchProductsBasedOnTag(withTag: String, completed: @escaping(Result<[ProductLocal], Error>) -> Void) {
         var products: [ProductLocal] = []
