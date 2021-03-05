@@ -17,7 +17,7 @@ final class LogInVC: UIViewController {
     
     var email           = RegisterTextField(placeholder: "@Email", capitalised: .none, isPassword: false)
     var password        = RegisterTextField(placeholder: "Password", capitalised: .none, isPassword: true)
-    var confirmButton   = StoreButton(fontSize: 18, label: "Log In!")
+    var confirmButton   = StoreVCButton(fontSize: 18, label: "Log In!")
     
     // MARK: - Override, Initialiser
     
@@ -100,7 +100,7 @@ final class LogInVC: UIViewController {
         loginFormStackV.axis                = .vertical
         loginFormStackV.distribution        = .fillEqually
         loginFormStackV.spacing             = 14
-        loginFormStackV.backgroundColor     = UIColor(named: colorAsString.storeBackground)
+        loginFormStackV.backgroundColor     = colorAsUIColor.storeBackground
 
         loginFormStackV.addArrangedSubview(email)
         loginFormStackV.addArrangedSubview(password)
@@ -112,7 +112,7 @@ final class LogInVC: UIViewController {
     
     
     private func configureVC() {
-        view.backgroundColor = UIColor(named: colorAsString.storeBackground)
+        view.backgroundColor = colorAsUIColor.storeBackground
         title                = "Log In"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.setNavigationBarHidden(false, animated: true)

@@ -9,8 +9,8 @@ import UIKit
 
 final class EntryVC: UIViewController {
     // MARK: - Declaration
-    var loginButton         = StoreButton(fontSize: 18, label: "Log In")
-    var registerButton      = StoreButton(fontSize: 18, label: "Sign Up")
+    var loginButton         = StoreVCButton(fontSize: 18, label: "Log In")
+    var registerButton      = StoreVCButton(fontSize: 18, label: "Sign Up")
     
     var shopImageView       = ShopImageView(frame: .zero)
     var buttonsStack        = UIStackView()
@@ -20,14 +20,14 @@ final class EntryVC: UIViewController {
                                              ofsize: 35,
                                              ofweight: .bold,
                                              alpha: 0,
-                                             color: UIColor(named: colorAsString.storePrimaryText)!)
+                                             color: colorAsUIColor.storePrimaryText ?? .orange)
     
     var bodyLabel           = StoreBoldLabel(with: "Please log in or sign up in order to buy some awesome things!",
                                              from: .left,
                                              ofsize: 20,
                                              ofweight: .medium,
                                              alpha: 0,
-                                             color: UIColor(named: colorAsString.storePrimaryText)!)
+                                             color: colorAsUIColor.storePrimaryText ?? .orange)
     
     
     
@@ -84,7 +84,7 @@ final class EntryVC: UIViewController {
     
     
     private func configureVC() {
-        view.backgroundColor = UIColor(named: colorAsString.storeBackground)
+        view.backgroundColor = colorAsUIColor.storeBackground
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.setNavigationBarHidden(true, animated: true)
         navigationController?.isNavigationBarHidden = true
@@ -96,7 +96,7 @@ final class EntryVC: UIViewController {
         buttonsStack.axis                = .vertical
         buttonsStack.distribution        = .fillEqually
         buttonsStack.spacing             = 20
-        buttonsStack.backgroundColor     = UIColor(named: colorAsString.storeBackground)
+        buttonsStack.backgroundColor     = colorAsUIColor.storeBackground
 
         buttonsStack.addArrangedSubview(loginButton)
         buttonsStack.addArrangedSubview(registerButton)

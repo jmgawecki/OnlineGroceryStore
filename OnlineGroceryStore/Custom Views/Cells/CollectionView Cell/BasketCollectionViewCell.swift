@@ -1,19 +1,15 @@
 //
-//  BasketVCTableViewCell.swift
+//  BasketCollectionViewCell.swift
 //  OnlineGroceryStore
 //
-//  Created by Jakub Gawecki on 02/03/2021.
+//  Created by Jakub Gawecki on 05/03/2021.
 //
 
 import UIKit
-import Firebase
-import FirebaseUI
 
-class BasketVCTableViewCell: UITableViewCell {
+class BasketCollectionViewCell: UICollectionViewCell {
     // MARK: - Declaration
-    
-    
-    static let reuseID      = "BrowseByCategoryCell"
+    static let reuseId = "SpeicificCellName"
     
     let cache               = NSCache<NSString, UIImage>()
     
@@ -24,7 +20,7 @@ class BasketVCTableViewCell: UITableViewCell {
                                              ofsize: 20,
                                              ofweight: .medium,
                                              alpha: 1,
-                                             color: UIColor(named: colorAsString.storePrimaryText) ?? .orange)
+                                             color: colorAsUIColor.storePrimaryText ?? .orange)
     
     var product: ProductLocal!
     
@@ -32,14 +28,16 @@ class BasketVCTableViewCell: UITableViewCell {
     // MARK: - Override and Initialise
     
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         configureCell()
         configure()
     }
     
     
-    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     
     // MARK: - Called Outside
@@ -66,12 +64,11 @@ class BasketVCTableViewCell: UITableViewCell {
     // MARK: - Cell configuration
     
     
-    private func configureCell() { backgroundColor = UIColor(named: colorAsString.storeBackground) }
+    private func configureCell() { backgroundColor = colorAsUIColor.storeBackground }
     
     
     private func configure() {
         addSubviews(categoryImageView, categoryLabel)
-        accessoryType           = .disclosureIndicator
         let padding: CGFloat    = 12
         
         NSLayoutConstraint.activate([
@@ -80,7 +77,7 @@ class BasketVCTableViewCell: UITableViewCell {
             categoryImageView.heightAnchor.constraint       (equalToConstant: 60),
             categoryImageView.widthAnchor.constraint        (equalToConstant: 60),
             
-            categoryLabel.centerYAnchor.constraint          (equalTo: self.centerYAnchor),
+            categoryLabel.topAnchor.constraint              (equalTo: categoryImageView.topAnchor),
             categoryLabel.leadingAnchor.constraint          (equalTo: categoryImageView.trailingAnchor, constant: 24),
             categoryLabel.trailingAnchor.constraint         (equalTo: self.trailingAnchor, constant: -padding),
             categoryLabel.heightAnchor.constraint           (equalToConstant: 40)

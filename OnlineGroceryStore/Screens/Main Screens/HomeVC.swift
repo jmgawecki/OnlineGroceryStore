@@ -13,20 +13,18 @@ final class HomeVC: UIViewController {
     
     var scrollView              = UIScrollView()
     
-    var logOutButton            = StoreButton(fontSize: 18, label: "Log Out")
-    var hiNameLabel             = StoreBoldLabel(with: "Hello ",
-                                                 from: .left,
-                                                 ofsize: 30,
-                                                 ofweight: .bold,
-                                                 alpha: 0,
-                                                 color: UIColor(named: colorAsString.storePrimaryText) ?? .orange)
-    var vawingGirlImageView         = ShopImageView(frame: .zero)
+    var quickActionMenu:        StoreVCButton!
+    var hiNameLabel             = StoreTitleLabel(from: .left, alpha: 0)
+    var vawingGirlImageView     = ShopImageView(frame: .zero)
     
     var contentView             = UIView()
-    var specialOffersView   = UIView()
-    var favoritesOffersView = UIView()
+    var specialOffersView       = UIView()
+    var favoritesOffersView     = UIView()
     
-    var allCategoriesButton = StoreImageLabelButton(fontSize: 20, message: "Shop by Category", image: imageAsUIImage.foodPlaceholder!, textColor: UIColor(named: colorAsString.storeTertiary) ?? .green)
+    var allCategoriesButton     = StoreImageLabelButton(fontSize: 20,
+                                                        message: "Shop by Category",
+                                                        image: imageAsUIImage.foodPlaceholder!,
+                                                        textColor: colorAsUIColor.storeTertiary ?? .green)
     
     var currentUser: UserLocal?
     
@@ -37,8 +35,8 @@ final class HomeVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         layoutAndConfigureScrollView()
+        configureQuickActionMenu()
         layoutUIInScrollView()
-        configureLogOutButton()
         configureAllCategoriesButton()
         configureUIElements()
         getCurrentUser()
@@ -48,9 +46,7 @@ final class HomeVC: UIViewController {
     }
     
     
-    override func viewWillAppear(_ animated: Bool) {
-        configureVC()
-    }
+    override func viewWillAppear(_ animated: Bool) { configureVC() }
     
     
     init(currentUser: UserLocal) {
@@ -64,20 +60,6 @@ final class HomeVC: UIViewController {
     
     // MARK: - @Objectives
     
-   
-    @objc private func logOutButtonTapped() {
-        var isError: Error? = nil
-        do {
-            try Auth.auth().signOut()
-        } catch let error {
-            isError = error
-        }
-        if isError == nil {
-            let destVC = logOutVC()
-            navigationController?.pushViewController(destVC, animated: true)
-        }
-    }
-    
     
     @objc private func allCategoriesButtonTapped(_ sender: UIView) {
         animateButtonViewAlpha(sender)
@@ -89,6 +71,12 @@ final class HomeVC: UIViewController {
     //MARK: - VC Configuration
     
     
+    private func configureVC() {
+        view.backgroundColor = colorAsUIColor.storeBackground
+        navigationController?.setNavigationBarHidden(true, animated: true)
+    }
+    
+    
     private func configureUIElements() {
         vawingGirlImageView.image = imageAsUIImage.wavingBlackGirlR056
         vawingGirlImageView.alpha = 0
@@ -98,34 +86,13 @@ final class HomeVC: UIViewController {
     //MARK: - Private Function
     
     
-    private func configureVC() {
-        view.backgroundColor = UIColor(named: colorAsString.storeBackground)
-        navigationController?.setNavigationBarHidden(true, animated: true)
-    }
-    
-    
     private func add(childVC: UIViewController, to containerView: UIView) {
         addChild(childVC)
         containerView.addSubview(childVC.view)
         childVC.view.frame = containerView.bounds
         childVC.didMove(toParent: self)
     }
-    
-    
-    // MARK: - Button Configuration
-    
-    
-    private func configureLogOutButton() { logOutButton.addTarget(self, action: #selector(logOutButtonTapped), for: .touchUpInside) }
-    
-    
-    private func configureAllCategoriesButton() { allCategoriesButton.addTarget(self, action: #selector(allCategoriesButtonTapped), for: .touchUpInside) }
-    
-    
-    private func animateViews() {
-        animateViewAlpha(hiNameLabel)
-        animateViewAlpha(vawingGirlImageView)
-    }
-    
+
     
     //MARK: - Firebase
     
@@ -146,6 +113,50 @@ final class HomeVC: UIViewController {
     }
     
     
+    private func signOut() {
+        var isError: Error? = nil
+        do {
+            try Auth.auth().signOut()
+        } catch let error {
+            isError = error
+        }
+        if isError == nil {
+            let destVC = logOutVC()
+            navigationController?.pushViewController(destVC, animated: true)
+        }
+    }
+    
+    
+    // MARK: - Button Configuration
+    
+    
+    private func configureAllCategoriesButton() { allCategoriesButton.addTarget(self, action: #selector(allCategoriesButtonTapped), for: .touchUpInside) }
+    
+    
+    private func animateViews() {
+        animateViewAlpha(hiNameLabel)
+        animateViewAlpha(vawingGirlImageView)
+    }
+    
+    
+    // MARK: - UI Configuration
+    
+    
+    private func configureQuickActionMenu() {
+        quickActionMenu  = StoreVCButton(fontSize: 18, label: "More")
+        quickActionMenu.menu = UIMenu( options: .displayInline,
+                                       children: [ UIAction(title: "Log out", handler: { [weak self] (_) in
+                                        guard let self = self else { return }
+                                        self.signOut()
+                                       }),
+                                       UIAction(title: "Personal data", handler: { (_) in
+                                        print("tralalallalalalaa")
+                                       })])
+        quickActionMenu.showsMenuAsPrimaryAction = true
+    }
+    
+    
+    
     //MARK: - Layout UI
     
     
@@ -156,27 +167,27 @@ final class HomeVC: UIViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         
-        scrollView.backgroundColor = UIColor(named: colorAsString.storeBackground)
+        scrollView.backgroundColor = colorAsUIColor.storeBackground
         
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint             (equalTo: view.topAnchor),
-            scrollView.bottomAnchor.constraint          (equalTo: view.bottomAnchor),
-            scrollView.leadingAnchor.constraint         (equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint        (equalTo: view.trailingAnchor),
-        
-            contentView.topAnchor.constraint            (equalTo: scrollView.topAnchor),
-            contentView.bottomAnchor.constraint         (equalTo: scrollView.bottomAnchor),
-            contentView.leadingAnchor.constraint        (equalTo: scrollView.leadingAnchor),
-            contentView.trailingAnchor.constraint       (equalTo: scrollView.trailingAnchor),
-        
-            contentView.widthAnchor.constraint          (equalTo: scrollView.widthAnchor),
-            contentView.heightAnchor.constraint         (equalToConstant: 1400),
+            scrollView.topAnchor.constraint                 (equalTo: view.topAnchor),
+            scrollView.bottomAnchor.constraint              (equalTo: view.bottomAnchor),
+            scrollView.leadingAnchor.constraint             (equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint            (equalTo: view.trailingAnchor),
+            
+            contentView.topAnchor.constraint                (equalTo: scrollView.topAnchor),
+            contentView.bottomAnchor.constraint             (equalTo: scrollView.bottomAnchor),
+            contentView.leadingAnchor.constraint            (equalTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint           (equalTo: scrollView.trailingAnchor),
+            
+            contentView.widthAnchor.constraint              (equalTo: scrollView.widthAnchor),
+            contentView.heightAnchor.constraint             (equalToConstant: 1000),
         ])
     }
     
     
     private func layoutUIInScrollView() {
-        contentView.addSubviews(hiNameLabel, vawingGirlImageView, favoritesOffersView, specialOffersView, allCategoriesButton, logOutButton)
+        contentView.addSubviews(hiNameLabel, quickActionMenu ,vawingGirlImageView, favoritesOffersView, specialOffersView, allCategoriesButton)
         //        debugConfiguration(hiNameLabel, vawingGirlImageView, favoritesView, specialOffersView, allCategoriesButton)
         specialOffersView.translatesAutoresizingMaskIntoConstraints     = false
         favoritesOffersView.translatesAutoresizingMaskIntoConstraints   = false
@@ -186,6 +197,11 @@ final class HomeVC: UIViewController {
             hiNameLabel.topAnchor.constraint                (equalTo: contentView.topAnchor, constant: 20),
             hiNameLabel.widthAnchor.constraint              (equalToConstant: 220),
             hiNameLabel.heightAnchor.constraint             (equalToConstant: 50),
+            
+            quickActionMenu.topAnchor.constraint            (equalTo: hiNameLabel.bottomAnchor, constant: 0),
+            quickActionMenu.leadingAnchor.constraint        (equalTo: hiNameLabel.leadingAnchor, constant: 10),
+            quickActionMenu.widthAnchor.constraint          (equalToConstant: 140),
+            quickActionMenu.heightAnchor.constraint         (equalToConstant: 44),
             
             vawingGirlImageView.topAnchor.constraint        (equalTo: contentView.topAnchor),
             vawingGirlImageView.leadingAnchor.constraint    (equalTo: hiNameLabel.trailingAnchor, constant: 5), //

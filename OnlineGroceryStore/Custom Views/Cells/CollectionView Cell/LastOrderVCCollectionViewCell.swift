@@ -21,15 +21,15 @@ class LastOrderVCCollectionViewCell: UICollectionViewCell {
                                                  ofsize: 20,
                                                  ofweight: .bold,
                                                  alpha: 1,
-                                                 color: UIColor(named: colorAsString.storePrimaryText) ?? .orange)
+                                                 color: colorAsUIColor.storePrimaryText ?? .red)
     var priceLabel              = StoreBoldLabel(with: "$3.50",
                                                  from: .center,
                                                  ofsize: 18,
                                                  ofweight: .semibold,
                                                  alpha: 1,
-                                                 color: UIColor(named: colorAsString.storeTertiary) ?? .orange)
+                                                 color: colorAsUIColor.storeTertiary ?? .orange)
     var favoriteSystemButton    = UIButton()
-    var addToBasketButton       = StoreButton(fontSize: 20, label: "Add")
+    var addToBasketButton       = StoreVCButton(fontSize: 20, label: "Add")
     
     var productCounter:         UIStackView!
     let counter                 = UITextField()
@@ -88,10 +88,10 @@ class LastOrderVCCollectionViewCell: UICollectionViewCell {
         print(product.id)
         if product.favorite == true {
             favoriteSystemButton.setImage(UIImage(systemName: "heart.fill", withConfiguration: UIImage.SymbolConfiguration(scale: .large)), for: .normal)
-            favoriteSystemButton.tintColor = UIColor(named: colorAsString.storeTertiary)
+            favoriteSystemButton.tintColor = colorAsUIColor.storeTertiary
         } else {
             favoriteSystemButton.setImage(UIImage(systemName: "heart", withConfiguration: UIImage.SymbolConfiguration(scale: .large)), for: .normal)
-            favoriteSystemButton.tintColor = UIColor(named: colorAsString.storeTertiary)
+            favoriteSystemButton.tintColor = colorAsUIColor.storeTertiary
         }
     }
     
@@ -111,8 +111,10 @@ class LastOrderVCCollectionViewCell: UICollectionViewCell {
     
     
     private func configureCell() {
-        backgroundColor                     = UIColor(named: colorAsString.storeBackground)
+        backgroundColor                     = colorAsUIColor.storeBackground
         layer.cornerRadius                  = 15
+        layer.borderWidth = 1
+        layer.borderColor = colorAsUIColor.storePrimaryText?.cgColor
     }
     
     
@@ -124,7 +126,7 @@ class LastOrderVCCollectionViewCell: UICollectionViewCell {
         
         counter.text = String(count)
         counter.font = UIFont.preferredFont(forTextStyle: .title2)
-        counter.textColor = UIColor(named: colorAsString.storeTertiary)
+        counter.textColor = colorAsUIColor.storeTertiary
         counter.textAlignment = .center
         counter.isEnabled = false
         
@@ -151,7 +153,7 @@ class LastOrderVCCollectionViewCell: UICollectionViewCell {
     private func layoutUI() {
         favoriteSystemButton.translatesAutoresizingMaskIntoConstraints = false
         addSubviews(productImageView, productTitleLabel, productCounter)
-        debugConfiguration(productImageView, productTitleLabel, productCounter)
+//        debugConfiguration(productImageView, productTitleLabel, productCounter)
         
         NSLayoutConstraint.activate([
             productImageView.topAnchor.constraint       (equalTo: topAnchor, constant: 0),

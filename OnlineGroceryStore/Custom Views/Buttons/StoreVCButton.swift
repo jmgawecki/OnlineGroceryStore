@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class StoreButton: UIButton {
+final class StoreVCButton: UIButton {
     // MARK: - Override and Initialiser
     
     
@@ -33,7 +33,7 @@ final class StoreButton: UIButton {
     private func configure() {
         translatesAutoresizingMaskIntoConstraints = false
         
-        backgroundColor     = UIColor(named: colorAsString.storeSecondary)
+        backgroundColor     = colorAsUIColor.storeSecondary
         layer.cornerRadius  = 10
         layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
         layer.shadowOffset = CGSize(width: 0.0, height: 2.0)

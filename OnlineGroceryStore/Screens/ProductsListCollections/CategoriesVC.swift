@@ -63,7 +63,7 @@ final class CategoriesVC: UIViewController {
     
     private func configureVC() {
         title = "Categories"
-        view.backgroundColor = UIColor(named: colorAsString.storeBackground)
+        view.backgroundColor = colorAsUIColor.storeBackground
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.prefersLargeTitles = true
     }
@@ -78,7 +78,7 @@ final class CategoriesVC: UIViewController {
         view.addSubview(categoriesTableView)
         categoriesTableView.rowHeight = 80
         categoriesTableView.delegate = self
-        categoriesTableView.backgroundColor = UIColor(named: colorAsString.storeBackground)
+        categoriesTableView.backgroundColor = colorAsUIColor.storeBackground
         categoriesTableView.register(BrowseByCategoryTableViewCell.self, forCellReuseIdentifier: BrowseByCategoryTableViewCell.reuseID)
     }
     

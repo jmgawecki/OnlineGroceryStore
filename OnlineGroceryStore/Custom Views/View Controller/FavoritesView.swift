@@ -16,12 +16,7 @@ final class FavoritesView: UIViewController {
     var dataSource:             UICollectionViewDiffableDataSource<Section, ProductLocal>!
     var snapshot:               NSDiffableDataSourceSnapshot<Section, ProductLocal>!
     
-    let hiNameLabel             = StoreBoldLabel(with: "Last Orders",
-                                                 from: .left,
-                                                 ofsize: 20,
-                                                 ofweight: .bold,
-                                                 alpha: 1,
-                                                 color: UIColor(named: colorAsString.storePrimaryText) ?? .orange)
+    let hiNameLabel             = StoreTitleLabel(from: .left, alpha: 1)
    
     var products:               [ProductLocal] = []
     var currentUser:            UserLocal!
@@ -35,6 +30,7 @@ final class FavoritesView: UIViewController {
         super.viewDidLoad()
         configureCollectionView()
         layoutUI()
+        configureUIElements()
         configureDataSource()
         updateDataOnCollection()
     }
@@ -123,7 +119,7 @@ final class FavoritesView: UIViewController {
     
     private func configureCollectionView() {
         collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: CollectionLayouts.favoriteCollectionViewLayout())
-        collectionView.backgroundColor = UIColor(named: colorAsString.storeBackground)
+        collectionView.backgroundColor = colorAsUIColor.storeBackground
         collectionView.delegate = self
     }
     
@@ -145,6 +141,13 @@ final class FavoritesView: UIViewController {
         snapshot.appendItems(products, toSection: .main)
         
         DispatchQueue.main.async { self.dataSource.apply(snapshot, animatingDifferences: true) }
+    }
+    
+    // MARK: - UI Configuration
+    
+    
+    private func configureUIElements() {
+        hiNameLabel.text = "Special Offers"
     }
     
     
@@ -177,9 +180,8 @@ final class FavoritesView: UIViewController {
 
 extension FavoritesView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let navigationController = UINavigationController()
         let destVC = ProductDetailsVC(currentProduct: products[indexPath.item], currentUser: currentUser)
         destVC.getProductImage(for: products[indexPath.item].id)
-        navigationController.present(destVC, animated: true)
+        present(destVC, animated: true)
     }
 }

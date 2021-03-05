@@ -21,14 +21,33 @@ enum imageAsUIImage {
     static let wavingBlackGirlR056      = UIImage(named: "wavingBlackGirlR056")
     static let foodPlaceholder          = UIImage(named: "foodPlaceholder")
     static let xmark                    = UIImage(named: "xmark")
+    
 }
 
-enum colorAsString {
-    static let storeBackground          = "storeBackground"
-    static let storeSecondary           = "storeSecondary"
-    static let storeTertiary            = "storeTertiary"
-    static let storePrimaryText         = "storePrimaryText"
+enum systemImageAsUIImage {
+    static let plusLarge                = UIImage(systemName: "plus",
+                                                  withConfiguration: UIImage.SymbolConfiguration(scale: .large))
+    static let minusLarge               = UIImage(systemName: "minus",
+                                                  withConfiguration: UIImage.SymbolConfiguration(scale: .large))
 }
+
+
+enum colorAsUIColor {
+    static let storeBackground          = UIColor(named: "storeBackground")
+    static let storeSecondaryBackground = UIColor(named: "storeSecondaryBackground")
+    static let storeSecondary           = UIColor(named: "storeSecondary")
+    static let storeTertiary            = UIColor(named: "storeTertiary")
+    static let storePrimaryText         = UIColor(named: "storePrimaryText")
+}
+
+//
+//enum colorAsString {
+//    static let storeBackground          = "storeBackground"
+//    static let storeSecondary           = "storeSecondary"
+//    static let storeTertiary            = "storeTertiary"
+//    static let storePrimaryText         = "storePrimaryText"
+//}
+
 
 enum systemImageAsString {
     static let search                   = "magnifyingglass"
@@ -37,4 +56,3 @@ enum systemImageAsString {
     static let orders                   = "bag"
     static let basket                   = "cart"
 }
-

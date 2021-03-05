@@ -10,8 +10,8 @@ import UIKit
 final class logOutVC: UIViewController {
 
     // MARK: - Declaration
-    var loginButton         = StoreButton(fontSize: 18, label: "Log In")
-    var registerButton      = StoreButton(fontSize: 18, label: "Sign Up")
+    var loginButton         = StoreVCButton(fontSize: 18, label: "Log In")
+    var registerButton      = StoreVCButton(fontSize: 18, label: "Sign Up")
     
     var shopImageView       = ShopImageView(frame: .zero)
     var buttonsStack        = UIStackView()
@@ -21,7 +21,7 @@ final class logOutVC: UIViewController {
                                              ofsize: 35,
                                              ofweight: .bold,
                                              alpha: 1,
-                                             color: UIColor(named: colorAsString.storePrimaryText)!)
+                                             color: colorAsUIColor.storePrimaryText ?? .orange)
     
     
     // MARK: - Override, Initialiser
@@ -76,7 +76,7 @@ final class logOutVC: UIViewController {
     
     
     private func configureVC() {
-        view.backgroundColor = UIColor(named: colorAsString.storeBackground)
+        view.backgroundColor = colorAsUIColor.storeBackground
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.setNavigationBarHidden(true, animated: true)
         tabBarController?.tabBar.isHidden = true
@@ -88,7 +88,7 @@ final class logOutVC: UIViewController {
         buttonsStack.axis                = .vertical
         buttonsStack.distribution        = .fillEqually
         buttonsStack.spacing             = 20
-        buttonsStack.backgroundColor     = UIColor(named: colorAsString.storeBackground)
+        buttonsStack.backgroundColor     = colorAsUIColor.storeBackground
 
         buttonsStack.addArrangedSubview(loginButton)
         buttonsStack.addArrangedSubview(registerButton)

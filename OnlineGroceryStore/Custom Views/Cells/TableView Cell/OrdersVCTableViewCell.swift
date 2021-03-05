@@ -23,13 +23,13 @@ class OrdersVCTableViewCell: UITableViewCell {
                                           ofsize: 20,
                                           ofweight: .bold,
                                           alpha: 1,
-                                          color: UIColor(named: colorAsString.storePrimaryText) ?? .orange)
+                                          color: colorAsUIColor.storePrimaryText ?? .orange)
     var dateLabel        = StoreBoldLabel(with: "",
                                           from: .left,
                                           ofsize: 15,
                                           ofweight: .medium,
                                           alpha: 1,
-                                          color: UIColor(named: colorAsString.storePrimaryText) ?? .orange )
+                                          color: colorAsUIColor.storePrimaryText ?? .orange )
     
     var product: Order!
     
@@ -59,7 +59,7 @@ class OrdersVCTableViewCell: UITableViewCell {
     // MARK: - Cell configuration
     
     
-    private func configureCell() { backgroundColor = UIColor(named: colorAsString.storeBackground) }
+    private func configureCell() { backgroundColor = colorAsUIColor.storeBackground }
     
     private func configure() {
         addSubviews(orderLabel, dateLabel)

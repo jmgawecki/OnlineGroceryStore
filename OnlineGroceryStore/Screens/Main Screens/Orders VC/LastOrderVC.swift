@@ -16,7 +16,7 @@ class LastOrderVC: UIViewController {
     var dataSource:         UICollectionViewDiffableDataSource<Section, ProductLocal>!
     var currentUser:        UserLocal!
     
-    var addToBasketButton = StoreImageLabelButton(fontSize: 20, message: "Add to Basket", image: imageAsUIImage.foodPlaceholder!, textColor: UIColor(named: colorAsString.storeTertiary) ?? .green)
+    var addToBasketButton = StoreImageLabelButton(fontSize: 20, message: "Add to Basket", image: imageAsUIImage.foodPlaceholder!, textColor: colorAsUIColor.storeTertiary ?? .green)
     
     var order: Order!
     
@@ -71,7 +71,7 @@ class LastOrderVC: UIViewController {
     
     
     private func configureVC() {
-        view.backgroundColor = UIColor(named: colorAsString.storeBackground)
+        view.backgroundColor = colorAsUIColor.storeBackground
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.prefersLargeTitles = true
     }
@@ -88,7 +88,7 @@ class LastOrderVC: UIViewController {
     
     private func configureCollectionView() {
         collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: CollectionLayouts.productsVCCollectionViewLayout())
-        collectionView.backgroundColor = UIColor(named: colorAsString.storeBackground)
+        collectionView.backgroundColor = colorAsUIColor.storeBackground
     }
     
     

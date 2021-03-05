@@ -24,7 +24,7 @@ final class BrowseByCategoryTableViewCell: UITableViewCell {
                                              ofsize: 20,
                                              ofweight: .medium,
                                              alpha: 1,
-                                             color: UIColor(named: colorAsString.storePrimaryText) ?? .orange)
+                                             color: colorAsUIColor.storePrimaryText ?? .orange)
     
     var currentCategory: String!
     
@@ -65,7 +65,7 @@ final class BrowseByCategoryTableViewCell: UITableViewCell {
     // MARK: - Cell configuration
     
     
-    private func configureCell() { backgroundColor = UIColor(named: colorAsString.storeBackground) }
+    private func configureCell() { backgroundColor = colorAsUIColor.storeBackground }
     
     
     private func configure() {

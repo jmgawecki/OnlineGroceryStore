@@ -58,7 +58,7 @@ final class ProductsVC: UIViewController {
     
     
     private func configureVC() {
-        view.backgroundColor = UIColor(named: colorAsString.storeBackground)
+        view.backgroundColor = colorAsUIColor.storeBackground
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.prefersLargeTitles = true
     }
@@ -96,7 +96,7 @@ final class ProductsVC: UIViewController {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: CollectionLayouts.productsVCCollectionViewLayout())
         view.addSubview(collectionView)
         collectionView.delegate = self
-        collectionView.backgroundColor = UIColor(named: colorAsString.storeBackground)
+        collectionView.backgroundColor = colorAsUIColor.storeBackground
     }
     
     private func configureDataSource() {

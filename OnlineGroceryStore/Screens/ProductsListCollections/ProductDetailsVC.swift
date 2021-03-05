@@ -13,16 +13,16 @@ final class ProductDetailsVC: UIViewController {
     var productImageView    = ShopImageView(frame: .zero)
     var productTitleLabel   = StoreBoldLabel(with: "Product's Name",
                                              from: .center,
-                                             ofsize: 20,
-                                             ofweight: .medium,
+                                             ofsize: 25,
+                                             ofweight: .bold,
                                              alpha: 1,
-                                             color: UIColor(named: colorAsString.storePrimaryText) ?? .orange)
+                                             color: colorAsUIColor.storePrimaryText ?? .orange)
     
     var descriptionTextView = GroceryTextView(with: "Product's Description")
     var currentUser:        UserLocal!
     var currentProduct:     ProductLocal!
     
-    var addToBasketButton   = StoreButton(fontSize: 20, label: "Add")
+    var addToBasketButton   = StoreVCButton(fontSize: 20, label: "Add")
     
     var productCounter:     UIStackView!
     let plusButton          = UIButton()
@@ -118,7 +118,7 @@ final class ProductDetailsVC: UIViewController {
     
     
     private func configureVC() {
-        view.backgroundColor = UIColor(named: colorAsString.storeBackground)
+        view.backgroundColor = colorAsUIColor.storeBackground
         navigationController?.setNavigationBarHidden(true, animated: true)
         navigationController?.navigationBar.prefersLargeTitles = true
     }
@@ -138,14 +138,14 @@ final class ProductDetailsVC: UIViewController {
     
     private func configureUIStackView() {
         plusButton.setImage(UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(scale: .large)), for: .normal)
-        plusButton.tintColor = UIColor(named: colorAsString.storeTertiary)
+        plusButton.tintColor = colorAsUIColor.storeTertiary
         
         minusButton.setImage(UIImage(systemName: "minus", withConfiguration: UIImage.SymbolConfiguration(scale: .large)), for: .normal)
-        minusButton.tintColor = UIColor(named: colorAsString.storeTertiary)
+        minusButton.tintColor = colorAsUIColor.storeTertiary
         
         counter.text = String(count)
         counter.font = UIFont.preferredFont(forTextStyle: .title2)
-        counter.textColor = UIColor(named: colorAsString.storeTertiary)
+        counter.textColor = colorAsUIColor.storeTertiary
         counter.textAlignment = .center
         counter.isEnabled = false
         
@@ -154,8 +154,6 @@ final class ProductDetailsVC: UIViewController {
         productCounter.distribution      = .fillEqually
         productCounter.alignment         = .center
         
-        minusButton.layer.borderWidth = 2
-        counter.layer.borderWidth = 2
         productCounter.addArrangedSubview(minusButton)
         productCounter.addArrangedSubview(counter)
         productCounter.addArrangedSubview(plusButton)
@@ -165,13 +163,13 @@ final class ProductDetailsVC: UIViewController {
     
     private func layoutUI() {
         productCounter.translatesAutoresizingMaskIntoConstraints = false
-        addSubviews(productImageView, productTitleLabel, descriptionTextView, productCounter)
+        addSubviews(productImageView, productTitleLabel, descriptionTextView, productCounter, addToBasketButton)
         
         NSLayoutConstraint.activate([
-            productImageView.topAnchor.constraint           (equalTo: view.topAnchor, constant: -20),
-            productImageView.leadingAnchor.constraint       (equalTo: view.leadingAnchor, constant: 20),
-            productImageView.trailingAnchor.constraint      (equalTo: view.trailingAnchor, constant: -20),
-            productImageView.heightAnchor.constraint        (equalToConstant: 250),
+            productImageView.topAnchor.constraint           (equalTo: view.topAnchor, constant: 20),
+            productImageView.centerXAnchor.constraint       (equalTo: view.centerXAnchor),
+            productImageView.widthAnchor.constraint         (equalToConstant: 300),
+            productImageView.heightAnchor.constraint        (equalTo: productImageView.widthAnchor),
                 
             productTitleLabel.topAnchor.constraint          (equalTo: productImageView.bottomAnchor, constant: 10),
             productTitleLabel.leadingAnchor.constraint      (equalTo: view.leadingAnchor, constant: 20),
@@ -179,11 +177,16 @@ final class ProductDetailsVC: UIViewController {
             productTitleLabel.heightAnchor.constraint       (equalToConstant: 30),
             
             productCounter.topAnchor.constraint             (equalTo: productTitleLabel.bottomAnchor, constant: 0),
-            productCounter.leadingAnchor.constraint         (equalTo: view.leadingAnchor, constant: 0),
-            productCounter.widthAnchor.constraint           (equalToConstant: 150),
+            productCounter.centerXAnchor.constraint         (equalTo: view.centerXAnchor),
+            productCounter.widthAnchor.constraint           (equalToConstant: 200),
             productCounter.heightAnchor.constraint          (equalToConstant: 50),
             
-            descriptionTextView.topAnchor.constraint        (equalTo: productCounter.bottomAnchor, constant: 10),
+            addToBasketButton.topAnchor.constraint          (equalTo: productCounter.bottomAnchor, constant: 0),
+            addToBasketButton.centerXAnchor.constraint      (equalTo: view.centerXAnchor),
+            addToBasketButton.widthAnchor.constraint        (equalToConstant: 200),
+            addToBasketButton.heightAnchor.constraint       (equalToConstant: 50),
+            
+            descriptionTextView.topAnchor.constraint        (equalTo: addToBasketButton.bottomAnchor, constant: 10),
             descriptionTextView.leadingAnchor.constraint    (equalTo: view.leadingAnchor, constant: 20),
             descriptionTextView.trailingAnchor.constraint   (equalTo: view.trailingAnchor, constant: -20),
             descriptionTextView.heightAnchor.constraint     (equalToConstant: 100),

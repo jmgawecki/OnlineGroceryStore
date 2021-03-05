@@ -38,7 +38,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     
     private func configureNavigationController() {
-        UINavigationBar.appearance().tintColor = UIColor(named: colorAsString.storeTertiary)
+        UINavigationBar.appearance().tintColor = colorAsUIColor.storeTertiary
     }
     
     

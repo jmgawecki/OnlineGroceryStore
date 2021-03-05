@@ -21,12 +21,8 @@ final class SpecialOffersView: UIViewController {
     var dataSource:             UICollectionViewDiffableDataSource<Section, ProductLocal>!
     var snapshot:               NSDiffableDataSourceSnapshot<Section, ProductLocal>!
     
-    let hiNameLabel             = StoreBoldLabel(with: "Special Offers",
-                                                 from: .left,
-                                                 ofsize: 20,
-                                                 ofweight: .bold,
-                                                 alpha: 1,
-                                                 color: UIColor(named: colorAsString.storePrimaryText) ?? .orange)
+    let hiNameLabel             = StoreTitleLabel(from: .left, alpha: 1)
+
     var segmentedControl:       UISegmentedControl!
     
     var products:               [ProductLocal] = []
@@ -46,6 +42,7 @@ final class SpecialOffersView: UIViewController {
         configureSegmentedControl()
         configureSegmentedControlSwitch()
         layoutUI()
+        configureUIElements()
         configureDataSource()
         updateDataOnCollection()
     }
@@ -95,7 +92,7 @@ final class SpecialOffersView: UIViewController {
     
     private func configureCollectionView() {
         collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: CollectionLayouts.favoriteCollectionViewLayout())
-        collectionView.backgroundColor = UIColor(named: colorAsString.storeBackground)
+        collectionView.backgroundColor = colorAsUIColor.storeBackground
         collectionView.delegate = self
     }
     
@@ -125,13 +122,17 @@ final class SpecialOffersView: UIViewController {
     
     private func configureSegmentedControlSwitch() { segmentedControl.addTarget(self, action: #selector(segmentedControlSwitched), for: .valueChanged) }
     
+    private func configureUIElements() {
+        hiNameLabel.text = "Special Offers"
+    }
+    
     
     private func configureSegmentedControl() {
         let items        = ["Top offers", "Half price", "Only $1"]
         segmentedControl = UISegmentedControl(items: items)
         
         segmentedControl.selectedSegmentIndex       = 0
-        segmentedControl.selectedSegmentTintColor   = UIColor(named: colorAsString.storeTertiary)
+        segmentedControl.selectedSegmentTintColor   = colorAsUIColor.storeTertiary
         
         getProducts(uponField: "topOffer", withCondition: true)
     }

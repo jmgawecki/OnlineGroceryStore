@@ -14,14 +14,15 @@ final class BasketVC: UIViewController {
     
     enum Section { case main }
     
-    var basketTableView:    UITableView!
-    var dataSource:         UITableViewDiffableDataSource<Section, ProductLocal>!
+    var collectionView:     UICollectionView!
+    var dataSource:         UICollectionViewDiffableDataSource<Section, ProductLocal>!
     var snapshot:           NSDiffableDataSourceSnapshot<Section, ProductLocal>!
+//    
+//    var basketTableView:    UITableView!
+//    var dataSource:         UITableViewDiffableDataSource<Section, ProductLocal>!
+//    var snapshot:           NSDiffableDataSourceSnapshot<Section, ProductLocal>!
 
-    var orderButton         = StoreImageLabelButton(fontSize: 20,
-                                                    message: "Proceed with Order",
-                                                    image: imageAsUIImage.foodPlaceholder!,
-                                                    textColor: UIColor(named: colorAsString.storeTertiary) ?? .green)
+    var orderButton         = StoreVCButton(fontSize: 20, label: "Place Order")
   
     var currentUser:        UserLocal!
     var basketProducts:     [ProductLocal] = []
@@ -33,7 +34,7 @@ final class BasketVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         fetchBasketProducts()
-        configureTableView()
+        configureCollectionView()
         configureDataSource()
         layoutUI()
         configureVC()
@@ -55,12 +56,17 @@ final class BasketVC: UIViewController {
     
     @objc private func orderButtonTapped(sender: UIView) {
         animateButtonView(sender)
+        if basketProducts.isEmpty {
+            print("looks like the basket is empty!")
+            return
+        }
         FireManager.shared.addOrder(for: currentUser, products: basketProducts, date: createTodaysDate(), idOrder: UUID().uuidString) { [weak self] (error) in
             guard let self = self else { return }
             switch error {
             case .none:
                 self.basketProducts.removeAll()
-                self.updateData()
+                self.clearTheBasket()
+                self.updateDataOnCollection()
             case .some(let error):
                 print(error.localizedDescription)
             }
@@ -72,11 +78,42 @@ final class BasketVC: UIViewController {
     
     
     private func configureVC() {
-        view.backgroundColor = UIColor(named: colorAsString.storeBackground)
+        view.backgroundColor = colorAsUIColor.storeBackground
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.prefersLargeTitles = true
     }
     
+    
+    // MARK: - Collection View
+    
+    
+    private func configureCollectionView() {
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: CollectionLayouts.basketCollectionViewLayout())
+        view.addSubview(collectionView)
+        collectionView.backgroundColor = colorAsUIColor.storeBackground
+        collectionView.delegate = self
+    }
+    
+    
+    private func configureDataSource() {
+        let cellRegistration = UICollectionView.CellRegistration<BasketCollectionViewCell, ProductLocal> { (cell, indexPath, product) in
+            cell.set(with: product)
+        }
+        
+        dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { (collectionView, indexPath, product) -> UICollectionViewCell? in
+            return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: product)
+        })
+    }
+    
+    
+    private func updateDataOnCollection() {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, ProductLocal>()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(basketProducts, toSection: .main)
+        DispatchQueue.main.async { self.dataSource.apply(snapshot, animatingDifferences: true) }
+    }
+    
+
     
     //MARK: - Private Function
     
@@ -105,61 +142,42 @@ final class BasketVC: UIViewController {
             switch result {
             case .success(let basketProducts):
                 self.basketProducts = basketProducts
-                self.updateData()
+                self.updateDataOnCollection()
             case .failure(let error):
                 print(error.localizedDescription)
             }
         }
     }
+    
+    func clearTheBasket() {
+        FireManager.shared.clearBasket(for: currentUser, from: basketProducts) { (error) in
+            if let error = error {
+                print(error)
+            }
+        }
+    }
 
     
-    //MARK: - UITableView Configuration
-
-
-    private func configureTableView() {
-        basketTableView = UITableView(frame: CGRect.zero, style: .plain)
-        basketTableView.rowHeight = 80
-        basketTableView.delegate = self
-        basketTableView.backgroundColor = UIColor(named: colorAsString.storeBackground)
-        basketTableView.register(BasketVCTableViewCell.self, forCellReuseIdentifier: BasketVCTableViewCell.reuseID)
-    }
-
-
-    private func configureDataSource() {
-        dataSource = UITableViewDiffableDataSource<Section, ProductLocal>(tableView: basketTableView, cellProvider: { (tableView, indexPath, product) -> UITableViewCell? in
-            let cell = tableView.dequeueReusableCell(withIdentifier: BasketVCTableViewCell.reuseID) as! BasketVCTableViewCell
-            cell.set(with: product)
-            return cell
-        })
-    }
-
-
-    private func updateData() {
-        snapshot = NSDiffableDataSourceSnapshot<Section, ProductLocal>()
-        snapshot.appendSections([.main])
-        snapshot.appendItems(basketProducts, toSection: .main)
-        DispatchQueue.main.async { self.dataSource.apply(self.snapshot, animatingDifferences: true) }
-    }
-    
+    #warning("implement uploading a basket and clearing the basket. cheks if the function exists in firemanager")
     
     //MARK: - Layout UI
     
     
     private func layoutUI() {
-        basketTableView.translatesAutoresizingMaskIntoConstraints = false
-        addSubviews(orderButton, basketTableView)
-        debugConfiguration(orderButton, basketTableView)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        addSubviews(orderButton, collectionView)
+//        debugConfiguration(orderButton, collectionView)
         
         NSLayoutConstraint.activate([
-            orderButton.bottomAnchor.constraint         (equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
-            orderButton.leadingAnchor.constraint        (equalTo: view.leadingAnchor, constant: 0),
-            orderButton.trailingAnchor.constraint       (equalTo: view.trailingAnchor, constant: 0),
-            orderButton.heightAnchor.constraint         (equalToConstant: 60),
+            orderButton.bottomAnchor.constraint        (equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -5),
+            orderButton.leadingAnchor.constraint       (equalTo: view.leadingAnchor, constant: 5),
+            orderButton.trailingAnchor.constraint      (equalTo: view.trailingAnchor, constant: -5),
+            orderButton.heightAnchor.constraint        (equalToConstant: 60),
 
-            basketTableView.topAnchor.constraint        (equalTo: view.topAnchor, constant: 0),
-            basketTableView.leadingAnchor.constraint    (equalTo: view.leadingAnchor, constant: 0),
-            basketTableView.trailingAnchor.constraint   (equalTo: view.trailingAnchor, constant: 0),
-            basketTableView.bottomAnchor.constraint     (equalTo: orderButton.topAnchor, constant: 0),
+            collectionView.topAnchor.constraint        (equalTo: view.topAnchor, constant: 0),
+            collectionView.leadingAnchor.constraint    (equalTo: view.leadingAnchor, constant: 0),
+            collectionView.trailingAnchor.constraint   (equalTo: view.trailingAnchor, constant: 0),
+            collectionView.bottomAnchor.constraint     (equalTo: orderButton.topAnchor, constant: -5),
         ])
     }
     
@@ -185,6 +203,14 @@ final class BasketVC: UIViewController {
 extension BasketVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let destVC = ProductDetailsVC(currentProduct: basketProducts[indexPath.row], currentUser: currentUser)
+        destVC.getProductImage(for: basketProducts[indexPath.item].id)
+        navigationController?.present(destVC, animated: true)
+    }
+}
+
+extension BasketVC: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let destVC = ProductDetailsVC(currentProduct: basketProducts[indexPath.item], currentUser: currentUser)
         destVC.getProductImage(for: basketProducts[indexPath.item].id)
         navigationController?.present(destVC, animated: true)
     }

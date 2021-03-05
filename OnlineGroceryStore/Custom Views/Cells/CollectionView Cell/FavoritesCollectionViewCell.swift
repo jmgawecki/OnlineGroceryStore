@@ -21,13 +21,13 @@ final class FavoritesCollectionViewCell: UICollectionViewCell {
                                              ofsize: 15,
                                              ofweight: .medium,
                                              alpha: 1,
-                                             color: UIColor(named: colorAsString.storePrimaryText) ?? .orange)
+                                             color: colorAsUIColor.storePrimaryText ?? .orange)
     var priceLabel          = StoreBoldLabel(with: "$3.50",
                                              from: .center,
                                              ofsize: 15,
                                              ofweight: .semibold,
                                              alpha: 1,
-                                             color: UIColor(named: colorAsString.storeTertiary) ?? .orange)
+                                             color: colorAsUIColor.storeTertiary ?? .green)
     
     var product: ProductLocal!
     
@@ -71,8 +71,10 @@ final class FavoritesCollectionViewCell: UICollectionViewCell {
     
     
     private func configureCell() {
-        backgroundColor                     = UIColor(named: colorAsString.storeBackground)
+        backgroundColor                     = colorAsUIColor.storeBackground
         layer.cornerRadius                  = 15
+        layer.borderWidth = 1
+        layer.borderColor = colorAsUIColor.storePrimaryText?.cgColor
     }
     
     

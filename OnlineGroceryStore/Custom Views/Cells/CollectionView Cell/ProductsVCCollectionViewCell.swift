@@ -25,16 +25,15 @@ final class ProductsVCCollectionViewCell: UICollectionViewCell {
                                                 ofsize: 20,
                                                 ofweight: .bold,
                                                 alpha: 1,
-                                                color: UIColor(named: colorAsString.storePrimaryText) ?? .orange)
+                                                color: colorAsUIColor.storePrimaryText ?? .orange)
     var priceLabel              = StoreBoldLabel(with: "$3.50",
                                                  from: .center,
                                                  ofsize: 18,
                                                  ofweight: .semibold,
                                                  alpha: 1,
-                                                 color: UIColor(named: colorAsString.storeTertiary) ?? .orange)
+                                                 color: colorAsUIColor.storePrimaryText ?? .orange)
     
-    var favoriteSystemButton    = UIButton()
-    var addToBasketButton       = StoreButton(fontSize: 20, label: "Add")
+    var addToBasketButton       = StoreVCButton(fontSize: 20, label: "Add")
     
     var productCounter:         UIStackView!
     let plusButton              = UIButton()
@@ -114,19 +113,11 @@ final class ProductsVCCollectionViewCell: UICollectionViewCell {
     
     
     func set(with product: ProductLocal, currentUser: UserLocal) {
-        self.product = product
-        self.currentUser = currentUser
-        productTitleLabel.text = product.name
-        priceLabel.text = "$\(String(product.price))"
+        self.product            = product
+        self.currentUser        = currentUser
+        productTitleLabel.text  = product.name
+        priceLabel.text         = "$\(String(product.price))"
         downloadImage(from: product.id)
-        print(product.id)
-        if product.favorite == true {
-            favoriteSystemButton.setImage(UIImage(systemName: "heart.fill", withConfiguration: UIImage.SymbolConfiguration(scale: .large)), for: .normal)
-            favoriteSystemButton.tintColor = UIColor(named: colorAsString.storeTertiary)
-        } else {
-            favoriteSystemButton.setImage(UIImage(systemName: "heart", withConfiguration: UIImage.SymbolConfiguration(scale: .large)), for: .normal)
-            favoriteSystemButton.tintColor = UIColor(named: colorAsString.storeTertiary)
-        }
     }
     
     
@@ -145,8 +136,10 @@ final class ProductsVCCollectionViewCell: UICollectionViewCell {
     
     
     private func configureCell() {
-        backgroundColor                     = UIColor(named: colorAsString.storeBackground)
+        backgroundColor                     = colorAsUIColor.storeBackground
         layer.cornerRadius                  = 15
+        layer.borderWidth                   = 1
+        layer.borderColor                   = colorAsUIColor.storePrimaryText?.cgColor
     }
     
     
@@ -155,14 +148,14 @@ final class ProductsVCCollectionViewCell: UICollectionViewCell {
     
     private func configureUIStackView() {
         plusButton.setImage(UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(scale: .large)), for: .normal)
-        plusButton.tintColor = UIColor(named: colorAsString.storeTertiary)
+        plusButton.tintColor = colorAsUIColor.storeTertiary
         
         minusButton.setImage(UIImage(systemName: "minus", withConfiguration: UIImage.SymbolConfiguration(scale: .large)), for: .normal)
-        minusButton.tintColor = UIColor(named: colorAsString.storeTertiary)
+        minusButton.tintColor = colorAsUIColor.storeTertiary
         
         counter.text = String(count)
         counter.font = UIFont.preferredFont(forTextStyle: .title2)
-        counter.textColor = UIColor(named: colorAsString.storeTertiary)
+        counter.textColor = colorAsUIColor.storeTertiary
         counter.textAlignment = .center
         counter.isEnabled = false
         
@@ -183,9 +176,8 @@ final class ProductsVCCollectionViewCell: UICollectionViewCell {
     
     
     private func layoutUI() {
-        favoriteSystemButton.translatesAutoresizingMaskIntoConstraints = false
-        addSubviews(productImageView, productTitleLabel, priceLabel, favoriteSystemButton, addToBasketButton, productCounter)
-        debugConfiguration(productImageView, productTitleLabel, priceLabel, favoriteSystemButton, addToBasketButton, productCounter)
+        addSubviews(productImageView, productTitleLabel, priceLabel, addToBasketButton, productCounter)
+//        debugConfiguration(productImageView, productTitleLabel, priceLabel, favoriteSystemButton, addToBasketButton, productCounter)
         
         NSLayoutConstraint.activate([
             productImageView.topAnchor.constraint           (equalTo: topAnchor, constant: 0),
@@ -195,13 +187,8 @@ final class ProductsVCCollectionViewCell: UICollectionViewCell {
             
             priceLabel.topAnchor.constraint                 (equalTo: topAnchor, constant: 0),
             priceLabel.leadingAnchor.constraint             (equalTo: productImageView.trailingAnchor, constant: 0),
-            priceLabel.widthAnchor.constraint               (equalToConstant: 80),
+            priceLabel.trailingAnchor.constraint            (equalTo: trailingAnchor),
             priceLabel.heightAnchor.constraint              (equalToConstant: 40),
-            
-            favoriteSystemButton.topAnchor.constraint       (equalTo: priceLabel.topAnchor, constant: 0),
-            favoriteSystemButton.leadingAnchor.constraint   (equalTo: priceLabel.trailingAnchor, constant: 10),
-            favoriteSystemButton.heightAnchor.constraint    (equalTo: priceLabel.heightAnchor),
-            favoriteSystemButton.widthAnchor.constraint     (equalTo: favoriteSystemButton.heightAnchor),
             
             productCounter.topAnchor.constraint             (equalTo: priceLabel.bottomAnchor, constant: 0),
             productCounter.leadingAnchor.constraint         (equalTo: productImageView.trailingAnchor, constant: 0),

@@ -42,9 +42,7 @@ final class SearchVC: UIViewController {
     }
     
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     
     // MARK: - @Objectives
@@ -75,7 +73,7 @@ final class SearchVC: UIViewController {
     //MARK: - VC Configuration
     
     private func configureVC() {
-        view.backgroundColor = UIColor(named: colorAsString.storeBackground)
+        view.backgroundColor = colorAsUIColor.storeBackground
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.prefersLargeTitles = true
     }
@@ -87,7 +85,7 @@ final class SearchVC: UIViewController {
     private func configureCollectionView() {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: CollectionLayouts.searchVCCollectionViewLayout())
         view.addSubview(collectionView)
-        collectionView.backgroundColor = UIColor(named: colorAsString.storeBackground)
+        collectionView.backgroundColor = colorAsUIColor.storeBackground
         collectionView.delegate = self
     }
     

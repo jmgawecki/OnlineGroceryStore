@@ -19,7 +19,7 @@ final class SignUpVC: UIViewController {
     var email               = RegisterTextField(placeholder: "@Email", capitalised: .none, isPassword: false)
     var password            = RegisterTextField(placeholder: "Password", capitalised: .none, isPassword: true)
     var confirmPassword     = RegisterTextField(placeholder: "Confirm Password", capitalised: .none, isPassword: true)
-    var confirmButton       = StoreButton(fontSize: 18, label: "Sign Up!")
+    var confirmButton       = StoreVCButton(fontSize: 18, label: "Sign Up!")
     
     var currentUser: UserLocal?
     
@@ -118,7 +118,7 @@ final class SignUpVC: UIViewController {
         registerFormStackV.axis                = .vertical
         registerFormStackV.distribution        = .fillEqually
         registerFormStackV.spacing             = 14
-        registerFormStackV.backgroundColor     = UIColor(named: colorAsString.storeBackground)
+        registerFormStackV.backgroundColor     = colorAsUIColor.storeBackground
         
         registerFormStackV.addArrangedSubview(firstName)
         registerFormStackV.addArrangedSubview(lastName)
@@ -135,7 +135,7 @@ final class SignUpVC: UIViewController {
     
     
     private func configureVC() {
-        view.backgroundColor = UIColor(named: colorAsString.storeBackground)
+        view.backgroundColor = colorAsUIColor.storeBackground
         title = "Sign Up"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.setNavigationBarHidden(false, animated: true)
