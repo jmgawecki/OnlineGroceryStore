@@ -10,7 +10,7 @@ import UIKit
 final class FavoritesVC: UIViewController {
     // MARK: - Declaration
     
-    
+    var currentUser: UserLocal!
     
     
     // MARK: - Override and Initialise
@@ -22,6 +22,15 @@ final class FavoritesVC: UIViewController {
         configureUIElements()
         layoutUI()
         // Do any additional setup after loading the view.
+    }
+    
+    init(currentUser: UserLocal) {
+        super.init(nibName: nil, bundle: nil)
+        self.currentUser = currentUser
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     

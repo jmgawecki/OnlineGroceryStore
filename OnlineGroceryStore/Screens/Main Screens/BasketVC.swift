@@ -13,13 +13,13 @@ final class BasketVC: UIViewController {
     
     enum Section { case main }
     
-    var dataSource: UITableViewDiffableDataSource<Section, ProductLocal>!
-    var snapshot:   NSDiffableDataSourceSnapshot<Section, ProductLocal>!
+    var dataSource:         UITableViewDiffableDataSource<Section, ProductLocal>!
+    var snapshot:           NSDiffableDataSourceSnapshot<Section, ProductLocal>!
 
-    var basketTableView: UITableView!
-    var currentUser: UserLocal!
+    var basketTableView:    UITableView!
+    var currentUser:        UserLocal!
     
-    var basketProducts: [ProductLocal] = []
+    var basketProducts:     [ProductLocal] = []
     
     var orderButton = StoreImageLabelButton(fontSize: 20, message: "Proceed with Order", image: imageAsUIImage.foodPlaceholder!, textColor: UIColor(named: colorAsString.storeTertiary) ?? .green)
     
@@ -35,13 +35,23 @@ final class BasketVC: UIViewController {
         configureVC()
         configureUIElements()
         configureOrderButton()
-
-        // Do any additional setup after loading the view.
     }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         getCurrentUser()
     }
+    
+    
+    init(currentUser: UserLocal) {
+        super.init(nibName: nil, bundle: nil)
+        self.currentUser = currentUser
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     
     
     // MARK: - @Objectives
@@ -49,7 +59,16 @@ final class BasketVC: UIViewController {
     
     @objc private func orderButtonTapped(sender: UIView) {
         animateButtonView(sender)
-        FireManager.shared.addOrder(for: currentUser, products: basketProducts, date: createTodaysDate(), idOrder: UUID().uuidString)
+        FireManager.shared.addOrder(for: currentUser, products: basketProducts, date: createTodaysDate(), idOrder: UUID().uuidString) { [weak self] (error) in
+            guard let self = self else { return }
+            switch error {
+            case .none:
+                self.basketProducts.removeAll()
+                self.updateData()
+            case .some(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
     
     
@@ -190,7 +209,7 @@ final class BasketVC: UIViewController {
 extension BasketVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         #warning("do a check for current user")
-        let destVC = ProductDetailsVC()
+        let destVC = ProductDetailsVC(currentProduct: basketProducts[indexPath.row], currentUser: currentUser)
         #warning("how to add category's title?")
         
         navigationController?.present(destVC, animated: true)

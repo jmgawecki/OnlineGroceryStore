@@ -79,6 +79,7 @@ final class logOutVC: UIViewController {
         view.backgroundColor = UIColor(named: colorAsString.storeBackground)
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.setNavigationBarHidden(true, animated: true)
+        tabBarController?.tabBar.isHidden = true
     }
     
     

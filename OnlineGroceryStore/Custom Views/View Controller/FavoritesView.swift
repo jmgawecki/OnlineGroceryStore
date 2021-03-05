@@ -1,5 +1,5 @@
 //
-//  SpecialOffersView.swift
+//  StoreSegmentedControl3.swift
 //  OnlineGroceryStore
 //
 //  Created by Jakub Gawecki on 26/02/2021.
@@ -7,18 +7,12 @@
 
 import UIKit
 
-    // MARK: - Protocol & Delegate
-
-protocol SpecialOffersViewDelegate: class {
-    func presentProductDetailModally()
-}
-
-final class SpecialOffersView: UIViewController {
+final class FavoritesView: UIViewController {
     // MARK: - Declaration
     
     enum Section { case main }
     
-    let hiNameLabel             = StoreBoldLabel(with: "Special Offers",
+    let hiNameLabel             = StoreBoldLabel(with: "Favorites",
                                                  from: .left,
                                                  ofsize: 20,
                                                  ofweight: .bold,
@@ -29,53 +23,50 @@ final class SpecialOffersView: UIViewController {
     var snapshot:       NSDiffableDataSourceSnapshot<Section, ProductLocal>!
     
     var products: [ProductLocal] = []
-    
+    var currentUser: UserLocal!
     var segmentedControl: UISegmentedControl!
     
-    weak var specialOffersViewDelegate: SpecialOffersViewDelegate!
     
-    let items                   = ["Top Offers", "Half price", "Only $1"]
     // MARK: - Override and Initialise
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        getCurrentUser()
         configureCollectionView()
         configureSegmentedControl()
-        configureSegmentedControlSwitch()
         layoutUI()
         configureDataSource()
         updateDataOnCollection()
+        
+        configureSegmentedControlSwitch()
     }
-
-//
-//    init(<#parameters#>) {
-//        <#statements#>
-//    }
-//
     
+    
+    init(currentUser: UserLocal) {
+        super.init(nibName: nil, bundle: nil)
+        self.currentUser = currentUser
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+   
+
     // MARK: - @Objectives
     
     @objc private func segmentedControlSwitched() {
         if segmentedControl.selectedSegmentIndex == 0 {
-            getProducts(uponField: "topOffer", withCondition: true)
+//            getProducts(uponField: <#T##String#>, withCondition: <#T##Any#>)
         } else if segmentedControl.selectedSegmentIndex == 1 {
-            getProducts(uponField: "discountMlt", withCondition: Double(0.5))
+//            getLastOrders()
         } else if segmentedControl.selectedSegmentIndex == 2 {
-            getProducts(uponField: "price", withCondition: Double(1))
+            print("third")
         }
     }
     
     
-    // MARK: - Private functions
-    
-    
-    private func configureSegmentedControlSwitch() {
-        segmentedControl.addTarget(self, action: #selector(segmentedControlSwitched), for: .valueChanged)
-    }
-    
-    
-    
     // MARK: - Firebase / Firestore
+    
     
     private func getProducts(uponField: String, withCondition: Any) {
         FireManager.shared.fetchProductsBasedOnField(collection: "products", uponField: uponField, withCondition: withCondition) { [weak self] (result) in
@@ -89,20 +80,54 @@ final class SpecialOffersView: UIViewController {
             }
         }
     }
-//    
-//    private func getProducts(uponField: String, withCondition: Any) {
-//        NetworkManager.shared.retrieveProductsFromFirestoreBasedOnField(collection: "products", uponField: uponField, withCondition: withCondition) { [weak self] (result) in
-//            guard let self = self else { return }
-//            switch result {
-//            case .success(let products):
-//                self.products.removeAll()
-//                self.products.append(contentsOf: products)
-//                self.configureSnapshot()
-//            case .failure(let error):
-//                print(error)
-//            }
-//        }
-//    }
+    
+    private func getLastOrders() {
+        guard let currentUser = currentUser else {
+            getCurrentUser()
+            print("no current user try again!")
+            return
+        }
+        FireManager.shared.fetchOrders(for: currentUser) { (result) in
+            switch result {
+            case .success(let orders):
+                self.products.removeAll()
+                for order in orders {
+                    for product in order.products {
+                        if self.products.contains(product) { } else {
+                            self.products.append(contentsOf: order.products)
+                        }
+                    }
+                }
+                self.updateDataOnCollection()
+                
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
+    
+    func getCurrentUser() {
+        FireManager.shared.getCurrentUserData { [weak self] (result) in
+            guard let self = self else { return }
+            switch result {
+            case .success(let currentUser):
+                self.currentUser = currentUser
+                self.getLastOrders()
+                
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    
+    // MARK: - Private functions
+    
+    
+    private func configureSegmentedControlSwitch() {
+        segmentedControl.addTarget(self, action: #selector(segmentedControlSwitched), for: .valueChanged)
+    }
     
     
     // MARK: - Collection View Configuration
@@ -114,7 +139,6 @@ final class SpecialOffersView: UIViewController {
         collectionView.delegate = self
     }
     
-    
     private func configureDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<FavoritesCollectionViewCell, ProductLocal> { (cell, indexPath, product) in
             cell.set(with: product)
@@ -125,7 +149,6 @@ final class SpecialOffersView: UIViewController {
         })
     }
     
-    
     private func updateDataOnCollection() {
         var snapshot = NSDiffableDataSourceSnapshot<Section, ProductLocal>()
         snapshot.appendSections([.main])
@@ -135,18 +158,18 @@ final class SpecialOffersView: UIViewController {
     }
     
     
+    
     // MARK: - UI Configuration
     
-    
     private func configureSegmentedControl() {
-        let items        = ["Top offers", "Half price", "Only $1"]
+        let items        = ["Favorite", "Last orders", "Usual"]
         segmentedControl = UISegmentedControl(items: items)
         
         segmentedControl.selectedSegmentIndex       = 0
         segmentedControl.selectedSegmentTintColor   = UIColor(named: colorAsString.storeTertiary)
-        
-        getProducts(uponField: "topOffer", withCondition: true)
     }
+    
+    
     
     
     // MARK: - Layout UI
@@ -178,13 +201,12 @@ final class SpecialOffersView: UIViewController {
     }
 }
 
+    // MARK: - Extension
 
-// MARK: - Extension
-
-
-extension SpecialOffersView: UICollectionViewDelegate {
+extension FavoritesView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let destVC = ProductDetailsVC()
-        present(destVC, animated: true)
+        let navigationController = UINavigationController()
+        let destVC = ProductDetailsVC(currentProduct: products[indexPath.item], currentUser: currentUser)
+        navigationController.present(destVC, animated: true)
     }
 }

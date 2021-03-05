@@ -73,13 +73,21 @@ final class LogInVC: UIViewController {
                 return
                 
             } else {
-                self.pushToHomeScreen()
+                FireManager.shared.getCurrentUserData { (result) in
+                    switch result {
+                    case .success(let user):
+                        self.pushToHomeScreen(with: user)
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
+                
             }
         }
     }
     
-    private func pushToHomeScreen() {
-        let destVC = HomeVC()
+    private func pushToHomeScreen(with currentUser: UserLocal) {
+        let destVC = HomeVC(currentUser: currentUser)
         navigationController?.pushViewController(destVC, animated: true)
     }
     

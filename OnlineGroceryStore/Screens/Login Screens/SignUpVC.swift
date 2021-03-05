@@ -90,7 +90,7 @@ final class SignUpVC: UIViewController {
     }
     
     private func pushToHomeScreen(with currentUser: UserLocal) {
-        let destVC = HomeVC()
+        let destVC = HomeVC(currentUser: currentUser)
         navigationController?.pushViewController(destVC, animated: true)
     }
     

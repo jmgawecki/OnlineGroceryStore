@@ -260,8 +260,6 @@
 		EF8A6F4B25E917170029EB00 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				EF8A6F5125E91AB50029EB00 /* FavoritesView.swift */,
-				EF8A6F6325E931C80029EB00 /* SpecialOffersView.swift */,
 				EFB774F825ED3DED00BF4B74 /* AlertContainerView.swift */,
 			);
 			path = Views;
@@ -398,6 +396,8 @@
 			isa = PBXGroup;
 			children = (
 				EFB774F525ED3DC000BF4B74 /* StoreAlertVC.swift */,
+				EF8A6F6325E931C80029EB00 /* SpecialOffersView.swift */,
+				EF8A6F5125E91AB50029EB00 /* FavoritesView.swift */,
 			);
 			path = "View Controller";
 			sourceTree = "<group>";

@@ -11,38 +11,47 @@ final class OrdersVC: UIViewController {
     // MARK: - Declaration
     
     enum Section { case main }
+    
+    var categoriesTableView:    UITableView!
+    var dataSource:             UITableViewDiffableDataSource<Section, Order>!
+    var snapshot:               NSDiffableDataSourceSnapshot<Section, Order>!
  
-    var orders: [Order] = []
-    var currentUser: UserLocal!
+    var orders:         [Order] = []
+    var currentUser:    UserLocal!
     
-    
-    var categoriesTableView: UITableView!
-    var dataSource: UITableViewDiffableDataSource<Section, Order>!
-    var snapshot: NSDiffableDataSourceSnapshot<Section, Order>!
     
     // MARK: - Override and Initialise
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getCurrentUser()
         configureVC()
         configureUIElements()
         layoutUI()
         configureTableView()
         configureDataSource()
-        // Do any additional setup after loading the view.
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        FireManager.shared.clearCache()
+    
+    override func viewWillDisappear(_ animated: Bool) { FireManager.shared.clearCache() }
+    
+    
+    init(currentUser: UserLocal) {
+        super.init(nibName: nil, bundle: nil)
+        self.currentUser = currentUser
     }
+    
+    
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    
+    
     // MARK: - @Objectives
     
     
     
     
-    //MARK: - Private Function
+    
+    //MARK: - VC Configuration
     
     
     private func configureVC() {
@@ -51,23 +60,9 @@ final class OrdersVC: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
     }
     
+    
     // MARK: - Firebase
-    
-    
-    func getCurrentUser() {
-        FireManager.shared.getCurrentUserData { [weak self] (result) in
-            guard let self = self else { return }
-            switch result {
-            case .success(let currentUser):
-                self.currentUser = currentUser
-                self.fetchOrders()
-                
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-    }
-    
+
     
     func fetchOrders() {
         FireManager.shared.fetchOrders(for: currentUser) { [weak self] (result) in

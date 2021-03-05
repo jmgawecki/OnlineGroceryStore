@@ -251,13 +251,14 @@ class FireManager {
     func clearCache() { cache.removeAllObjects() }
     
     
-    func addOrder(for user: UserLocal, products: [ProductLocal], date: String, idOrder: String) {
+    func addOrder(for user: UserLocal, products: [ProductLocal], date: String, idOrder: String, completed: @escaping(Error?) -> Void) {
         var order: Order?
         order = Order(orderNumber: idOrder, date: date, products: products)
         do {
             let _ = try db.collection("userPersistence").document(user.email).collection("lastOrders").addDocument(from: order)
+            completed(nil)
         } catch {
-            print(error)
+            completed(error)
         }
     }
     
@@ -281,6 +282,6 @@ class FireManager {
         for product in basket {
             db.collection("userPersistence").document(user.email).collection("currentOrder").document(product.id).delete()
         }
-        
     }
+    
 }

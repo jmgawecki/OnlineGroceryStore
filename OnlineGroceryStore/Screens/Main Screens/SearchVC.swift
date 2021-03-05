@@ -10,15 +10,15 @@ import UIKit
 final class SearchVC: UIViewController {
     // MARK: - Declaration
     
+    
     enum Section { case main }
     
     var collectionView: UICollectionView!
     var dataSource:     UICollectionViewDiffableDataSource<Section, ProductLocal>!
     var snapshot:       NSDiffableDataSourceSnapshot<Section, ProductLocal>!
     
-    var products: [ProductLocal] = []
-    var currentUser: UserLocal!
-    var isSearching         = false
+    var products:       [ProductLocal] = []
+    var currentUser:    UserLocal!
     
     
     // MARK: - Override and Initialise
@@ -29,19 +29,21 @@ final class SearchVC: UIViewController {
         configureVC()
         configureCollectionView()
         configureDataSource()
-        configureUIElements()
-        layoutUI()
         configureSearchController()
-        // Do any additional setup after loading the view.
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        getCurrentUser()
     }
     
     
-    override func viewWillDisappear(_ animated: Bool) {
-        FireManager.shared.clearCache()
+    override func viewWillDisappear(_ animated: Bool) { FireManager.shared.clearCache() }
+    
+    
+    init(currentUser: UserLocal) {
+        super.init(nibName: nil, bundle: nil)
+        self.currentUser = currentUser
+    }
+    
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     
@@ -52,11 +54,8 @@ final class SearchVC: UIViewController {
     
     // MARK: - Firebase
     
+    
     private func fetchSearchedProducts(collection: String, uponField: String, withCondition: String) {
-        guard currentUser != nil else {
-            getCurrentUser()
-            return
-        }
         FireManager.shared.fetchProductsBasedOnTag(withTag: withCondition) { [weak self] (result) in
             guard let self = self else { return }
             switch result {
@@ -73,22 +72,7 @@ final class SearchVC: UIViewController {
     }
   
     
-    func getCurrentUser() {
-        FireManager.shared.getCurrentUserData { [weak self] (result) in
-            guard let self = self else { return }
-            switch result {
-            case .success(let currentUser):
-                self.currentUser = currentUser
-                
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-    }
-    
-    
-    //MARK: - Private Function
-    
+    //MARK: - VC Configuration
     
     private func configureVC() {
         view.backgroundColor = UIColor(named: colorAsString.storeBackground)
@@ -100,7 +84,6 @@ final class SearchVC: UIViewController {
     // MARK: - Collection View
     
     
-    
     private func configureCollectionView() {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: CollectionLayouts.searchVCCollectionViewLayout())
         view.addSubview(collectionView)
@@ -108,9 +91,9 @@ final class SearchVC: UIViewController {
         collectionView.delegate = self
     }
     
+    
     private func configureDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<ProductsVCCollectionViewCell, ProductLocal> { (cell, indexPath, product) in
-            #warning("do a check if the current user exists")
             cell.set(with: product, currentUser: self.currentUser )
         }
         
@@ -119,6 +102,7 @@ final class SearchVC: UIViewController {
         })
     }
     
+    
     private func updateDataOnCollection() {
         var snapshot = NSDiffableDataSourceSnapshot<Section, ProductLocal>()
         snapshot.appendSections([.main])
@@ -126,21 +110,9 @@ final class SearchVC: UIViewController {
         DispatchQueue.main.async { self.dataSource.apply(snapshot, animatingDifferences: true) }
     }
     
-    
-    //MARK: - VC Configuration
-    
-    
-    private func configureUIElements() {
-       
-    }
-    
-    
+
     //MARK: - Layout configuration
     
-    
-    private func layoutUI() {
-        
-    }
     
     private func configureSearchController() {
         let searchController                    = UISearchController()
@@ -149,9 +121,7 @@ final class SearchVC: UIViewController {
         searchController.searchBar.placeholder  = "Type a username"
         navigationItem.searchController         = searchController
         searchController.obscuresBackgroundDuringPresentation = false
-        
     }
-    
 }
 
 
@@ -161,18 +131,18 @@ extension SearchVC: UISearchResultsUpdating, UISearchBarDelegate {
     func updateSearchResults(for searchController: UISearchController) {
         guard let keyTag = searchController.searchBar.text, !keyTag.isEmpty else { return }
         fetchSearchedProducts(collection: "products", uponField: "id", withCondition: keyTag.lowercased())
-        isSearching = true
         collectionView.reloadData()
     }
+    
+    
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        isSearching = false
 //        updateData(on: followers)
     }
 }
 
 extension SearchVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let destVC = ProductDetailsVC()
+        let destVC = ProductDetailsVC(currentProduct: products[indexPath.item], currentUser: currentUser)
         navigationController?.present(destVC, animated: true)
     }
 }

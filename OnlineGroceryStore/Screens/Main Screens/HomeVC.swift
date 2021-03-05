@@ -11,45 +11,56 @@ import Firebase
 final class HomeVC: UIViewController {
     // MARK: - Declaration
     
-    var logOutButton            = StoreButton(fontSize: 18, label: "Log Out")
     var scrollView              = UIScrollView()
+    
+    var logOutButton            = StoreButton(fontSize: 18, label: "Log Out")
     var hiNameLabel             = StoreBoldLabel(with: "Hello ",
                                                  from: .left,
                                                  ofsize: 30,
                                                  ofweight: .bold,
                                                  alpha: 0,
                                                  color: UIColor(named: colorAsString.storePrimaryText) ?? .orange)
+    var vawingGirlImageView         = ShopImageView(frame: .zero)
+    
     var contentView             = UIView()
-    var favoritesView           = FavoritesView()
+    var specialOffersView   = UIView()
+    var favoritesOffersView = UIView()
+    
+    var allCategoriesButton = StoreImageLabelButton(fontSize: 20, message: "Shop by Category", image: imageAsUIImage.foodPlaceholder!, textColor: UIColor(named: colorAsString.storeTertiary) ?? .green)
     
     var currentUser: UserLocal?
     
-    var specialOffersView = UIView()
-    
-    var vawingGirlImageView         = ShopImageView(frame: .zero)
-    
-    var allCategoriesButton = StoreImageLabelButton(fontSize: 20, message: "Shop by Category", image: imageAsUIImage.foodPlaceholder!, textColor: UIColor(named: colorAsString.storeTertiary) ?? .green)
     
     // MARK: - Override and Initialise
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        layoutScrollViewAndContentView()
+        layoutAndConfigureScrollView()
         layoutUIInScrollView()
         configureLogOutButton()
         configureAllCategoriesButton()
         configureUIElements()
         getCurrentUser()
         animateViews()
-        add(childVC: SpecialOffersView(), to: specialOffersView)
+        add(childVC: SpecialOffersView(currentUser: currentUser!), to: specialOffersView)
+        add(childVC: FavoritesView(currentUser: currentUser!), to: favoritesOffersView)
     }
     
     
     override func viewWillAppear(_ animated: Bool) {
         configureVC()
     }
-
+    
+    
+    init(currentUser: UserLocal) {
+        super.init(nibName: nil, bundle: nil)
+        self.currentUser = currentUser
+    }
+    
+    
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    
     
     // MARK: - @Objectives
     
@@ -70,9 +81,17 @@ final class HomeVC: UIViewController {
     
     @objc private func allCategoriesButtonTapped(_ sender: UIView) {
         animateButtonViewAlpha(sender)
-        #warning("before a push do a check if currentUser != nil. If its nil shows alert that internetConnection was probably lost")
         let destVC = CategoriesVC(currentUser: currentUser!)
         navigationController?.pushViewController(destVC, animated: true)
+    }
+    
+    
+    //MARK: - VC Configuration
+    
+    
+    private func configureUIElements() {
+        vawingGirlImageView.image = imageAsUIImage.wavingBlackGirlR056
+        vawingGirlImageView.alpha = 0
     }
     
     
@@ -85,14 +104,21 @@ final class HomeVC: UIViewController {
     }
     
     
-    private func configureLogOutButton() {
-        logOutButton.addTarget(self, action: #selector(logOutButtonTapped), for: .touchUpInside)
+    private func add(childVC: UIViewController, to containerView: UIView) {
+        addChild(childVC)
+        containerView.addSubview(childVC.view)
+        childVC.view.frame = containerView.bounds
+        childVC.didMove(toParent: self)
     }
     
     
-    private func configureAllCategoriesButton() {
-        allCategoriesButton.addTarget(self, action: #selector(allCategoriesButtonTapped), for: .touchUpInside)
-    }
+    // MARK: - Button Configuration
+    
+    
+    private func configureLogOutButton() { logOutButton.addTarget(self, action: #selector(logOutButtonTapped), for: .touchUpInside) }
+    
+    
+    private func configureAllCategoriesButton() { allCategoriesButton.addTarget(self, action: #selector(allCategoriesButtonTapped), for: .touchUpInside) }
     
     
     private func animateViews() {
@@ -100,31 +126,9 @@ final class HomeVC: UIViewController {
         animateViewAlpha(vawingGirlImageView)
     }
     
-    //MARK: - VC Configuration
-    
-    
-    private func configureUIElements() {
-        vawingGirlImageView.image = imageAsUIImage.wavingBlackGirlR056
-        vawingGirlImageView.alpha = 0
-    }
-    
     
     //MARK: - Firebase
     
-//    func fetchCurrentUser() {
-//        NetworkManager.shared.fetchCurrentUser { [weak self] (result) in
-//            guard let self = self else { return }
-//            switch result {
-//            case .success(let currentUser):
-//                self.currentUser = currentUser
-//                DispatchQueue.main.async { self.hiNameLabel.text = "Hi \(currentUser.firstName)" }
-//
-//
-//            case .failure(let error):
-//                print(error.localizedDescription)
-//            }
-//        }
-//    }
     
     func getCurrentUser() {
         FireManager.shared.getCurrentUserData { [weak self] (result) in
@@ -142,22 +146,18 @@ final class HomeVC: UIViewController {
     }
     
     
-    //MARK: - Layout configuration
+    //MARK: - Layout UI
     
     
-    private func add(childVC: UIViewController, to containerView: UIView) {
-        addChild(childVC)
-        containerView.addSubview(childVC.view)
-        childVC.view.frame = containerView.bounds
-        childVC.didMove(toParent: self)
-    }
-    
-    private func layoutScrollViewAndContentView() {
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.translatesAutoresizingMaskIntoConstraints = false
+    private func layoutAndConfigureScrollView() {
+        scrollView.translatesAutoresizingMaskIntoConstraints    = false
+        contentView.translatesAutoresizingMaskIntoConstraints   = false
+        
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
+        
         scrollView.backgroundColor = UIColor(named: colorAsString.storeBackground)
+        
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint             (equalTo: view.topAnchor),
             scrollView.bottomAnchor.constraint          (equalTo: view.bottomAnchor),
@@ -170,17 +170,16 @@ final class HomeVC: UIViewController {
             contentView.trailingAnchor.constraint       (equalTo: scrollView.trailingAnchor),
         
             contentView.widthAnchor.constraint          (equalTo: scrollView.widthAnchor),
-            contentView.heightAnchor.constraint         (equalToConstant: 2000),
-            
+            contentView.heightAnchor.constraint         (equalToConstant: 1400),
         ])
     }
     
     
     private func layoutUIInScrollView() {
-        contentView.addSubviews(hiNameLabel, vawingGirlImageView, favoritesView, specialOffersView, allCategoriesButton)
+        contentView.addSubviews(hiNameLabel, vawingGirlImageView, favoritesOffersView, specialOffersView, allCategoriesButton, logOutButton)
         //        debugConfiguration(hiNameLabel, vawingGirlImageView, favoritesView, specialOffersView, allCategoriesButton)
-        favoritesView.translatesAutoresizingMaskIntoConstraints = false
-        specialOffersView.translatesAutoresizingMaskIntoConstraints = false
+        specialOffersView.translatesAutoresizingMaskIntoConstraints     = false
+        favoritesOffersView.translatesAutoresizingMaskIntoConstraints   = false
         
         NSLayoutConstraint.activate([
             hiNameLabel.leadingAnchor.constraint            (equalTo: contentView.leadingAnchor, constant: 30),
@@ -193,12 +192,12 @@ final class HomeVC: UIViewController {
             vawingGirlImageView.widthAnchor.constraint      (equalToConstant: 100),
             vawingGirlImageView.heightAnchor.constraint     (equalTo: vawingGirlImageView.widthAnchor, multiplier: 1.78),
             
-            favoritesView.topAnchor.constraint              (equalTo: vawingGirlImageView.bottomAnchor),
-            favoritesView.leadingAnchor.constraint          (equalTo: contentView.leadingAnchor, constant: 0),
-            favoritesView.trailingAnchor.constraint         (equalTo: contentView.trailingAnchor, constant: 0),
-            favoritesView.heightAnchor.constraint           (equalToConstant: 355),
+            favoritesOffersView.topAnchor.constraint        (equalTo: vawingGirlImageView.bottomAnchor),
+            favoritesOffersView.leadingAnchor.constraint    (equalTo: contentView.leadingAnchor, constant: 0),
+            favoritesOffersView.trailingAnchor.constraint   (equalTo: contentView.trailingAnchor, constant: 0),
+            favoritesOffersView.heightAnchor.constraint     (equalToConstant: 355),
             
-            specialOffersView.topAnchor.constraint          (equalTo: favoritesView.bottomAnchor, constant: 20),
+            specialOffersView.topAnchor.constraint          (equalTo: favoritesOffersView.bottomAnchor, constant: 20),
             specialOffersView.leadingAnchor.constraint      (equalTo: contentView.leadingAnchor, constant: 0),
             specialOffersView.trailingAnchor.constraint     (equalTo: contentView.trailingAnchor, constant: 0),
             specialOffersView.heightAnchor.constraint       (equalToConstant: 355),
@@ -209,6 +208,9 @@ final class HomeVC: UIViewController {
             allCategoriesButton.heightAnchor.constraint     (equalToConstant: 60),
         ])
     }
+    
+    
+    // MARK: - Animation
     
     
     private func animateViewAlpha(_ viewToAnimate: UIView) {

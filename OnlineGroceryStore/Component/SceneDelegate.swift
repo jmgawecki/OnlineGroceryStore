@@ -30,11 +30,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         return UINavigationController(rootViewController: entryVC)
     }
     
-    private func configureHomeNavController() -> UINavigationController {
-        let entryVC         = HomeVC()
-        entryVC.title       = "Home"
-        return UINavigationController(rootViewController: entryVC)
-    }
+//    private func configureHomeNavController() -> UINavigationController {
+//        let entryVC         = HomeVC()
+//        entryVC.title       = "Home"
+//        return UINavigationController(rootViewController: entryVC)
+//    }
     
     
     private func configureNavigationController() {
