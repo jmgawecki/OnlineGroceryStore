@@ -9,11 +9,20 @@ import UIKit
 import Firebase
 import FirebaseUI
 
+    // MARK: - Protocol & Delegate
+
+
+protocol ProductsVCCollectionViewCellDelegate: class {
+    func didAddProducts()
+    func didNotAddProducts(with error: String)
+}
+
+
 final class ProductsVCCollectionViewCell: UICollectionViewCell {
     // MARK: - Declaration
     
     
-    static let reuseId          = "SpeicificCellName"
+    static let reuseId          = "ProductsVCCollectionViewCell"
     
     let cache                   = NSCache<NSString, UIImage>()
     
@@ -45,6 +54,7 @@ final class ProductsVCCollectionViewCell: UICollectionViewCell {
 
     var count                   = 0
     
+    weak var productsVCCollectionViewCellDelegate: ProductsVCCollectionViewCellDelegate!
     
     // MARK: - Override and Initialise
     
@@ -85,9 +95,16 @@ final class ProductsVCCollectionViewCell: UICollectionViewCell {
     
     @objc private func addToBasketButtonTapped(sender: UIView) {
         animateButtonView(sender)
-        FireManager.shared.addProductToBasket(for: currentUser, with: product, howMany: count) { (error) in
+        guard count > 0 else {
+            self.productsVCCollectionViewCellDelegate.didNotAddProducts(with: "Seem like you haven't add any products! Add some with the + button and try again.")
+            return
+        }
+        FireManager.shared.addProductToBasket(for: currentUser, with: product, howMany: count) { [weak self] (error) in
+            guard let self = self else { return }
             if let error = error {
-                print(error.localizedDescription)
+                self.productsVCCollectionViewCellDelegate.didNotAddProducts(with: error.localizedDescription)
+            } else {
+                self.productsVCCollectionViewCellDelegate.didAddProducts()
             }
         }
 

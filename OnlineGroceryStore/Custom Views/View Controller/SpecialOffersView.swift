@@ -9,7 +9,9 @@ import UIKit
 
     // MARK: - Protocol & Delegate
 
-protocol SpecialOffersViewDelegate: class { func presentProductDetailModally() }
+protocol SpecialOffersViewDelegate: class {
+    func productDetailsRequestedDismissal()
+}
 
 
 final class SpecialOffersView: UIViewController {
@@ -28,10 +30,9 @@ final class SpecialOffersView: UIViewController {
     var products:               [ProductLocal] = []
     var currentUser:            UserLocal!
     
-    weak var specialOffersViewDelegate: SpecialOffersViewDelegate!
-    
     let items                   = ["Top Offers", "Half price", "Only $1"]
     
+    weak var specialOffersViewDelegate: SpecialOffersViewDelegate!
     
     // MARK: - Override and Initialise
     
@@ -48,9 +49,10 @@ final class SpecialOffersView: UIViewController {
     }
     
     
-    init(currentUser: UserLocal) {
+    init(currentUser: UserLocal, specialOffersViewDelegate: SpecialOffersViewDelegate) {
         super.init(nibName: nil, bundle: nil)
         self.currentUser = currentUser
+        self.specialOffersViewDelegate = specialOffersViewDelegate
     }
     
     
@@ -175,6 +177,16 @@ extension SpecialOffersView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let destVC = ProductDetailsVC(currentProduct: products[indexPath.item], currentUser: currentUser)
         destVC.getProductImage(for: products[indexPath.item].id)
+        destVC.productDetailVCDelegateForHomeVC = self
         present(destVC, animated: true)
     }
 }
+
+
+extension SpecialOffersView: ProductDetailVCDelegateForHomeVC {
+    func dismissProductDetailVC() {
+        print("Tralalalala")
+        specialOffersViewDelegate.productDetailsRequestedDismissal()
+    }
+}
+

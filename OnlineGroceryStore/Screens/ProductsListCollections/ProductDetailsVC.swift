@@ -7,6 +7,22 @@
 
 import UIKit
 
+
+    // MARK: - Protocol & Delegate
+
+
+protocol ProductDetailVCDelegate: class {
+    
+    /// Communicaiton path ProductDetailsVC --> CategoriesVC
+   func productAddedToBasket()
+}
+
+protocol ProductDetailVCDelegateForHomeVC: class {
+    /// Communication path ProductDetailsVC --> SpecialOffersVC/ FavoritesVC --> HomeVC
+    func dismissProductDetailVC()
+}
+
+
 final class ProductDetailsVC: UIViewController {
     // MARK: - Declaration
     
@@ -30,6 +46,8 @@ final class ProductDetailsVC: UIViewController {
     let counter             = UITextField()
     var count               = 0
     
+    weak var productDetailVCDelegate: ProductDetailVCDelegate!
+    weak var productDetailVCDelegateForHomeVC: ProductDetailVCDelegateForHomeVC!
     
     // MARK: - Override and Initialise
     
@@ -41,6 +59,9 @@ final class ProductDetailsVC: UIViewController {
         configureUIElements()
         layoutUI()
         configureStackViewButtons()
+        configureAddToBasketButton()
+        print(productDetailVCDelegate)
+        print(productDetailVCDelegateForHomeVC)
         // Do any additional setup after loading the view.
     }
     
@@ -83,8 +104,23 @@ final class ProductDetailsVC: UIViewController {
     
     @objc private func addToBasketButtonTapped(sender: UIView) {
         animateButtonView(sender)
-        FireManager.shared.addProductToBasket(for: currentUser, with: currentProduct, howMany: count) { (error) in
-            if let error = error { print(error.localizedDescription) }
+        guard count > 0 else {
+            presentStoreAlertOnMainThread(title: "Oops!", message: "Seem like you haven't add any products! Add some with the + button and try again.", button: "Will do", image: AlertImage.concernedBlackGirlR056!)
+            return
+        }
+        FireManager.shared.addProductToBasket(for: currentUser, with: currentProduct, howMany: count) { [weak self] (error) in
+            guard let self = self else { return }
+            switch error {
+            case .none:
+                self.dismiss(animated: true)
+                if (self.productDetailVCDelegate != nil) {
+                    self.productDetailVCDelegate.productAddedToBasket()
+                } else if (self.productDetailVCDelegateForHomeVC != nil) {
+                    self.productDetailVCDelegateForHomeVC.dismissProductDetailVC()
+                }
+            case .some(_):
+                self.presentStoreAlertOnMainThread(title: "Oops!", message: AlertMessages.checkInternet, button: "Will do", image: AlertImage.concernedBlackGirlR056!)
+            }
         }
 
         self.count = 0

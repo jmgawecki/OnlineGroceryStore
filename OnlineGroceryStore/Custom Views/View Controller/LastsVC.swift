@@ -7,7 +7,11 @@
 
 import UIKit
 
-final class FavoritesView: UIViewController {
+protocol LastsVCDelegates: class {
+    func productDetailsRequestedDismissalThroughLasts()
+}
+
+final class LastsVC: UIViewController {
     // MARK: - Declaration
     
     enum Section { case main }
@@ -21,7 +25,7 @@ final class FavoritesView: UIViewController {
     var products:               [ProductLocal] = []
     var currentUser:            UserLocal!
 
-    
+    var lastsVCDelegates: LastsVCDelegates!
     
     // MARK: - Override and Initialise
     
@@ -39,9 +43,10 @@ final class FavoritesView: UIViewController {
     override func viewWillAppear(_ animated: Bool) { getLastOrdersID() }
     
     
-    init(currentUser: UserLocal) {
+    init(currentUser: UserLocal, lastsVCDelegates: LastsVCDelegates) {
         super.init(nibName: nil, bundle: nil)
         self.currentUser = currentUser
+        self.lastsVCDelegates = lastsVCDelegates
     }
     
     
@@ -147,7 +152,7 @@ final class FavoritesView: UIViewController {
     
     
     private func configureUIElements() {
-        hiNameLabel.text = "Special Offers"
+        hiNameLabel.text = "Favorites"
     }
     
     
@@ -178,10 +183,17 @@ final class FavoritesView: UIViewController {
     // MARK: - Extension
 
 
-extension FavoritesView: UICollectionViewDelegate {
+extension LastsVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let destVC = ProductDetailsVC(currentProduct: products[indexPath.item], currentUser: currentUser)
         destVC.getProductImage(for: products[indexPath.item].id)
+        destVC.productDetailVCDelegateForHomeVC = self
         present(destVC, animated: true)
+    }
+}
+
+extension LastsVC: ProductDetailVCDelegateForHomeVC {
+    func dismissProductDetailVC() {
+        lastsVCDelegates.productDetailsRequestedDismissalThroughLasts()
     }
 }

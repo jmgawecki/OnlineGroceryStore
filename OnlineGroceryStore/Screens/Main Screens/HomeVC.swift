@@ -39,10 +39,9 @@ final class HomeVC: UIViewController {
         layoutUIInScrollView()
         configureAllCategoriesButton()
         configureUIElements()
-        getCurrentUser()
         animateViews()
-        add(childVC: SpecialOffersView(currentUser: currentUser!), to: specialOffersView)
-        add(childVC: FavoritesView(currentUser: currentUser!), to: favoritesOffersView)
+        add(childVC: SpecialOffersView(currentUser: currentUser!, specialOffersViewDelegate: self), to: specialOffersView)
+        add(childVC: LastsVC(currentUser: currentUser!, lastsVCDelegates: self), to: favoritesOffersView)
     }
     
     
@@ -95,23 +94,7 @@ final class HomeVC: UIViewController {
 
     
     //MARK: - Firebase
-    
-    
-    func getCurrentUser() {
-        FireManager.shared.getCurrentUserData { [weak self] (result) in
-            guard let self = self else { return }
-            switch result {
-            case .success(let currentUser):
-                self.currentUser = currentUser
-                DispatchQueue.main.async { self.hiNameLabel.text = "Hi \(currentUser.firstName)" }
-                
-                
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-    }
-    
+
     
     private func signOut() {
         var isError: Error? = nil
@@ -119,6 +102,7 @@ final class HomeVC: UIViewController {
             try Auth.auth().signOut()
         } catch let error {
             isError = error
+            presentStoreAlertOnMainThread(title: "Oops!", message: AlertMessages.checkInternet, button: "Will do", image: AlertImage.sadBlackGirlR056!)
         }
         if isError == nil {
             let destVC = logOutVC()
@@ -245,5 +229,20 @@ final class HomeVC: UIViewController {
                 return
             }
         }
+    }
+}
+
+
+    // MARK: - Extension
+
+extension HomeVC: SpecialOffersViewDelegate {
+    func productDetailsRequestedDismissal() {
+        presentStoreAlertOnMainThread(title: "Success!", message: "You have sucessfully added item to your basket!", button: "Ok", image: AlertImage.happyBlackGirlR056!)
+    }
+}
+
+extension HomeVC: LastsVCDelegates {
+    func productDetailsRequestedDismissalThroughLasts() {
+        presentStoreAlertOnMainThread(title: "Success!", message: "You have sucessfully added item to your basket!", button: "Ok", image: AlertImage.happyBlackGirlR056!)
     }
 }

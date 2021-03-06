@@ -42,6 +42,9 @@ final class BasketVC: UIViewController {
     }
     
     
+    override func viewWillAppear(_ animated: Bool) { collectionView.reloadData() }
+    
+    
     init(currentUser: UserLocal) {
         super.init(nibName: nil, bundle: nil)
         self.currentUser = currentUser
@@ -64,9 +67,9 @@ final class BasketVC: UIViewController {
             guard let self = self else { return }
             switch error {
             case .none:
-                self.basketProducts.removeAll()
                 self.clearTheBasket()
                 self.updateDataOnCollection()
+                self.collectionView.reloadData()
             case .some(let error):
                 print(error.localizedDescription)
             }
@@ -143,16 +146,21 @@ final class BasketVC: UIViewController {
             case .success(let basketProducts):
                 self.basketProducts = basketProducts
                 self.updateDataOnCollection()
-            case .failure(let error):
-                print(error.localizedDescription)
+            case .failure(_):
+                self.presentStoreAlertOnMainThread(title: "Oops!", message: AlertMessages.checkInternet, button: "Will do", image: AlertImage.sadBlackGirlR056!)
             }
         }
     }
     
+    
     func clearTheBasket() {
-        FireManager.shared.clearBasket(for: currentUser, from: basketProducts) { (error) in
-            if let error = error {
-                print(error)
+        FireManager.shared.clearBasket(for: currentUser, from: basketProducts) { [weak self] (error) in
+            guard let self = self else { return }
+            if let _ = error {
+                self.presentStoreAlertOnMainThread(title: "Oops", message: AlertMessages.checkInternet, button: "Ok", image: AlertImage.sadBlackGirlR056!)
+            } else {
+                self.basketProducts.removeAll()
+                self.presentStoreAlertOnMainThread(title: "Horray!", message: "You have succesfully placed your order!", button: "Thanks", image: AlertImage.happyBlackGirlR056!)
             }
         }
     }
@@ -166,7 +174,6 @@ final class BasketVC: UIViewController {
     private func layoutUI() {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         addSubviews(orderButton, collectionView)
-//        debugConfiguration(orderButton, collectionView)
         
         NSLayoutConstraint.activate([
             orderButton.bottomAnchor.constraint        (equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -5),

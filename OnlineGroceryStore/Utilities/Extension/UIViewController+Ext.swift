@@ -15,4 +15,14 @@ extension UIViewController {
         for view in views {
             view.layer.borderWidth = 1 }
     }
+    
+    
+    func presentStoreAlertOnMainThread(title: String, message: String, button: String, image: UIImage) {
+        DispatchQueue.main.async {
+            let alertVC = StoreAlertVC(title: title, message: message, buttonTitle: button, image: image)
+            alertVC.modalPresentationStyle  = .overFullScreen
+            alertVC.modalTransitionStyle    = .crossDissolve
+            self.present(alertVC, animated: true)
+        }
+    }
 }

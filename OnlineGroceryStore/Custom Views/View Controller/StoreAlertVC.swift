@@ -14,13 +14,15 @@ final class StoreAlertVC: UIViewController {
     //MARK: - Declarations
 
     let containerView   = UIView()
-//    let titleLabel      = StoreBoldLabel(with: <#T##String#>, from: <#T##NSTextAlignment#>, ofsize: <#T##CGFloat#>, ofweight: <#T##UIFont.Weight#>, alpha: <#T##CGFloat#>, color: <#T##UIColor#>)
-//    let messageLabel    = StoreBoldLabel(with: <#T##String#>, from: <#T##NSTextAlignment#>, ofsize: <#T##CGFloat#>, ofweight: <#T##UIFont.Weight#>, alpha: <#T##CGFloat#>, color: <#T##UIColor#>)
+    let titleLabel      = StoreTitleLabel(from: .center, alpha: 1)
+    let messageLabel    = StoreBodyLabel(from: .left, alpha: 1)
     let actionButton    = StoreVCButton()
+    var girlImageView   = ShopImageView(frame: .zero)
     
     var alertTitle:     String?
     var message:        String?
     var buttonTitle:    String?
+    var girlImage:      UIImage?
     
     let padding:        CGFloat = 20
     
@@ -28,11 +30,12 @@ final class StoreAlertVC: UIViewController {
     //MARK: - Initialisers
     
     
-    init(title: String, message: String, buttonTitle: String) {
+    init(title: String, message: String, buttonTitle: String, image: UIImage) {
         super.init(nibName: nil, bundle: nil)
         self.alertTitle     = title
         self.message        = message
         self.buttonTitle    = buttonTitle
+        self.girlImage      = image
     }
     
     
@@ -40,9 +43,10 @@ final class StoreAlertVC: UIViewController {
     
     
     override func viewDidLoad() {
-//        super.viewDidLoad()
-//        layoutUI()
-//        configureUIElements()
+        super.viewDidLoad()
+        configure()
+        layoutUI()
+        configureUIElements()
     }
     
     
@@ -55,11 +59,15 @@ final class StoreAlertVC: UIViewController {
     //MARK: - Layout configurations
     
     
+    private func configure() { view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.75) }
+    
+    
     private func configureUIElements() {
         view.backgroundColor        = UIColor.black.withAlphaComponent(0.75)
-//        titleLabel.text             = alertTitle ?? "Something went wrong"
-//        messageLabel.text           = message ?? "Unable to complete request"
-//        messageLabel.numberOfLines  = 4
+        titleLabel.text             = alertTitle ?? "Something went wrong"
+        messageLabel.text           = message ?? "Unable to complete request"
+        messageLabel.numberOfLines  = 4
+        girlImageView.image         = girlImage
 
         actionButton.setTitle(buttonTitle ?? "Ok", for: .normal)
         actionButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
@@ -67,7 +75,8 @@ final class StoreAlertVC: UIViewController {
 
 
     private func layoutUI() {
-        view.addSubviews(containerView, actionButton)
+        view.addSubviews(containerView, actionButton, titleLabel, messageLabel)
+        containerView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             containerView.centerYAnchor.constraint  (equalTo: view.centerYAnchor),
@@ -75,20 +84,20 @@ final class StoreAlertVC: UIViewController {
             containerView.widthAnchor.constraint    (equalToConstant: 280),
             containerView.heightAnchor.constraint   (equalToConstant: 220),
 
-//            titleLabel.topAnchor.constraint         (equalTo: containerView.topAnchor, constant: padding),
-//            titleLabel.leadingAnchor.constraint     (equalTo: containerView.leadingAnchor, constant: padding),
-//            titleLabel.trailingAnchor.constraint    (equalTo: containerView.trailingAnchor, constant: -padding),
-//            titleLabel.heightAnchor.constraint      (equalToConstant: 28),
+            titleLabel.topAnchor.constraint         (equalTo: containerView.topAnchor, constant: padding),
+            titleLabel.leadingAnchor.constraint     (equalTo: containerView.leadingAnchor, constant: padding),
+            titleLabel.trailingAnchor.constraint    (equalTo: containerView.trailingAnchor, constant: -padding),
+            titleLabel.heightAnchor.constraint      (equalToConstant: 28),
 
             actionButton.bottomAnchor.constraint    (equalTo: containerView.bottomAnchor, constant: -padding),
             actionButton.leadingAnchor.constraint   (equalTo: containerView.leadingAnchor, constant: padding),
             actionButton.trailingAnchor.constraint  (equalTo: containerView.trailingAnchor, constant: -padding),
             actionButton.heightAnchor.constraint    (equalToConstant: 44),
 
-//            messageLabel.topAnchor.constraint       (equalTo: titleLabel.bottomAnchor, constant: 8),
-//            messageLabel.leadingAnchor.constraint   (equalTo: containerView.leadingAnchor, constant: padding),
-//            messageLabel.trailingAnchor.constraint  (equalTo: containerView.trailingAnchor, constant: -padding),
-//            messageLabel.bottomAnchor.constraint    (equalTo: actionButton.topAnchor, constant: -12)
+            messageLabel.topAnchor.constraint       (equalTo: titleLabel.bottomAnchor, constant: 8),
+            messageLabel.leadingAnchor.constraint   (equalTo: containerView.leadingAnchor, constant: padding),
+            messageLabel.trailingAnchor.constraint  (equalTo: containerView.trailingAnchor, constant: -padding),
+            messageLabel.bottomAnchor.constraint    (equalTo: actionButton.topAnchor, constant: -12)
         ])
     }
 }

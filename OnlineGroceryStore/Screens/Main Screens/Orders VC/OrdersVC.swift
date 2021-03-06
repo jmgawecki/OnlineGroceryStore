@@ -73,8 +73,8 @@ final class OrdersVC: UIViewController {
                 self.orders = orders
                 self.updateDataOnCollection()
                 
-            case .failure(let error):
-                print(error.localizedDescription)
+            case .failure(_):
+                self.presentStoreAlertOnMainThread(title: "Oops!", message: AlertMessages.checkInternet, button: "Will do", image: AlertImage.sadBlackGirlR056!)
             }
         }
     }

@@ -102,6 +102,7 @@ final class ProductsVC: UIViewController {
     private func configureDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<ProductsVCCollectionViewCell, ProductLocal> { (cell, indexPath, product) in
             cell.set(with: product, currentUser: self.currentUser)
+            cell.productsVCCollectionViewCellDelegate = self
         }
         
         dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { (collectionView, indexPath, product) -> ProductsVCCollectionViewCell? in
@@ -138,6 +139,28 @@ extension ProductsVC: UICollectionViewDelegate {
         let destVC = ProductDetailsVC(currentProduct: products[indexPath.item], currentUser: currentUser)
         destVC.getProductImage(for: products[indexPath.item].id)
         #warning("do a check if current user exists")
+        destVC.productDetailVCDelegate = self
         navigationController?.present(destVC, animated: true)
     }
+}
+
+
+extension ProductsVC: ProductDetailVCDelegate {
+    func productAddedToBasket() {
+        self.presentStoreAlertOnMainThread(title: "Horray!", message: "You have succesfully added an item to your basket", button: "Ok", image: AlertImage.happyBlackGirlR056!)
+    }
+}
+
+
+extension ProductsVC: ProductsVCCollectionViewCellDelegate {
+    func didAddProducts() {
+        print("Tralal")
+        presentStoreAlertOnMainThread(title: "Success!", message: "You have sucessfully added item to your basket!", button: "Ok", image: AlertImage.happyBlackGirlR056!)
+    }
+    
+    func didNotAddProducts(with error: String) {
+        presentStoreAlertOnMainThread(title: "Ops!", message: error, button: "Will do", image: AlertImage.concernedBlackGirlR056!)
+    }
+    
+    
 }

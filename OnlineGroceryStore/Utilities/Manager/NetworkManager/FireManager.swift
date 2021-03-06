@@ -241,6 +241,8 @@ final class FireManager {
                               "tag":            product.tag]) { error in
                         if let error = error {
                             completed(error)
+                        } else {
+                            completed(nil)
                         }
                     }
             }
@@ -249,7 +251,14 @@ final class FireManager {
     
     func clearBasket(for user: UserLocal, from basket: [ProductLocal] ,completed: @escaping(Error?) -> Void) {
         for product in basket {
-            db.collection("userPersistence").document(user.email).collection("currentOrder").document(product.id).delete()
+            db.collection("userPersistence").document(user.email).collection("currentOrder").document(product.id).delete { (error) in
+                if let error = error {
+                    completed(error)
+                } else {
+                    completed(nil)
+                }
+            }
+            
         }
     }
     

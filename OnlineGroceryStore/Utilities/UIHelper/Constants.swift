@@ -24,6 +24,18 @@ enum imageAsUIImage {
     
 }
 
+enum AlertImage {
+    static let angryBlackGirlR056       = UIImage(named: "angryBlackGirlR056")
+    static let concernedBlackGirlR056   = UIImage(named: "concernedBlackGirlR056")
+    static let happyBlackGirlR056       = UIImage(named: "happyBlackGirlR056")
+    static let sadBlackGirlR056         = UIImage(named: "sadBlackGirlR056")
+    static let smilingBlackGirlR065     = UIImage(named: "smilingBlackGirlR065")
+}
+
+enum AlertMessages {
+    static let checkInternet            = "We couldn't make that happen.. Please check your internet connection"
+}
+
 enum systemImageAsUIImage {
     static let plusLarge                = UIImage(systemName: "plus",
                                                   withConfiguration: UIImage.SymbolConfiguration(scale: .large))

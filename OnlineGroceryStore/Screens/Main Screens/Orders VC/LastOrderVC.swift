@@ -61,8 +61,14 @@ class LastOrderVC: UIViewController {
     
     
     private func addOrderToBasket() {
-        FireManager.shared.addOrderToBasket(for: currentUser, order: order) { (error) in
-            if let error = error { print(error) }
+        FireManager.shared.addOrderToBasket(for: currentUser, order: order) { [weak self] (error) in
+            guard let self = self else { return }
+            switch error {
+            case .none:
+                self.presentStoreAlertOnMainThread(title: "Horray!", message: "You have succesfully added last order to your basket.", button: "Ok", image: AlertImage.happyBlackGirlR056!)
+            case .some(_):
+                self.presentStoreAlertOnMainThread(title: "Oops!", message: AlertMessages.checkInternet, button: "Will do", image: AlertImage.concernedBlackGirlR056!)
+            }
         }
     }
     
