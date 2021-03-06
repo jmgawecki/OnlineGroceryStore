@@ -203,6 +203,8 @@ final class FireManager {
                                   "tag":            product.tag]) { error in
                             if let error = error {
                                 completed(error)
+                            } else {
+                                completed(nil)
                             }
                         }
                 }

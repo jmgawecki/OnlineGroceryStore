@@ -115,10 +115,17 @@ final class OrdersVC: UIViewController {
 
 
 extension OrdersVC: UITableViewDelegate {
-func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let destVC = LastOrderVC(with: orders[indexPath.item], for: currentUser)
-    destVC.currentUser = currentUser
-    
-    navigationController?.pushViewController(destVC, animated: true)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let destVC = LastOrderVC(with: orders[indexPath.item], for: currentUser)
+        destVC.currentUser = currentUser
+        destVC.lastOrderVCDelegates = self
+        navigationController?.pushViewController(destVC, animated: true)
+    }
 }
+
+
+extension OrdersVC: LastOrderVCDelegates {
+    func didRequestDismissal() {
+        self.presentStoreAlertOnMainThread(title: "Horray!", message: "You have succesfully added last order to your basket.", button: "Ok", image: AlertImage.happyBlackGirlR056!)
+    }
 }

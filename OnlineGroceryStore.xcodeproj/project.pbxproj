@@ -26,7 +26,6 @@
 		EF8A6F6425E931C80029EB00 /* SpecialOffersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF8A6F6325E931C80029EB00 /* SpecialOffersView.swift */; };
 		EF8A6F6725E9345D0029EB00 /* StoreImageLabelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF8A6F6625E9345D0029EB00 /* StoreImageLabelButton.swift */; };
 		EF8A6F6B25E93E8C0029EB00 /* HomeTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF8A6F6A25E93E8C0029EB00 /* HomeTabBarController.swift */; };
-		EF8A6F7225E93FA50029EB00 /* FavoritesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF8A6F7125E93FA50029EB00 /* FavoritesVC.swift */; };
 		EF8A6F7D25E93FCF0029EB00 /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF8A6F7C25E93FCF0029EB00 /* SearchVC.swift */; };
 		EF8A6F8025E93FD80029EB00 /* OrdersVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF8A6F7F25E93FD80029EB00 /* OrdersVC.swift */; };
 		EF8A6F8325E93FDF0029EB00 /* BasketVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF8A6F8225E93FDF0029EB00 /* BasketVC.swift */; };
@@ -81,7 +80,6 @@
 		EF8A6F6325E931C80029EB00 /* SpecialOffersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecialOffersView.swift; sourceTree = "<group>"; };
 		EF8A6F6625E9345D0029EB00 /* StoreImageLabelButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreImageLabelButton.swift; sourceTree = "<group>"; };
 		EF8A6F6A25E93E8C0029EB00 /* HomeTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarController.swift; sourceTree = "<group>"; };
-		EF8A6F7125E93FA50029EB00 /* FavoritesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesVC.swift; sourceTree = "<group>"; };
 		EF8A6F7C25E93FCF0029EB00 /* SearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
 		EF8A6F7F25E93FD80029EB00 /* OrdersVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdersVC.swift; sourceTree = "<group>"; };
 		EF8A6F8225E93FDF0029EB00 /* BasketVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketVC.swift; sourceTree = "<group>"; };
@@ -298,7 +296,6 @@
 			isa = PBXGroup;
 			children = (
 				EF5ADCA125E6E2400029A3B9 /* HomeVC.swift */,
-				EF8A6F7125E93FA50029EB00 /* FavoritesVC.swift */,
 				EF8A6F7C25E93FCF0029EB00 /* SearchVC.swift */,
 				EFE670A325EFF0DC00FB16CD /* Orders VC */,
 				EF8A6F8225E93FDF0029EB00 /* BasketVC.swift */,
@@ -550,7 +547,6 @@
 				EFA981FC25E7C820002EB81E /* Links.swift in Sources */,
 				EF51091E25E6E54E007A459F /* SignUpVC.swift in Sources */,
 				EFA9824725E81898002EB81E /* logOutVC.swift in Sources */,
-				EF8A6F7225E93FA50029EB00 /* FavoritesVC.swift in Sources */,
 				EF8A6F5825E921640029EB00 /* FavoritesCollectionViewCell.swift in Sources */,
 				EF8A6F6725E9345D0029EB00 /* StoreImageLabelButton.swift in Sources */,
 				EF1B3E7925F2DE0100F23FA4 /* BasketCollectionViewCell.swift in Sources */,

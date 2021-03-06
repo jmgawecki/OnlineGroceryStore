@@ -60,7 +60,7 @@ final class BasketVC: UIViewController {
     @objc private func orderButtonTapped(sender: UIView) {
         animateButtonView(sender)
         if basketProducts.isEmpty {
-            print("looks like the basket is empty!")
+            presentStoreAlertOnMainThread(title: "Oops!", message: "looks like the basket is empty! Add some products", button: "Will do", image: AlertImage.smilingBlackGirlR065!)
             return
         }
         FireManager.shared.addOrder(for: currentUser, products: basketProducts, date: createTodaysDate(), idOrder: UUID().uuidString) { [weak self] (error) in
@@ -71,7 +71,7 @@ final class BasketVC: UIViewController {
                 self.updateDataOnCollection()
                 self.collectionView.reloadData()
             case .some(let error):
-                print(error.localizedDescription)
+                self.presentStoreAlertOnMainThread(title: "Oops!", message: AlertMessages.checkInternet, button: "Will do", image: AlertImage.concernedBlackGirlR056!)
             }
         }
     }

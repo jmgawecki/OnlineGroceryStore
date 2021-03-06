@@ -11,7 +11,7 @@ final class SearchVC: UIViewController {
     // MARK: - Declaration
     
     
-    enum Section { case main }
+    enum Section        { case main }
     
     var collectionView: UICollectionView!
     var dataSource:     UICollectionViewDiffableDataSource<Section, ProductLocal>!
@@ -72,6 +72,7 @@ final class SearchVC: UIViewController {
     
     //MARK: - VC Configuration
     
+    
     private func configureVC() {
         view.backgroundColor = colorAsUIColor.storeBackground
         navigationController?.setNavigationBarHidden(false, animated: true)
@@ -125,6 +126,7 @@ final class SearchVC: UIViewController {
 
 //MARK: - Extension
 
+
 extension SearchVC: UISearchResultsUpdating, UISearchBarDelegate {
     func updateSearchResults(for searchController: UISearchController) {
         guard let keyTag = searchController.searchBar.text, !keyTag.isEmpty else { return }
@@ -133,10 +135,12 @@ extension SearchVC: UISearchResultsUpdating, UISearchBarDelegate {
     }
     
     
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-//        updateData(on: followers)
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        fetchSearchedProducts(collection: "products", uponField: "id", withCondition: searchBar.text!)
+        collectionView.reloadData()
     }
 }
+
 
 extension SearchVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

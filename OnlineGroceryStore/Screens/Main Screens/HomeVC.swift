@@ -26,7 +26,7 @@ final class HomeVC: UIViewController {
                                                         image: imageAsUIImage.foodPlaceholder!,
                                                         textColor: colorAsUIColor.storeTertiary ?? .green)
     
-    var currentUser: UserLocal?
+    var currentUser:            UserLocal?
     
     
     // MARK: - Override and Initialise
@@ -114,7 +114,9 @@ final class HomeVC: UIViewController {
     // MARK: - Button Configuration
     
     
-    private func configureAllCategoriesButton() { allCategoriesButton.addTarget(self, action: #selector(allCategoriesButtonTapped), for: .touchUpInside) }
+    private func configureAllCategoriesButton() {
+        allCategoriesButton.addTarget(self, action: #selector(allCategoriesButtonTapped), for: .touchUpInside)
+    }
     
     
     private func animateViews() {
@@ -172,7 +174,6 @@ final class HomeVC: UIViewController {
     
     private func layoutUIInScrollView() {
         contentView.addSubviews(hiNameLabel, quickActionMenu ,vawingGirlImageView, favoritesOffersView, specialOffersView, allCategoriesButton)
-        //        debugConfiguration(hiNameLabel, vawingGirlImageView, favoritesView, specialOffersView, allCategoriesButton)
         specialOffersView.translatesAutoresizingMaskIntoConstraints     = false
         favoritesOffersView.translatesAutoresizingMaskIntoConstraints   = false
         
@@ -235,11 +236,13 @@ final class HomeVC: UIViewController {
 
     // MARK: - Extension
 
+
 extension HomeVC: SpecialOffersViewDelegate {
     func productDetailsRequestedDismissal() {
         presentStoreAlertOnMainThread(title: "Success!", message: "You have sucessfully added item to your basket!", button: "Ok", image: AlertImage.happyBlackGirlR056!)
     }
 }
+
 
 extension HomeVC: LastsVCDelegates {
     func productDetailsRequestedDismissalThroughLasts() {

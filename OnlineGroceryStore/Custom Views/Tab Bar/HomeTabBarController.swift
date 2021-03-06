@@ -51,15 +51,7 @@ final class HomeTabBarController: UITabBarController {
         homeVC.tabBarItem                       = UITabBarItem(title: "Home", image: UIImage(systemName: systemImageAsString.home), tag: 0)
         return UINavigationController(rootViewController: homeVC)
     }
-    
-//
-//    private func createFavoritesNavigationController() -> UINavigationController {
-//        let homeVC = FavoritesVC(currentUser: currentUser)
-//        homeVC.title                          = "Favorites"
-//        homeVC.tabBarItem                     = UITabBarItem(title: "Favorites", image: UIImage(systemName: systemImageAsString.favorites), tag: 1)
-//        return UINavigationController(rootViewController: homeVC)
-//    }
-//
+
     
     private func createSearchNavigationController() -> UINavigationController {
         let homeVC = SearchVC(currentUser: currentUser)

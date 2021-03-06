@@ -7,6 +7,14 @@
 
 import UIKit
 
+
+// MARK: - Protocol & Delegate
+
+
+protocol LastOrderVCDelegates: class {
+    func didRequestDismissal()
+}
+
 class LastOrderVC: UIViewController {
     // MARK: - Declaration
     
@@ -19,6 +27,8 @@ class LastOrderVC: UIViewController {
     var addToBasketButton = StoreImageLabelButton(fontSize: 20, message: "Add to Basket", image: imageAsUIImage.foodPlaceholder!, textColor: colorAsUIColor.storeTertiary ?? .green)
     
     var order: Order!
+    
+    weak var lastOrderVCDelegates: LastOrderVCDelegates!
     
     
     // MARK: - Override and Initialise
@@ -65,7 +75,8 @@ class LastOrderVC: UIViewController {
             guard let self = self else { return }
             switch error {
             case .none:
-                self.presentStoreAlertOnMainThread(title: "Horray!", message: "You have succesfully added last order to your basket.", button: "Ok", image: AlertImage.happyBlackGirlR056!)
+                self.lastOrderVCDelegates.didRequestDismissal()
+                _ = self.navigationController?.popViewController(animated: true)
             case .some(_):
                 self.presentStoreAlertOnMainThread(title: "Oops!", message: AlertMessages.checkInternet, button: "Will do", image: AlertImage.concernedBlackGirlR056!)
             }
@@ -122,7 +133,7 @@ class LastOrderVC: UIViewController {
     
     
     private func layoutUI() {
-        view.addSubviews(addToBasketButton ,collectionView)
+        view.addSubviews(addToBasketButton, collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([

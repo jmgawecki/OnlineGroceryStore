@@ -12,10 +12,10 @@ import UIKit
 
 
 protocol ProductDetailVCDelegate: class {
-    
     /// Communicaiton path ProductDetailsVC --> CategoriesVC
    func productAddedToBasket()
 }
+
 
 protocol ProductDetailVCDelegateForHomeVC: class {
     /// Communication path ProductDetailsVC --> SpecialOffersVC/ FavoritesVC --> HomeVC
@@ -25,6 +25,7 @@ protocol ProductDetailVCDelegateForHomeVC: class {
 
 final class ProductDetailsVC: UIViewController {
     // MARK: - Declaration
+    
     
     var productImageView    = ShopImageView(frame: .zero)
     var productTitleLabel   = StoreBoldLabel(with: "Product's Name",
@@ -49,6 +50,7 @@ final class ProductDetailsVC: UIViewController {
     weak var productDetailVCDelegate: ProductDetailVCDelegate!
     weak var productDetailVCDelegateForHomeVC: ProductDetailVCDelegateForHomeVC!
     
+    
     // MARK: - Override and Initialise
     
     
@@ -56,13 +58,9 @@ final class ProductDetailsVC: UIViewController {
         super.viewDidLoad()
         configureVC()
         configureUIStackView()
-        configureUIElements()
         layoutUI()
         configureStackViewButtons()
         configureAddToBasketButton()
-        print(productDetailVCDelegate)
-        print(productDetailVCDelegateForHomeVC)
-        // Do any additional setup after loading the view.
     }
     
     
@@ -130,6 +128,7 @@ final class ProductDetailsVC: UIViewController {
     
     // MARK: - Firebase
     
+    
     func getProductImage(for productId: String) {
         FireManager.shared.retrieveImageWithPathReferenceFromDocument(from: productId, categoryOrProduct: .product) { [weak self] (image) in
             guard let self = self else { return }
@@ -138,8 +137,8 @@ final class ProductDetailsVC: UIViewController {
     }
     
     
-    
     // MARK: - Private function
+    
     
     private func configureStackViewButtons() {
         plusButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
@@ -157,15 +156,6 @@ final class ProductDetailsVC: UIViewController {
         view.backgroundColor = colorAsUIColor.storeBackground
         navigationController?.setNavigationBarHidden(true, animated: true)
         navigationController?.navigationBar.prefersLargeTitles = true
-    }
-    
-    
-    
-    //MARK: - VC Configuration
-    
-    
-    private func configureUIElements() {
-        
     }
     
     
@@ -194,7 +184,6 @@ final class ProductDetailsVC: UIViewController {
         productCounter.addArrangedSubview(counter)
         productCounter.addArrangedSubview(plusButton)
     }
-    
     
     
     private func layoutUI() {
@@ -229,6 +218,7 @@ final class ProductDetailsVC: UIViewController {
         ])
     }
     
+    
     // MARK: - Animation
     
     
@@ -242,6 +232,7 @@ final class ProductDetailsVC: UIViewController {
             }
         }
     }
+    
     
     private func animateCounterView(_ viewToAnimate: UIView) {
         UIView.animate(withDuration: 0.1, animations: {viewToAnimate.alpha = 0.3}) { (true) in
