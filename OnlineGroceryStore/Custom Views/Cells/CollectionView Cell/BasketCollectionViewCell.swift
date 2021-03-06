@@ -15,12 +15,13 @@ class BasketCollectionViewCell: UICollectionViewCell {
     
     var categoryImageView   = ShopImageView(frame: .zero)
     #warning("Refactor later so its initialised in a function set")
-    var categoryLabel       = StoreBoldLabel(with: "",
-                                             from: .left,
-                                             ofsize: 20,
-                                             ofweight: .medium,
-                                             alpha: 1,
-                                             color: colorAsUIColor.storePrimaryText ?? .orange)
+    var categoryLabel       = StoreBodyLabel(from: .left, alpha: 1)
+    
+    var priceLabel          = StoreBodyLabel(from: .center, alpha: 1)
+    var xLabel              = StoreBodyLabel(from: .center, alpha: 1)
+    var quantityLabel       = StoreBodyLabel(from: .center, alpha: 1)
+    var totalProductLabel   = StoreBodyLabel(from: .center, alpha: 1)
+    
     
     var product: ProductLocal!
     
@@ -31,7 +32,7 @@ class BasketCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureCell()
-        configure()
+        layoutUI()
     }
     
     
@@ -45,10 +46,14 @@ class BasketCollectionViewCell: UICollectionViewCell {
     
     func set(with basketProduct: ProductLocal) {
         self.product = basketProduct
-        categoryLabel.text = basketProduct.name
         downloadImage(from: basketProduct.id)
+        categoryLabel.text          = product.name
+        priceLabel.text             = "$\(String(format: "%.2f" , product.price))"
+        xLabel.text                 = "x"
+        quantityLabel.text          = String(product.quantity)
+        totalProductLabel.text      = "Total: $\(String(format: "%.2f" , product.price * Double(product.quantity)))"
     }
-    
+    // let doubleStr = String(format: "%.2f", myDouble) // "3.14"
     
     // MARK: - Firebase
     
@@ -67,20 +72,41 @@ class BasketCollectionViewCell: UICollectionViewCell {
     private func configureCell() { backgroundColor = colorAsUIColor.storeBackground }
     
     
-    private func configure() {
-        addSubviews(categoryImageView, categoryLabel)
+    private func layoutUI() {
+        addSubviews(categoryImageView, categoryLabel, priceLabel, xLabel, quantityLabel, totalProductLabel)
+//        debugConfiguration(categoryImageView, categoryLabel, priceLabel, xLabel, quantityLabel, totalProductLabel)
         let padding: CGFloat    = 12
         
         NSLayoutConstraint.activate([
             categoryImageView.centerYAnchor.constraint      (equalTo: self.centerYAnchor),
-            categoryImageView.leadingAnchor.constraint      (equalTo: self.leadingAnchor, constant: padding),
+            categoryImageView.leadingAnchor.constraint      (equalTo: self.leadingAnchor, constant: 5),
             categoryImageView.heightAnchor.constraint       (equalToConstant: 60),
             categoryImageView.widthAnchor.constraint        (equalToConstant: 60),
             
             categoryLabel.topAnchor.constraint              (equalTo: categoryImageView.topAnchor),
-            categoryLabel.leadingAnchor.constraint          (equalTo: categoryImageView.trailingAnchor, constant: 24),
+            categoryLabel.leadingAnchor.constraint          (equalTo: categoryImageView.trailingAnchor, constant: 10),
             categoryLabel.trailingAnchor.constraint         (equalTo: self.trailingAnchor, constant: -padding),
-            categoryLabel.heightAnchor.constraint           (equalToConstant: 40)
+            categoryLabel.heightAnchor.constraint           (equalToConstant: 30),
+            
+            priceLabel.topAnchor.constraint                 (equalTo: categoryLabel.bottomAnchor, constant: 0),
+            priceLabel.leadingAnchor.constraint             (equalTo: categoryLabel.leadingAnchor, constant: 0),
+            priceLabel.widthAnchor.constraint               (equalToConstant: 65),
+            priceLabel.heightAnchor.constraint              (equalToConstant: 30),
+            
+            xLabel.topAnchor.constraint                     (equalTo: priceLabel.topAnchor, constant: 0),
+            xLabel.leadingAnchor.constraint                 (equalTo: priceLabel.trailingAnchor, constant: 0),
+            xLabel.widthAnchor.constraint                   (equalToConstant: 20),
+            xLabel.heightAnchor.constraint                  (equalToConstant: 30),
+            
+            quantityLabel.topAnchor.constraint              (equalTo: priceLabel.topAnchor, constant: 0),
+            quantityLabel.leadingAnchor.constraint          (equalTo: xLabel.trailingAnchor, constant: 0),
+            quantityLabel.widthAnchor.constraint            (equalToConstant: 50),
+            quantityLabel.heightAnchor.constraint           (equalToConstant: 30),
+            
+            totalProductLabel.topAnchor.constraint          (equalTo: priceLabel.topAnchor, constant: 0),
+            totalProductLabel.leadingAnchor.constraint      (equalTo: quantityLabel.trailingAnchor, constant: 0),
+            totalProductLabel.trailingAnchor.constraint     (equalTo: trailingAnchor, constant: -5),
+            totalProductLabel.heightAnchor.constraint       (equalToConstant: 30),
         ])
     }
 }

@@ -147,7 +147,7 @@ extension ProductsVC: UICollectionViewDelegate {
 
 extension ProductsVC: ProductDetailVCDelegate {
     func productAddedToBasket() {
-        self.presentStoreAlertOnMainThread(title: "Horray!", message: "You have succesfully added an item to your basket", button: "Ok", image: AlertImage.happyBlackGirlR056!)
+        self.presentStoreAlertOnMainThread(title: .success, message: .itemAddedToBasket, button: .ok, image: .happyBlackGirlR056)
     }
 }
 
@@ -155,11 +155,11 @@ extension ProductsVC: ProductDetailVCDelegate {
 extension ProductsVC: ProductsVCCollectionViewCellDelegate {
     func didAddProducts() {
         print("Tralal")
-        presentStoreAlertOnMainThread(title: "Success!", message: "You have sucessfully added item to your basket!", button: "Ok", image: AlertImage.happyBlackGirlR056!)
+        presentStoreAlertOnMainThread(title: .success, message: .itemAddedToBasket, button: .ok, image: .happyBlackGirlR056)
     }
     
     func didNotAddProducts(with error: String) {
-        presentStoreAlertOnMainThread(title: "Ops!", message: error, button: "Will do", image: AlertImage.concernedBlackGirlR056!)
+        presentStoreAlertOnMainThread(title: .failure, message: .checkInternet, button: .willDo, image: .concernedBlackGirlR056)
     }
     
     

@@ -11,6 +11,7 @@ import FirebaseUI
 import FirebaseFirestoreSwift
 
 
+
 // MARK: - Enum
 
 
@@ -63,6 +64,10 @@ final class FireManager {
     
     // MARK: - User
     
+    
+    func firebaseNetworkCheck() {
+   
+    }
     
     func getCurrentUserData(completed: @escaping(Result<UserLocal, Error>) -> Void) {
         let userEmail = (Auth.auth().currentUser?.email)!
@@ -181,7 +186,10 @@ final class FireManager {
                 .document(product.id)
                 .getDocument { [weak self] (documentSnapshot, error) in
                     guard let self = self else { return }
-                    if let _ = error { print("no product") }
+                    if let _ = error {
+                        completed(error)
+                        return
+                    }
                     
                     if ((documentSnapshot?.exists) != nil) {
                         currentQuantity = documentSnapshot?["quantity"] as? Int ?? 0
@@ -236,6 +244,40 @@ final class FireManager {
                               "price":          product.price,
                               "discountMlt":    product.discountMlt,
                               "quantity":       quantity + currentQuantity,
+                              "category":       product.category,
+                              "description":    product.description ?? "No product's description",
+                              "favorite":       product.favorite,
+                              "topOffer":       product.topOffer,
+                              "tag":            product.tag]) { error in
+                        if let error = error {
+                            completed(error)
+                        } else {
+                            completed(nil)
+                        }
+                    }
+            }
+    }
+    
+    
+    func updateProductBasketQuantity(for user: UserLocal, with product: ProductLocal, updatedQuantity quantity: Int, completed: @escaping(Error?) -> Void) {
+        Firestore.firestore().collection("userPersistence")
+            .document(user.email)
+            .collection("currentOrder")
+            .document(product.id)
+            .getDocument { (documentSnapshot, error) in
+                if let _ = error {
+                    completed(error)
+                }
+                Firestore.firestore().collection("userPersistence")
+                    .document(user.email)
+                    .collection("currentOrder")
+                    .document(product.id)
+                    .setData(["id":             product.id,
+                              "name":           product.name,
+                              "imageReference": product.imageReference,
+                              "price":          product.price,
+                              "discountMlt":    product.discountMlt,
+                              "quantity":       quantity,
                               "category":       product.category,
                               "description":    product.description ?? "No product's description",
                               "favorite":       product.favorite,

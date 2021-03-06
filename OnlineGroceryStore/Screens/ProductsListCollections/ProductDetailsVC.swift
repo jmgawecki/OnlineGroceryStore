@@ -23,21 +23,22 @@ protocol ProductDetailVCDelegateForHomeVC: class {
 }
 
 
+enum AddToBasketButtonAnimation {
+    case increaseDecrease
+    case increase01
+    case decrease10
+}
+
+
 final class ProductDetailsVC: UIViewController {
     // MARK: - Declaration
     
     
     var productImageView    = ShopImageView(frame: .zero)
-    var productTitleLabel   = StoreBoldLabel(with: "Product's Name",
-                                             from: .center,
-                                             ofsize: 25,
-                                             ofweight: .bold,
-                                             alpha: 1,
-                                             color: colorAsUIColor.storePrimaryText ?? .orange)
     
+    var productTitleLabel   = StoreTitleLabel(from: .left, alpha: 1)
+    var priceLabel          = StoreSecondaryTitleLabel(from: .left, alpha: 1)
     var descriptionTextView = GroceryTextView(with: "Product's Description")
-    var currentUser:        UserLocal!
-    var currentProduct:     ProductLocal!
     
     var addToBasketButton   = StoreVCButton(fontSize: 20, label: "Add")
     
@@ -46,6 +47,9 @@ final class ProductDetailsVC: UIViewController {
     let minusButton         = UIButton()
     let counter             = UITextField()
     var count               = 0
+    
+    var currentUser:        UserLocal!
+    var currentProduct:     ProductLocal!
     
     weak var productDetailVCDelegate: ProductDetailVCDelegate!
     weak var productDetailVCDelegateForHomeVC: ProductDetailVCDelegateForHomeVC!
@@ -58,6 +62,7 @@ final class ProductDetailsVC: UIViewController {
         super.viewDidLoad()
         configureVC()
         configureUIStackView()
+        configureUIElements()
         layoutUI()
         configureStackViewButtons()
         configureAddToBasketButton()
@@ -75,6 +80,7 @@ final class ProductDetailsVC: UIViewController {
         descriptionTextView.text    = currentProduct.description
         counter.text                = String(currentProduct.quantity)
         count                       = currentProduct.quantity
+        priceLabel.text             = "$\(String(format: "%.2f", currentProduct.price))"
     }
     
     
@@ -86,7 +92,19 @@ final class ProductDetailsVC: UIViewController {
     
     @objc private func plusButtonTapped() {
         animateCounterView(counter)
-        count += 1
+            // animateButtonView(addToBasketButton.titleLabel!)
+        if count == 0 {
+            count += 1
+            animateAddButtonBasket0110(addToBasketButton, animationCase: .increase01)
+            // if from 0 to 1 then
+            // 1. change color
+            // 2. change title to Add $totalPrice
+        } else {
+            count += 1
+            animateAddButtonBasket0110(addToBasketButton, animationCase: .increaseDecrease)
+            // if it wasnt 0 ( so 1,2,3,4,5)
+            // 1. change title to Add $newTotalPrice
+        }
         DispatchQueue.main.async { self.counter.text = String(self.count) }
     }
     
@@ -94,7 +112,18 @@ final class ProductDetailsVC: UIViewController {
     @objc private func minusButtonTapped() {
         if count > 0 {
             animateCounterView(counter)
-            count -= 1
+            if count == 1 {
+                count -= 1
+                animateAddButtonBasket0110(addToBasketButton, animationCase: .decrease10)
+                // if from count = 1
+                // 1. change color to gray
+                // 2. change title to "Add"
+            } else {
+                animateAddButtonBasket0110(addToBasketButton, animationCase: .increaseDecrease)
+                count -= 1
+                // if from count >= 2
+                // 2. change title to Add $newTotalPrice
+            }
             DispatchQueue.main.async { self.counter.text = String(self.count) }
         }
     }
@@ -102,8 +131,9 @@ final class ProductDetailsVC: UIViewController {
     
     @objc private func addToBasketButtonTapped(sender: UIView) {
         animateButtonView(sender)
+        
         guard count > 0 else {
-            presentStoreAlertOnMainThread(title: "Oops!", message: "Seem like you haven't add any products! Add some with the + button and try again.", button: "Will do", image: AlertImage.concernedBlackGirlR056!)
+            presentStoreAlertOnMainThread(title: .failure, message: .addSomeQuantity, button: .willDo, image: .concernedBlackGirlR056)
             return
         }
         FireManager.shared.addProductToBasket(for: currentUser, with: currentProduct, howMany: count) { [weak self] (error) in
@@ -117,7 +147,7 @@ final class ProductDetailsVC: UIViewController {
                     self.productDetailVCDelegateForHomeVC.dismissProductDetailVC()
                 }
             case .some(_):
-                self.presentStoreAlertOnMainThread(title: "Oops!", message: AlertMessages.checkInternet, button: "Will do", image: AlertImage.concernedBlackGirlR056!)
+                self.presentStoreAlertOnMainThread(title: .failure, message: .checkInternet, button: .willDo, image: .concernedBlackGirlR056)
             }
         }
 
@@ -151,7 +181,6 @@ final class ProductDetailsVC: UIViewController {
     }
     
     
-    
     private func configureVC() {
         view.backgroundColor = colorAsUIColor.storeBackground
         navigationController?.setNavigationBarHidden(true, animated: true)
@@ -164,21 +193,21 @@ final class ProductDetailsVC: UIViewController {
     
     private func configureUIStackView() {
         plusButton.setImage(UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(scale: .large)), for: .normal)
-        plusButton.tintColor = colorAsUIColor.storeTertiary
+        plusButton.tintColor            = colorAsUIColor.storeTertiary
         
         minusButton.setImage(UIImage(systemName: "minus", withConfiguration: UIImage.SymbolConfiguration(scale: .large)), for: .normal)
-        minusButton.tintColor = colorAsUIColor.storeTertiary
+        minusButton.tintColor           = colorAsUIColor.storeTertiary
         
-        counter.text = String(count)
-        counter.font = UIFont.preferredFont(forTextStyle: .title2)
-        counter.textColor = colorAsUIColor.storeTertiary
-        counter.textAlignment = .center
-        counter.isEnabled = false
+        counter.text                    = String(count)
+        counter.font                    = UIFont.preferredFont(forTextStyle: .title2)
+        counter.textColor               = colorAsUIColor.storeTertiary
+        counter.textAlignment           = .center
+        counter.isEnabled               = false
         
-        productCounter                   = UIStackView()
-        productCounter.axis              = .horizontal
-        productCounter.distribution      = .fillEqually
-        productCounter.alignment         = .center
+        productCounter                  = UIStackView()
+        productCounter.axis             = .horizontal
+        productCounter.distribution     = .fillEqually
+        productCounter.alignment        = .center
         
         productCounter.addArrangedSubview(minusButton)
         productCounter.addArrangedSubview(counter)
@@ -186,35 +215,51 @@ final class ProductDetailsVC: UIViewController {
     }
     
     
+    private func configureUIElements() {
+        addToBasketButton.backgroundColor = .gray
+        addToBasketButton.setTitleColor(.black, for: .normal)
+    }
+    
+    
+    // MARK: - Layout UI
+    
+    
     private func layoutUI() {
         productCounter.translatesAutoresizingMaskIntoConstraints = false
-        addSubviews(productImageView, productTitleLabel, descriptionTextView, productCounter, addToBasketButton)
+        addSubviews(productImageView, productTitleLabel, priceLabel, descriptionTextView, addToBasketButton, productCounter)
+        
+//        debugConfiguration(productImageView, productTitleLabel, priceLabel, descriptionTextView, addToBasketButton, productCounter)
         
         NSLayoutConstraint.activate([
             productImageView.topAnchor.constraint           (equalTo: view.topAnchor, constant: 20),
-            productImageView.centerXAnchor.constraint       (equalTo: view.centerXAnchor),
-            productImageView.widthAnchor.constraint         (equalToConstant: 300),
+            productImageView.leadingAnchor.constraint       (equalTo: view.leadingAnchor, constant: 20),
+            productImageView.trailingAnchor.constraint      (equalTo: view.trailingAnchor, constant: -20),
             productImageView.heightAnchor.constraint        (equalTo: productImageView.widthAnchor),
-                
+            
             productTitleLabel.topAnchor.constraint          (equalTo: productImageView.bottomAnchor, constant: 10),
             productTitleLabel.leadingAnchor.constraint      (equalTo: view.leadingAnchor, constant: 20),
             productTitleLabel.trailingAnchor.constraint     (equalTo: view.trailingAnchor, constant: -20),
             productTitleLabel.heightAnchor.constraint       (equalToConstant: 30),
             
-            productCounter.topAnchor.constraint             (equalTo: productTitleLabel.bottomAnchor, constant: 0),
-            productCounter.centerXAnchor.constraint         (equalTo: view.centerXAnchor),
-            productCounter.widthAnchor.constraint           (equalToConstant: 200),
-            productCounter.heightAnchor.constraint          (equalToConstant: 50),
+            priceLabel.topAnchor.constraint                 (equalTo: productTitleLabel.bottomAnchor, constant: 0),
+            priceLabel.leadingAnchor.constraint             (equalTo: view.leadingAnchor, constant: 20),
+            priceLabel.widthAnchor.constraint               (equalToConstant: 100),
+            priceLabel.heightAnchor.constraint              (equalToConstant: 30),
             
-            addToBasketButton.topAnchor.constraint          (equalTo: productCounter.bottomAnchor, constant: 0),
-            addToBasketButton.centerXAnchor.constraint      (equalTo: view.centerXAnchor),
-            addToBasketButton.widthAnchor.constraint        (equalToConstant: 200),
-            addToBasketButton.heightAnchor.constraint       (equalToConstant: 50),
-            
-            descriptionTextView.topAnchor.constraint        (equalTo: addToBasketButton.bottomAnchor, constant: 10),
+            descriptionTextView.topAnchor.constraint        (equalTo: priceLabel.bottomAnchor, constant: 10),
             descriptionTextView.leadingAnchor.constraint    (equalTo: view.leadingAnchor, constant: 20),
             descriptionTextView.trailingAnchor.constraint   (equalTo: view.trailingAnchor, constant: -20),
             descriptionTextView.heightAnchor.constraint     (equalToConstant: 100),
+            
+            addToBasketButton.bottomAnchor.constraint       (equalTo: view.bottomAnchor, constant: -30),
+            addToBasketButton.leadingAnchor.constraint      (equalTo: view.leadingAnchor, constant: 20),
+            addToBasketButton.widthAnchor.constraint        (equalToConstant: 200),
+            addToBasketButton.heightAnchor.constraint       (equalToConstant: 50),
+            
+            productCounter.bottomAnchor.constraint          (equalTo: view.bottomAnchor, constant: -30),
+            productCounter.trailingAnchor.constraint        (equalTo: view.trailingAnchor, constant: -20),
+            productCounter.widthAnchor.constraint           (equalToConstant: 100),
+            productCounter.heightAnchor.constraint          (equalToConstant: 50),
         ])
     }
     
@@ -232,6 +277,70 @@ final class ProductDetailsVC: UIViewController {
             }
         }
     }
+    
+    
+    private func animateAddButtonBasket0110(_ viewToAnimate: UIButton, animationCase: AddToBasketButtonAnimation) {
+        switch animationCase {
+        case .increaseDecrease:
+            UIView.animate(withDuration: 0.25, animations: {
+                viewToAnimate.titleLabel!.alpha = 0
+            }) { [weak self] (true) in
+                guard let self = self else { return }
+                switch true {
+                case true:
+                    UIView.animate(withDuration: 0.25, animations: {
+                        DispatchQueue.main.async {
+                            viewToAnimate.setTitle("Total $\(String(format: "%.2f", self.currentProduct.price * Double(self.count)))", for: .normal)
+                        }
+                        viewToAnimate.titleLabel!.alpha = 1
+                        
+                    } )
+                case false:
+                    return
+                }
+            }
+            
+        case .increase01:
+            UIView.animate(withDuration: 0.25, animations: {
+                viewToAnimate.alpha = 0
+            }) { (true) in
+                switch true {
+                case true:
+                    UIView.animate(withDuration: 0.25, animations: {
+                        DispatchQueue.main.async {
+                            viewToAnimate.backgroundColor = colorAsUIColor.storeSecondary
+                            viewToAnimate.setTitle("Total $\(String(format: "%.2f", self.currentProduct.price * Double(self.count)))", for: .normal)
+                        }
+                        viewToAnimate.alpha = 1
+                        
+                    } )
+                case false:
+                    return
+                }
+            }
+            
+        case .decrease10:
+            UIView.animate(withDuration: 0.2, animations: {
+                viewToAnimate.alpha = 0
+            }) { (true) in
+                switch true {
+                case true:
+                    UIView.animate(withDuration: 0.2, animations: {
+                        DispatchQueue.main.async {
+                            viewToAnimate.backgroundColor = .lightGray
+                            viewToAnimate.setTitle("Add to Basket", for: .normal)
+                        }
+                        viewToAnimate.alpha = 1
+                        
+                    } )
+                case false:
+                    return
+                }
+            }
+            
+        }
+    }
+    
     
     
     private func animateCounterView(_ viewToAnimate: UIView) {

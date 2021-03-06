@@ -74,7 +74,7 @@ final class OrdersVC: UIViewController {
                 self.updateDataOnCollection()
                 
             case .failure(_):
-                self.presentStoreAlertOnMainThread(title: "Oops!", message: AlertMessages.checkInternet, button: "Will do", image: AlertImage.sadBlackGirlR056!)
+                self.presentStoreAlertOnMainThread(title: .failure, message: .checkInternet, button: .willDo, image: .sadBlackGirlR056)
             }
         }
     }
@@ -126,6 +126,6 @@ extension OrdersVC: UITableViewDelegate {
 
 extension OrdersVC: LastOrderVCDelegates {
     func didRequestDismissal() {
-        self.presentStoreAlertOnMainThread(title: "Horray!", message: "You have succesfully added last order to your basket.", button: "Ok", image: AlertImage.happyBlackGirlR056!)
+        self.presentStoreAlertOnMainThread(title: .success, message: .orderAddedToBasket, button: .ok, image: .happyBlackGirlR056)
     }
 }

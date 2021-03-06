@@ -1,13 +1,13 @@
 //
-//  StoreTitleLabel.swift
+//  StoreSecondaryTitle.swift
 //  OnlineGroceryStore
 //
-//  Created by Jakub Gawecki on 05/03/2021.
+//  Created by Jakub Gawecki on 06/03/2021.
 //
 
 import UIKit
 
-class StoreTitleLabel: UILabel {
+class StoreSecondaryTitleLabel: UILabel {
     //MARK: - Override and Initialise
     
     
@@ -31,10 +31,9 @@ class StoreTitleLabel: UILabel {
     
     private func configure() {
         translatesAutoresizingMaskIntoConstraints = false
-        numberOfLines               = 0
-        font                        = UIFont.systemFont(ofSize: 25, weight: .bold)
-        textColor                   = colorAsUIColor.storePrimaryText ?? .orange
-        adjustsFontSizeToFitWidth   = true
+        numberOfLines       = 0
+        font                = UIFont.systemFont(ofSize: 20, weight: .bold)
+        textColor           = colorAsUIColor.storePrimaryText ?? .orange
     }
 }
 

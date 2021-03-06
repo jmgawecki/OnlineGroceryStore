@@ -75,10 +75,12 @@ class LastOrderVC: UIViewController {
             guard let self = self else { return }
             switch error {
             case .none:
+                print("success")
                 self.lastOrderVCDelegates.didRequestDismissal()
                 _ = self.navigationController?.popViewController(animated: true)
-            case .some(_):
-                self.presentStoreAlertOnMainThread(title: "Oops!", message: AlertMessages.checkInternet, button: "Will do", image: AlertImage.concernedBlackGirlR056!)
+            case .some(let error):
+                print(error)
+                self.presentStoreAlertOnMainThread(title: .failure, message: .checkInternet, button: .willDo, image: .concernedBlackGirlR056)
             }
         }
     }

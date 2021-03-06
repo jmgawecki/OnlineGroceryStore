@@ -8,13 +8,15 @@
 import UIKit
 
 
-import UIKit
+    // MARK: - Protocol & Delegate
+
+
 
 final class StoreAlertVC: UIViewController {
     //MARK: - Declarations
 
     let containerView   = UIView()
-    let titleLabel      = StoreTitleLabel(from: .center, alpha: 1)
+    let titleLabel      = StoreSecondaryTitleLabel(from: .center, alpha: 1)
     let messageLabel    = StoreBodyLabel(from: .left, alpha: 1)
     let actionButton    = StoreVCButton()
     var girlImageView   = ShopImageView(frame: .zero)
@@ -30,12 +32,12 @@ final class StoreAlertVC: UIViewController {
     //MARK: - Initialisers
     
     
-    init(title: String, message: String, buttonTitle: String, image: UIImage) {
+    init(title: AlertTitle, message: AlertMessages, buttonTitle: AlertButtonTitle, image: AlertImage) {
         super.init(nibName: nil, bundle: nil)
-        self.alertTitle     = title
-        self.message        = message
-        self.buttonTitle    = buttonTitle
-        self.girlImage      = image
+        self.alertTitle     = title.rawValue
+        self.message        = message.rawValue
+        self.buttonTitle    = buttonTitle.rawValue
+        self.girlImage      = image.rawValue
     }
     
     
@@ -53,7 +55,10 @@ final class StoreAlertVC: UIViewController {
     //MARK: - Objectives
     
     
-    @objc func dismissVC() { dismiss(animated: true) }
+    @objc func dismissVC(sender: UIView) {
+        animateButtonView(sender)
+        dismiss(animated: true)
+    }
     
     
     //MARK: - Layout configurations
@@ -68,6 +73,9 @@ final class StoreAlertVC: UIViewController {
         messageLabel.text           = message ?? "Unable to complete request"
         messageLabel.numberOfLines  = 4
         girlImageView.image         = girlImage
+        
+        containerView.backgroundColor = colorAsUIColor.storeBackground
+        containerView.layer.cornerRadius = 10
 
         actionButton.setTitle(buttonTitle ?? "Ok", for: .normal)
         actionButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
@@ -99,5 +107,20 @@ final class StoreAlertVC: UIViewController {
             messageLabel.trailingAnchor.constraint  (equalTo: containerView.trailingAnchor, constant: -padding),
             messageLabel.bottomAnchor.constraint    (equalTo: actionButton.topAnchor, constant: -12)
         ])
+    }
+    
+    
+    // MARK: - Animation
+    
+    
+    private func animateButtonView(_ viewToAnimate: UIView) {
+        UIView.animate(withDuration: 0.1, animations: {viewToAnimate.alpha = 0.3}) { (true) in
+            switch true {
+            case true:
+                UIView.animate(withDuration: 0.1, animations: {viewToAnimate.alpha = 1} )
+            case false:
+                return
+            }
+        }
     }
 }

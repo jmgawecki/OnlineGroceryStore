@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import Network
 
 final class HomeVC: UIViewController {
     // MARK: - Declaration
@@ -34,6 +35,7 @@ final class HomeVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        checkNetworkStatus()
         layoutAndConfigureScrollView()
         configureQuickActionMenu()
         layoutUIInScrollView()
@@ -63,6 +65,7 @@ final class HomeVC: UIViewController {
     @objc private func allCategoriesButtonTapped(_ sender: UIView) {
         animateButtonViewAlpha(sender)
         let destVC = CategoriesVC(currentUser: currentUser!)
+        checkNetworkStatus()
         navigationController?.pushViewController(destVC, animated: true)
     }
     
@@ -91,7 +94,26 @@ final class HomeVC: UIViewController {
         childVC.view.frame = containerView.bounds
         childVC.didMove(toParent: self)
     }
-
+    
+    // MARK: - Network Manager
+    
+    
+    func checkNetworkStatus() {
+        let monitor = NWPathMonitor()
+        
+        monitor.pathUpdateHandler = { path in
+            if path.status == .satisfied {
+                print("internet")
+            }
+            else {
+                print("no internet")
+            }
+        }
+        let queue = DispatchQueue(label: "Monitor")
+        monitor.start(queue: queue)
+        
+    }
+    
     
     //MARK: - Firebase
 
@@ -102,7 +124,7 @@ final class HomeVC: UIViewController {
             try Auth.auth().signOut()
         } catch let error {
             isError = error
-            presentStoreAlertOnMainThread(title: "Oops!", message: AlertMessages.checkInternet, button: "Will do", image: AlertImage.sadBlackGirlR056!)
+            presentStoreAlertOnMainThread(title: .failure, message: .checkInternet, button: .willDo, image: .sadBlackGirlR056)
         }
         if isError == nil {
             let destVC = logOutVC()
@@ -239,13 +261,13 @@ final class HomeVC: UIViewController {
 
 extension HomeVC: SpecialOffersViewDelegate {
     func productDetailsRequestedDismissal() {
-        presentStoreAlertOnMainThread(title: "Success!", message: "You have sucessfully added item to your basket!", button: "Ok", image: AlertImage.happyBlackGirlR056!)
+        presentStoreAlertOnMainThread(title: .success, message: .itemAddedToBasket, button: .ok, image: .happyBlackGirlR056)
     }
 }
 
 
 extension HomeVC: LastsVCDelegates {
     func productDetailsRequestedDismissalThroughLasts() {
-        presentStoreAlertOnMainThread(title: "Success!", message: "You have sucessfully added item to your basket!", button: "Ok", image: AlertImage.happyBlackGirlR056!)
+        presentStoreAlertOnMainThread(title: .success, message: .itemAddedToBasket, button: .ok, image: .happyBlackGirlR056)
     }
 }

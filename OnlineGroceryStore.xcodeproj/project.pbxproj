@@ -10,6 +10,9 @@
 		D38B402E3E4B9FDBB38766BB /* Pods_OnlineGroceryStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6627F544C84643FDC03726C /* Pods_OnlineGroceryStore.framework */; };
 		EF1B3E7925F2DE0100F23FA4 /* BasketCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF1B3E7825F2DE0100F23FA4 /* BasketCollectionViewCell.swift */; };
 		EF1B3E8225F2EB8F00F23FA4 /* StoreTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF1B3E8125F2EB8F00F23FA4 /* StoreTitleLabel.swift */; };
+		EF1DE13825F3B809005EC61D /* StoreSecondaryTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF1DE13725F3B809005EC61D /* StoreSecondaryTitleLabel.swift */; };
+		EF1DE13B25F3BF84005EC61D /* BasketProductDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF1DE13A25F3BF84005EC61D /* BasketProductDetailsVC.swift */; };
+		EF1DE14125F4033F005EC61D /* NetworkCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF1DE14025F4033F005EC61D /* NetworkCheck.swift */; };
 		EF51091B25E6E546007A459F /* LogInVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF51091A25E6E546007A459F /* LogInVC.swift */; };
 		EF51091E25E6E54E007A459F /* SignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF51091D25E6E54E007A459F /* SignUpVC.swift */; };
 		EF51092225E6E8C9007A459F /* EntryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF51092125E6E8C9007A459F /* EntryVC.swift */; };
@@ -62,6 +65,9 @@
 		C6627F544C84643FDC03726C /* Pods_OnlineGroceryStore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OnlineGroceryStore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF1B3E7825F2DE0100F23FA4 /* BasketCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketCollectionViewCell.swift; sourceTree = "<group>"; };
 		EF1B3E8125F2EB8F00F23FA4 /* StoreTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreTitleLabel.swift; sourceTree = "<group>"; };
+		EF1DE13725F3B809005EC61D /* StoreSecondaryTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreSecondaryTitleLabel.swift; sourceTree = "<group>"; };
+		EF1DE13A25F3BF84005EC61D /* BasketProductDetailsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketProductDetailsVC.swift; sourceTree = "<group>"; };
+		EF1DE14025F4033F005EC61D /* NetworkCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkCheck.swift; sourceTree = "<group>"; };
 		EF51091A25E6E546007A459F /* LogInVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInVC.swift; sourceTree = "<group>"; };
 		EF51091D25E6E54E007A459F /* SignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVC.swift; sourceTree = "<group>"; };
 		EF51092125E6E8C9007A459F /* EntryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryVC.swift; sourceTree = "<group>"; };
@@ -137,6 +143,15 @@
 				C076D3161D3B6E059276D0ED /* Pods-OnlineGroceryStore.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		EF1DE13D25F3BF90005EC61D /* Basket VCs */ = {
+			isa = PBXGroup;
+			children = (
+				EF8A6F8225E93FDF0029EB00 /* BasketVC.swift */,
+				EF1DE13A25F3BF84005EC61D /* BasketProductDetailsVC.swift */,
+			);
+			path = "Basket VCs";
 			sourceTree = "<group>";
 		};
 		EF51091125E6E29B007A459F /* Screens */ = {
@@ -298,7 +313,7 @@
 				EF5ADCA125E6E2400029A3B9 /* HomeVC.swift */,
 				EF8A6F7C25E93FCF0029EB00 /* SearchVC.swift */,
 				EFE670A325EFF0DC00FB16CD /* Orders VC */,
-				EF8A6F8225E93FDF0029EB00 /* BasketVC.swift */,
+				EF1DE13D25F3BF90005EC61D /* Basket VCs */,
 			);
 			path = "Main Screens";
 			sourceTree = "<group>";
@@ -372,6 +387,7 @@
 				EFA9824A25E81DA2002EB81E /* StoreBoldLabel.swift */,
 				EF1B3E8125F2EB8F00F23FA4 /* StoreTitleLabel.swift */,
 				EFA9777125F3806600D6D276 /* StoreBodyLabel.swift */,
+				EF1DE13725F3B809005EC61D /* StoreSecondaryTitleLabel.swift */,
 			);
 			path = Labels;
 			sourceTree = "<group>";
@@ -379,6 +395,7 @@
 		EFB774BD25EBFEC900BF4B74 /* NetworkManager */ = {
 			isa = PBXGroup;
 			children = (
+				EF1DE14025F4033F005EC61D /* NetworkCheck.swift */,
 				EFB774BE25EBFED600BF4B74 /* FireManager.swift */,
 			);
 			path = NetworkManager;
@@ -521,6 +538,7 @@
 				EFB774BF25EBFED600BF4B74 /* FireManager.swift in Sources */,
 				EFE670A925EFF51500FB16CD /* LastOrderVCCollectionViewCell.swift in Sources */,
 				EFA9825025E823CE002EB81E /* UIView+Ext.swift in Sources */,
+				EF1DE13B25F3BF84005EC61D /* BasketProductDetailsVC.swift in Sources */,
 				EFE6708025EEAE3D00FB16CD /* Order.swift in Sources */,
 				EFA9821625E7E93C002EB81E /* RegisterTextField.swift in Sources */,
 				EF5ADCA225E6E2400029A3B9 /* HomeVC.swift in Sources */,
@@ -544,6 +562,7 @@
 				EF8A6F5225E91AB50029EB00 /* LastsVC.swift in Sources */,
 				EFA9821125E7CF6E002EB81E /* StoreVCButton.swift in Sources */,
 				EFA9777225F3806600D6D276 /* StoreBodyLabel.swift in Sources */,
+				EF1DE13825F3B809005EC61D /* StoreSecondaryTitleLabel.swift in Sources */,
 				EFA981FC25E7C820002EB81E /* Links.swift in Sources */,
 				EF51091E25E6E54E007A459F /* SignUpVC.swift in Sources */,
 				EFA9824725E81898002EB81E /* logOutVC.swift in Sources */,
@@ -554,6 +573,7 @@
 				EFA9825325E84C6D002EB81E /* UserLocal.swift in Sources */,
 				EF5ADCA025E6E2400029A3B9 /* SceneDelegate.swift in Sources */,
 				EF8A6F8025E93FD80029EB00 /* OrdersVC.swift in Sources */,
+				EF1DE14125F4033F005EC61D /* NetworkCheck.swift in Sources */,
 				EFB774F625ED3DC000BF4B74 /* StoreAlertVC.swift in Sources */,
 				EFA9824B25E81DA2002EB81E /* StoreBoldLabel.swift in Sources */,
 				EFA9820325E7CA2C002EB81E /* Constants.swift in Sources */,

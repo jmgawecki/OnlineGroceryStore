@@ -60,7 +60,7 @@ final class BasketVC: UIViewController {
     @objc private func orderButtonTapped(sender: UIView) {
         animateButtonView(sender)
         if basketProducts.isEmpty {
-            presentStoreAlertOnMainThread(title: "Oops!", message: "looks like the basket is empty! Add some products", button: "Will do", image: AlertImage.smilingBlackGirlR065!)
+            presentStoreAlertOnMainThread(title: .failure, message: .basketIsEmpty, button: .willDo, image: .smilingBlackGirlR065)
             return
         }
         FireManager.shared.addOrder(for: currentUser, products: basketProducts, date: createTodaysDate(), idOrder: UUID().uuidString) { [weak self] (error) in
@@ -70,8 +70,8 @@ final class BasketVC: UIViewController {
                 self.clearTheBasket()
                 self.updateDataOnCollection()
                 self.collectionView.reloadData()
-            case .some(let error):
-                self.presentStoreAlertOnMainThread(title: "Oops!", message: AlertMessages.checkInternet, button: "Will do", image: AlertImage.concernedBlackGirlR056!)
+            case .some(_):
+                self.presentStoreAlertOnMainThread(title: .failure, message: .checkInternet, button: .willDo, image: .concernedBlackGirlR056)
             }
         }
     }
@@ -147,7 +147,7 @@ final class BasketVC: UIViewController {
                 self.basketProducts = basketProducts
                 self.updateDataOnCollection()
             case .failure(_):
-                self.presentStoreAlertOnMainThread(title: "Oops!", message: AlertMessages.checkInternet, button: "Will do", image: AlertImage.sadBlackGirlR056!)
+                self.presentStoreAlertOnMainThread(title: .failure, message: .checkInternet, button: .willDo, image: .sadBlackGirlR056)
             }
         }
     }
@@ -157,10 +157,10 @@ final class BasketVC: UIViewController {
         FireManager.shared.clearBasket(for: currentUser, from: basketProducts) { [weak self] (error) in
             guard let self = self else { return }
             if let _ = error {
-                self.presentStoreAlertOnMainThread(title: "Oops", message: AlertMessages.checkInternet, button: "Ok", image: AlertImage.sadBlackGirlR056!)
+                self.presentStoreAlertOnMainThread(title: .failure, message: .checkInternet, button: .ok, image: .sadBlackGirlR056)
             } else {
                 self.basketProducts.removeAll()
-                self.presentStoreAlertOnMainThread(title: "Horray!", message: "You have succesfully placed your order!", button: "Thanks", image: AlertImage.happyBlackGirlR056!)
+                self.presentStoreAlertOnMainThread(title: .success, message: .orderPlaced, button: .ok, image: .happyBlackGirlR056)
             }
         }
     }
@@ -217,8 +217,14 @@ extension BasketVC: UITableViewDelegate {
 
 extension BasketVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let destVC = ProductDetailsVC(currentProduct: basketProducts[indexPath.item], currentUser: currentUser)
+        let destVC = BasketProductDetailsVC(currentProduct: basketProducts[indexPath.item], currentUser: currentUser, basketProductDetailsVCDelegates: self)
         destVC.getProductImage(for: basketProducts[indexPath.item].id)
         navigationController?.present(destVC, animated: true)
+    }
+}
+
+extension BasketVC: BasketProductDetailsVCDelegates {
+    func updatedProductBasketQuantity() {
+        self.presentStoreAlertOnMainThread(title: .success, message: .quantityUpdated, button: .ok, image: .happyBlackGirlR056)
     }
 }

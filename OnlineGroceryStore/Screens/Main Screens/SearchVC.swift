@@ -64,7 +64,7 @@ final class SearchVC: UIViewController {
                 self.updateDataOnCollection()
                 
             case .failure(_):
-                self.presentStoreAlertOnMainThread(title: "Oops!", message: AlertMessages.checkInternet, button: "Will do", image: AlertImage.sadBlackGirlR056!)
+                self.presentStoreAlertOnMainThread(title: .failure, message: .checkInternet, button: .willDo, image: .sadBlackGirlR056)
             }
         }
     }
