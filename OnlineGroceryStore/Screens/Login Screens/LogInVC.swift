@@ -35,13 +35,13 @@ final class LogInVC: UIViewController {
     
     
     @objc private func confirmButtonTapped(_ sender: UIView) {
-        animateButtonView(sender)
+        StoreAnimation.animateClickedView(sender, animationDuration: 0.2, middleAlpha: 0.3, endAlpha: 1)
         let error = valideFields()
         if error != nil {
             print(error!)
             return
         }
-        signInToFirebase()
+        logIn()
         
     }
     
@@ -57,38 +57,32 @@ final class LogInVC: UIViewController {
     private func valideFields() -> String? {
         if email.text           == "",
            password.text        == "" {
-            return "Seems like you haven't filled all fields. Please make sure that all the fields are correct"
+            presentStoreAlertOnMainThread(title: .failure, message: .signUpFillAllFields, button: .willDo, image: .concernedBlackGirlR056)
+            return "Error"
         }
         return nil
     }
-    
-    
-    private func signInToFirebase() {
-        let emailC      = email.text?.trimmingCharacters(in: .whitespacesAndNewlines)
-        let passwordC   = password.text?.trimmingCharacters(in: .whitespacesAndNewlines)
-        Auth.auth().signIn(withEmail: emailC!, password: passwordC!) { [weak self] (result, error) in
-            guard let self = self else { return }
-            if let error = error {
-                print(error.localizedDescription)
-                return
-                
-            } else {
-                FireManager.shared.getCurrentUserData { (result) in
-                    switch result {
-                    case .success(let user):
-                        self.pushToHomeScreen(with: user)
-                    case .failure(let error):
-                        print(error)
-                    }
-                }
-                
-            }
-        }
-    }
+
     
     private func pushToHomeScreen(with currentUser: UserLocal) {
         let destVC = HomeVC(currentUser: currentUser)
         navigationController?.pushViewController(destVC, animated: true)
+    }
+    
+    
+    // MARK: - Firebase
+    
+    
+    private func logIn() {
+        FireManager.shared.signInToFirebase(email: email.text!, password: password.text!) { [weak self] (result) in
+            guard let self = self else { return }
+            switch result {
+            case .success(let user):
+                self.pushToHomeScreen(with: user)
+            case .failure(_):
+                self.presentStoreAlertOnMainThread(title: .failure, message: .checkInternet, button: .willDo, image: .concernedBlackGirlR056)
+            }
+        }
     }
     
     
@@ -139,20 +133,4 @@ final class LogInVC: UIViewController {
             loginFormStackV.centerXAnchor.constraint    (equalTo: view.centerXAnchor),
         ])
     }
-    
-    
-    // MARK: - Animation
-    
-    
-    private func animateButtonView(_ viewToAnimate: UIView) {
-        UIView.animate(withDuration: 0.2, animations: {viewToAnimate.alpha = 0.3}) { (true) in
-            switch true {
-            case true:
-                UIView.animate(withDuration: 0.2, animations: {viewToAnimate.alpha = 1} )
-            case false:
-                return
-            }
-        }
-    }
-   
 }

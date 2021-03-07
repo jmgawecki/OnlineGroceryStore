@@ -78,7 +78,7 @@ class BasketProductDetailsVC: UIViewController {
     
     
     @objc private func plusButtonTapped() {
-        animateCounterView(counter)
+        StoreAnimation.animateClickedView(counter, animationDuration: 0.1, middleAlpha: 0.3, endAlpha: 1)
         count += 1
         DispatchQueue.main.async { self.counter.text = String(self.count) }
     }
@@ -86,7 +86,7 @@ class BasketProductDetailsVC: UIViewController {
     
     @objc private func minusButtonTapped() {
         if count > 0 {
-            animateCounterView(counter)
+            StoreAnimation.animateClickedView(counter, animationDuration: 0.1, middleAlpha: 0.3, endAlpha: 1)
             count -= 1
             DispatchQueue.main.async { self.counter.text = String(self.count) }
         }
@@ -94,7 +94,7 @@ class BasketProductDetailsVC: UIViewController {
     
     
     @objc private func addToBasketButtonTapped(sender: UIView) {
-        animateButtonView(sender)
+        StoreAnimation.animateClickedView(sender, animationDuration: 0.2, middleAlpha: 0.3, endAlpha: 1)
         guard count > 0 else {
             presentStoreAlertOnMainThread(title: .failure, message: .itemAddedToBasket, button: .willDo, image: .concernedBlackGirlR056)
             return
@@ -204,34 +204,6 @@ class BasketProductDetailsVC: UIViewController {
             descriptionTextView.heightAnchor.constraint     (equalToConstant: 100),
         ])
     }
-    
-    
-    // MARK: - Animation
-    
-    
-    private func animateButtonView(_ viewToAnimate: UIView) {
-        UIView.animate(withDuration: 0.2, animations: {viewToAnimate.alpha = 0.3}) { (true) in
-            switch true {
-            case true:
-                UIView.animate(withDuration: 0.2, animations: {viewToAnimate.alpha = 1} )
-            case false:
-                return
-            }
-        }
-    }
-    
-    
-    private func animateCounterView(_ viewToAnimate: UIView) {
-        UIView.animate(withDuration: 0.1, animations: {viewToAnimate.alpha = 0.3}) { (true) in
-            switch true {
-            case true:
-                UIView.animate(withDuration: 0.1, animations: {viewToAnimate.alpha = 1} )
-            case false:
-                return
-            }
-        }
-    }
-    
 }
 
 

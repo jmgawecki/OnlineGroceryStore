@@ -39,60 +39,28 @@ final class SignUpVC: UIViewController {
     
     
     @objc private func confirmButtonTapped(_ sender: UIView) {
-        animateButtonView(sender)
+        StoreAnimation.animateClickedView(sender, animationDuration: 0.2, middleAlpha: 0.3, endAlpha: 1)
         // validate
         let error = valideFields()
         if error != nil {
             print(error!)
             return
         }
-        createUserInFirebase()
-        
+        createUser()
     }
     
     
     // MARK: - Private Function
     
     
-    private func configureConfirmButton() {
-        confirmButton.addTarget(self, action: #selector(confirmButtonTapped), for: .touchUpInside)
-    }
+    private func configureConfirmButton() { confirmButton.addTarget(self, action: #selector(confirmButtonTapped), for: .touchUpInside) }
     
-    
-    private func createUserInFirebase() {
-        // trim the fields from white spaces and extra empty lines
-        let firstNameC      = firstName.text?.trimmingCharacters    (in: .whitespacesAndNewlines)
-        let lastNameC       = lastName.text?.trimmingCharacters     (in: .whitespacesAndNewlines)
-        let emailC          = email.text?.trimmingCharacters        (in: .whitespacesAndNewlines)
-        let passwordC       = password.text?.trimmingCharacters     (in: .whitespacesAndNewlines)
-        // create the user
-        Auth.auth().createUser(withEmail: emailC!, password: passwordC!) { [weak self] (result, error) in
-            guard let self  = self else { return }
-            if let error    = error {
-                print(error.localizedDescription)
-                return
-            }
-            let fireStore   = Firestore.firestore()
-            
-            self.currentUser = UserLocal(uid: (result?.user.uid)!, firstName: firstNameC!, lastName: lastNameC!, email: (result?.user.email)!)
-            
-            fireStore.collection("usersData").document(emailC!).setData(["firstname" : firstNameC!,
-                                                                         "lastname"  : lastNameC!,
-                                                                         "uid"       : result!.user.uid]) { (error) in
-                if error != nil {
-                    print("First name and last name saving failed")
-                }
-            }
-            self.pushToHomeScreen(with: self.currentUser!)
-            
-            
-        }
-    }
     
     private func pushToHomeScreen(with currentUser: UserLocal) {
         let destVC = HomeVC(currentUser: currentUser)
         navigationController?.pushViewController(destVC, animated: true)
     }
+    
     
     private func valideFields() -> String? {
         if firstName.text       == "",
@@ -100,17 +68,49 @@ final class SignUpVC: UIViewController {
            email.text           == "",
            password.text        == "",
            confirmPassword.text == "" {
-            return "Seems like you haven't field all fields. Please make sure that all the fields are correct"
+            presentStoreAlertOnMainThread(title: .failure, message: .signUpFillAllFields, button: .willDo, image: .concernedBlackGirlR056)
+            return "Error"
         }
         if password.text != confirmPassword.text {
-            return "Password are not matching! Please make sure both password are correct."
+            presentStoreAlertOnMainThread(title: .failure, message: .passwordsArentMatching, button: .willDo, image: .concernedBlackGirlR056)
+            return "Error"
         } else if HelpFunctions.isPasswordValid(for: password.text!) == false {
-            return "Password is not valid."
+            presentStoreAlertOnMainThread(title: .failure, message: .passwordBadFormat, button: .willDo, image: .sadBlackGirlR056)
+            return "Error"
         }
         return nil
     }
     
+    
+    // MARK: - Firebase
+    
+    
+    func createUser() {
+        FireManager.shared.createUserInFirebase(firstName: firstName.text!, lastName: lastName.text!, email: email.text!, password: password.text!) { [weak self] (result) in
+            guard let self = self else { return }
+            switch result {
+            case .success(let currentUser):
+                self.currentUser = currentUser
+                self.pushToHomeScreen(with: self.currentUser!)
+            case .failure(_):
+                self.presentStoreAlertOnMainThread(title: .failure, message: .checkInternet, button: .willDo, image: .concernedBlackGirlR056)
+            }
+        }
+    }
+    
+    
     // MARK: - UI Configuration
+    
+    
+    private func configureVC() {
+        view.backgroundColor = colorAsUIColor.storeBackground
+        title = "Sign Up"
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+
+    
+    private func configureUIElements() { shopImageView.image = imageAsUIImage.shoppingLadyr071 }
     
     
     private func configureRegisterStackView() {
@@ -130,22 +130,7 @@ final class SignUpVC: UIViewController {
     }
     
     
-    
-    // MARK: - UI Layout Configuration
-    
-    
-    private func configureVC() {
-        view.backgroundColor = colorAsUIColor.storeBackground
-        title = "Sign Up"
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.setNavigationBarHidden(false, animated: true)
-    }
-    
-
-    
-    private func configureUIElements() {
-        shopImageView.image = imageAsUIImage.shoppingLadyr071
-    }
+    // MARK: - UI Layout
     
     
     private func layoutUIElements() {
@@ -163,20 +148,4 @@ final class SignUpVC: UIViewController {
             registerFormStackV.centerXAnchor.constraint     (equalTo: view.centerXAnchor),
         ])
     }
-    
-    
-    // MARK: - Animation
-    
-    
-    private func animateButtonView(_ viewToAnimate: UIView) {
-        UIView.animate(withDuration: 0.2, animations: {viewToAnimate.alpha = 0.3}) { (true) in
-            switch true {
-            case true:
-                UIView.animate(withDuration: 0.2, animations: {viewToAnimate.alpha = 1} )
-            case false:
-                return
-            }
-        }
-    }
-   
 }

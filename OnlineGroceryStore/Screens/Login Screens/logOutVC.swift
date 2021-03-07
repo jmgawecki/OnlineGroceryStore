@@ -46,14 +46,14 @@ final class logOutVC: UIViewController {
     
     
     @objc private func loginButtonTapped(_ sender: UIView) {
-        animateButtonView(sender)
+        StoreAnimation.animateClickedView(sender, animationDuration: 0.2, middleAlpha: 0.3, endAlpha: 1)
         let destVC = LogInVC()
         navigationController?.pushViewController(destVC, animated: true)
     }
     
     
     @objc private func registerButtonTapped(_ sender: UIView) {
-        animateButtonView(sender)
+        StoreAnimation.animateClickedView(sender, animationDuration: 0.2, middleAlpha: 0.3, endAlpha: 1)
         let destVC = SignUpVC()
         navigationController?.pushViewController(destVC, animated: true)
     }
@@ -119,20 +119,4 @@ final class logOutVC: UIViewController {
             buttonsStack.centerXAnchor.constraint       (equalTo: view.centerXAnchor),
         ])
     }
-    
-    
-    // MARK: - Animation
-    
-    
-    private func animateButtonView(_ viewToAnimate: UIView) {
-        UIView.animate(withDuration: 0.2, animations: {viewToAnimate.alpha = 0.3}) { (true) in
-            switch true {
-            case true:
-                UIView.animate(withDuration: 0.2, animations: {viewToAnimate.alpha = 1} )
-            case false:
-                return
-            }
-        }
-    }
-   
 }

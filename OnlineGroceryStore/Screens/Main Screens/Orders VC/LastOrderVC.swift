@@ -62,7 +62,7 @@ class LastOrderVC: UIViewController {
     
     
     @objc private func addToBasketButtonTapped(sender: UIView) {
-        animateButtonView(sender)
+        StoreAnimation.animateClickedView(sender, animationDuration: 0.2, middleAlpha: 0.3, endAlpha: 1)
         addOrderToBasket()
     }
     
@@ -150,20 +150,5 @@ class LastOrderVC: UIViewController {
             collectionView.trailingAnchor.constraint    (equalTo: view.trailingAnchor, constant: 0),
             collectionView.bottomAnchor.constraint      (equalTo: addToBasketButton.topAnchor, constant: 0),
         ])
-    }
-    
-    
-    // MARK: - Animation
-    
-    
-    private func animateButtonView(_ viewToAnimate: UIView) {
-        UIView.animate(withDuration: 0.2, animations: {viewToAnimate.alpha = 0.3}) { (true) in
-            switch true {
-            case true:
-                UIView.animate(withDuration: 0.2, animations: {viewToAnimate.alpha = 1} )
-            case false:
-                return
-            }
-        }
     }
 }

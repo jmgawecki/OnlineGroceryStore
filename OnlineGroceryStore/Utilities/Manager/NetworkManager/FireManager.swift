@@ -87,6 +87,59 @@ final class FireManager {
     }
     
     
+    func createUserInFirebase(firstName: String, lastName: String, email: String, password: String, completed: @escaping(Result<UserLocal, Error>) -> Void ) {
+        // trim the fields from white spaces and extra empty lines
+        let firstNameC      = firstName.trimmingCharacters    (in: .whitespacesAndNewlines)
+        let lastNameC       = lastName.trimmingCharacters     (in: .whitespacesAndNewlines)
+        let emailC          = email.trimmingCharacters        (in: .whitespacesAndNewlines)
+        let passwordC       = password.trimmingCharacters     (in: .whitespacesAndNewlines)
+        // create the user
+        Auth.auth().createUser(withEmail: emailC, password: passwordC) { [weak self] (result, error) in
+            guard let self  = self else { return }
+            if let error    = error {
+                completed(.failure(error))
+                return
+            }
+            
+            let currentUser = UserLocal(uid: (result?.user.uid)!, firstName: firstNameC, lastName: lastNameC, email: (result?.user.email)!)
+            
+            self.db.collection("usersData").document(emailC).setData(["firstname" : firstNameC,
+                                                                      "lastname"  : lastNameC,
+                                                                      "uid"       : result!.user.uid]) { (error) in
+                if let error = error {
+                    completed(.failure(error))
+                    return
+                } else {
+                    completed(.success(currentUser))
+                }
+            }
+        }
+    }
+    
+    
+    func signInToFirebase(email: String, password: String, completed: @escaping(Result<UserLocal, Error>) -> Void) {
+        let emailC      = email.trimmingCharacters(in: .whitespacesAndNewlines)
+        let passwordC   = password.trimmingCharacters(in: .whitespacesAndNewlines)
+        Auth.auth().signIn(withEmail: emailC, password: passwordC) { (result, error) in
+            if let error = error {
+                completed(.failure(error))
+                return
+                
+            } else {
+                FireManager.shared.getCurrentUserData { (result) in
+                    switch result {
+                    case .success(let user):
+                        completed(.success(user))
+                        
+                    case .failure(let error):
+                        completed(.failure(error))
+                    }
+                }
+            }
+        }
+    }
+    
+    
     // MARK: - Product
     
     

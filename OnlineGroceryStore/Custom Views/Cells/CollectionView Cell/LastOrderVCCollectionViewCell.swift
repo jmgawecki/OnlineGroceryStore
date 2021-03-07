@@ -58,7 +58,7 @@ class LastOrderVCCollectionViewCell: UICollectionViewCell {
     
     
     @objc private func addToBasketButtonTapped(sender: UIView) {
-        animateButtonView(sender)
+        StoreAnimation.animateClickedView(sender, animationDuration: 0.2, middleAlpha: 0.3, endAlpha: 1)
         FireManager.shared.addProductToBasket(for: currentUser, with: product, howMany: count) { (error) in
             if let error = error {
                 print(error.localizedDescription)
@@ -171,32 +171,5 @@ class LastOrderVCCollectionViewCell: UICollectionViewCell {
             productTitleLabel.trailingAnchor.constraint (equalTo: trailingAnchor, constant: 0),
             productTitleLabel.heightAnchor.constraint   (equalToConstant: 60),
         ])
-    }
-    
-    
-    // MARK: - Animation
-    
-    
-    private func animateButtonView(_ viewToAnimate: UIView) {
-        UIView.animate(withDuration: 0.2, animations: {viewToAnimate.alpha = 0.3}) { (true) in
-            switch true {
-            case true:
-                UIView.animate(withDuration: 0.2, animations: {viewToAnimate.alpha = 1} )
-            case false:
-                return
-            }
-        }
-    }
-    
-    
-    private func animateCounterView(_ viewToAnimate: UIView) {
-        UIView.animate(withDuration: 0.1, animations: {viewToAnimate.alpha = 0.3}) { (true) in
-            switch true {
-            case true:
-                UIView.animate(withDuration: 0.1, animations: {viewToAnimate.alpha = 1} )
-            case false:
-                return
-            }
-        }
     }
 }

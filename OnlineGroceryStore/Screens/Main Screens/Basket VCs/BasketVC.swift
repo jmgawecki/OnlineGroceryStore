@@ -17,10 +17,6 @@ final class BasketVC: UIViewController {
     var collectionView:     UICollectionView!
     var dataSource:         UICollectionViewDiffableDataSource<Section, ProductLocal>!
     var snapshot:           NSDiffableDataSourceSnapshot<Section, ProductLocal>!
-//    
-//    var basketTableView:    UITableView!
-//    var dataSource:         UITableViewDiffableDataSource<Section, ProductLocal>!
-//    var snapshot:           NSDiffableDataSourceSnapshot<Section, ProductLocal>!
 
     var orderButton         = StoreVCButton(fontSize: 20, label: "Place Order")
   
@@ -58,7 +54,7 @@ final class BasketVC: UIViewController {
     
     
     @objc private func orderButtonTapped(sender: UIView) {
-        animateButtonView(sender)
+        StoreAnimation.animateClickedView(sender, animationDuration: 0.2, middleAlpha: 0.3, endAlpha: 1)
         if basketProducts.isEmpty {
             presentStoreAlertOnMainThread(title: .failure, message: .basketIsEmpty, button: .willDo, image: .smilingBlackGirlR065)
             return
@@ -186,21 +182,6 @@ final class BasketVC: UIViewController {
             collectionView.trailingAnchor.constraint   (equalTo: view.trailingAnchor, constant: 0),
             collectionView.bottomAnchor.constraint     (equalTo: orderButton.topAnchor, constant: -5),
         ])
-    }
-    
-    
-    // MARK: - Animation
-    
-    
-    private func animateButtonView(_ viewToAnimate: UIView) {
-        UIView.animate(withDuration: 0.2, animations: {viewToAnimate.alpha = 0.3}) { (true) in
-            switch true {
-            case true:
-                UIView.animate(withDuration: 0.2, animations: {viewToAnimate.alpha = 1} )
-            case false:
-                return
-            }
-        }
     }
 }
 

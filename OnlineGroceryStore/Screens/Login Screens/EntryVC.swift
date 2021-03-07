@@ -46,7 +46,7 @@ final class EntryVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         configureVC()
-        performContentAnimation(firstLabel: welcomeLabel, secondLabel: bodyLabel, anArrow: nil)
+        StoreAnimation.animateEntryVC(firstLabel: welcomeLabel, secondLabel: bodyLabel, anArrow: nil)
     }
     
     
@@ -54,14 +54,14 @@ final class EntryVC: UIViewController {
     
     
     @objc private func loginButtonTapped(_ sender: UIView) {
-        animateButtonView(sender)
+        StoreAnimation.animateClickedView(sender, animationDuration: 0.2, middleAlpha: 0.3, endAlpha: 1)
         let destVC = LogInVC()
         navigationController?.pushViewController(destVC, animated: true)
     }
     
     
     @objc private func registerButtonTapped(_ sender: UIView) {
-        animateButtonView(sender)
+        StoreAnimation.animateClickedView(sender, animationDuration: 0.2, middleAlpha: 0.3, endAlpha: 1)
         let destVC = SignUpVC()
         navigationController?.pushViewController(destVC, animated: true)
     }
@@ -108,7 +108,6 @@ final class EntryVC: UIViewController {
     
     
     private func layoutUIElements() {
-//        debugConfiguration(shopImageView,buttonsStack,welcomeLabel,bodyLabel)
         addSubviews(shopImageView, buttonsStack, welcomeLabel, bodyLabel)
         
         NSLayoutConstraint.activate([
@@ -133,39 +132,4 @@ final class EntryVC: UIViewController {
             buttonsStack.centerXAnchor.constraint       (equalTo: view.centerXAnchor),
         ])
     }
-    
-    
-    // MARK: - Animation
-    
-    
-    private func animateButtonView(_ viewToAnimate: UIView) {
-        UIView.animate(withDuration: 0.2, animations: {viewToAnimate.alpha = 0.3}) { (true) in
-            switch true {
-            case true:
-                UIView.animate(withDuration: 0.2, animations: {viewToAnimate.alpha = 1} )
-            case false:
-                return
-            }
-        }
-    }
-    
-    private func performContentAnimation(firstLabel: UIView, secondLabel: UIView, anArrow: UIImageView?) {
-        UIView.animate(withDuration: 1) {
-            firstLabel.alpha = 1
-        } completion: { (_) in
-            UIView.animate(withDuration: 0.75) {
-                secondLabel.alpha = 1
-            } completion: { (_) in
-                UIView.animate(withDuration: 0.5) {
-                    if anArrow != nil{
-                        anArrow!.alpha = 1
-                    }
-                    
-                }
-            }
-
-        }
-
-    }
-   
 }

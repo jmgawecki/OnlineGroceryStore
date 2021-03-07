@@ -57,6 +57,7 @@
 		EFE6709F25EFEE6700FB16CD /* OrdersVCTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE6709E25EFEE6700FB16CD /* OrdersVCTableViewCell.swift */; };
 		EFE670A525EFF10A00FB16CD /* LastOrderVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE670A425EFF10A00FB16CD /* LastOrderVC.swift */; };
 		EFE670A925EFF51500FB16CD /* LastOrderVCCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE670A825EFF51500FB16CD /* LastOrderVCCollectionViewCell.swift */; };
+		EFFC72EF25F513AD00376BDB /* StoreAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFFC72EE25F513AD00376BDB /* StoreAnimation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -114,6 +115,7 @@
 		EFE6709E25EFEE6700FB16CD /* OrdersVCTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdersVCTableViewCell.swift; sourceTree = "<group>"; };
 		EFE670A425EFF10A00FB16CD /* LastOrderVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastOrderVC.swift; sourceTree = "<group>"; };
 		EFE670A825EFF51500FB16CD /* LastOrderVCCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastOrderVCCollectionViewCell.swift; sourceTree = "<group>"; };
+		EFFC72EE25F513AD00376BDB /* StoreAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreAnimation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -224,6 +226,7 @@
 				EFA9820225E7CA2C002EB81E /* Constants.swift */,
 				EFA9822E25E7FB43002EB81E /* HelpFunctions.swift */,
 				EF8A6F6025E92D860029EB00 /* CollectionLayouts.swift */,
+				EFFC72EE25F513AD00376BDB /* StoreAnimation.swift */,
 			);
 			path = UIHelper;
 			sourceTree = "<group>";
@@ -580,6 +583,7 @@
 				EF8A6F9125E973E90029EB00 /* ProductsVC.swift in Sources */,
 				EF8A6F8325E93FDF0029EB00 /* BasketVC.swift in Sources */,
 				EFE6709F25EFEE6700FB16CD /* OrdersVCTableViewCell.swift in Sources */,
+				EFFC72EF25F513AD00376BDB /* StoreAnimation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

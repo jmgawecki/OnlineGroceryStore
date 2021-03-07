@@ -63,7 +63,7 @@ final class HomeVC: UIViewController {
     
     
     @objc private func allCategoriesButtonTapped(_ sender: UIView) {
-        animateButtonViewAlpha(sender)
+        StoreAnimation.animateClickedView(sender, animationDuration: 0.2, middleAlpha: 0.3, endAlpha: 1)
         let destVC = CategoriesVC(currentUser: currentUser!)
         checkNetworkStatus()
         navigationController?.pushViewController(destVC, animated: true)
@@ -76,12 +76,6 @@ final class HomeVC: UIViewController {
     private func configureVC() {
         view.backgroundColor = colorAsUIColor.storeBackground
         navigationController?.setNavigationBarHidden(true, animated: true)
-    }
-    
-    
-    private func configureUIElements() {
-        vawingGirlImageView.image = imageAsUIImage.wavingBlackGirlR056
-        vawingGirlImageView.alpha = 0
     }
     
     
@@ -142,8 +136,8 @@ final class HomeVC: UIViewController {
     
     
     private func animateViews() {
-        animateViewAlpha(hiNameLabel)
-        animateViewAlpha(vawingGirlImageView)
+        StoreAnimation.animateViewToAppear(hiNameLabel, animationDuration: 1, animationDelay: 0.5)
+        StoreAnimation.animateViewToAppear(vawingGirlImageView, animationDuration: 1, animationDelay: 0.5)
     }
     
     
@@ -151,18 +145,24 @@ final class HomeVC: UIViewController {
     
     
     private func configureQuickActionMenu() {
-        quickActionMenu  = StoreVCButton(fontSize: 18, label: "More")
-        quickActionMenu.menu = UIMenu( options: .displayInline,
-                                       children: [ UIAction(title: "Log out", handler: { [weak self] (_) in
-                                        guard let self = self else { return }
-                                        self.signOut()
-                                       }),
-                                       UIAction(title: "Personal data", handler: { (_) in
-                                        print("tralalallalalalaa")
-                                       })])
+        quickActionMenu             = StoreVCButton(fontSize: 18, label: "More")
+        quickActionMenu.menu        = UIMenu(options: .displayInline,
+                                             children: [ UIAction(title: "Log out", handler: { [weak self] (_) in
+                                                guard let self = self else { return }
+                                                self.signOut()
+                                             }),
+                                             UIAction(title: "Personal data", handler: { (_) in
+                                                print("tralalallalalalaa")
+                                             })])
         quickActionMenu.showsMenuAsPrimaryAction = true
     }
     
+    
+    private func configureUIElements() {
+        vawingGirlImageView.image   = imageAsUIImage.wavingBlackGirlR056
+        vawingGirlImageView.alpha   = 0
+        hiNameLabel.text            = "Hi \(currentUser?.firstName ?? "")"
+    }
     
     
     //MARK: - Layout UI
@@ -230,28 +230,6 @@ final class HomeVC: UIViewController {
             allCategoriesButton.trailingAnchor.constraint   (equalTo: contentView.trailingAnchor, constant: -10),
             allCategoriesButton.heightAnchor.constraint     (equalToConstant: 60),
         ])
-    }
-    
-    
-    // MARK: - Animation
-    
-    
-    private func animateViewAlpha(_ viewToAnimate: UIView) {
-        UIView.animate(withDuration: 1, delay: 0.5) {
-            viewToAnimate.alpha = 1
-        }
-    }
-    
-    
-    private func animateButtonViewAlpha(_ viewToAnimate: UIView) {
-        UIView.animate(withDuration: 0.2, animations: {viewToAnimate.alpha = 0.3}) { (true) in
-            switch true {
-            case true:
-                UIView.animate(withDuration: 0.2, animations: {viewToAnimate.alpha = 1} )
-            case false:
-                return
-            }
-        }
     }
 }
 

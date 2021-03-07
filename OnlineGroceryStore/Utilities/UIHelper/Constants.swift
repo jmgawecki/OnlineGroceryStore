@@ -56,6 +56,9 @@ enum AlertMessages: String {
     case orderPlaced                    = "You have succesfully placed your order!"
     case quantityUpdated                = "Item's quantity successfully updated!"
     case addSomeQuantity                = "Seem like you haven't add any products! Add some with the + button and try again.."
+    case passwordsArentMatching         = "Password are not matching! Please make sure both password are correct."
+    case passwordBadFormat              = "Password is not valid. Please make sure that the password inlcudes: capital letter, 1 number, 1 special character and at least 8 characters"
+    case signUpFillAllFields            = "Seems like you haven't field all fields. Please make sure that all the fields are correct"
 }
 
 
