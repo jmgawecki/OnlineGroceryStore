@@ -36,9 +36,13 @@ final class ProductDetailsVC: UIViewController {
     
     var productImageView    = ShopImageView(frame: .zero)
     
+    var contentView         = UIView()
+    
     var productTitleLabel   = StoreTitleLabel(from: .left, alpha: 1)
-    var priceLabel          = StoreSecondaryTitleLabel(from: .left, alpha: 1)
+    var priceLabel          = StoreTitleLabel(from: .left, alpha: 1)
     var descriptionTextView = GroceryTextView(with: "Product's Description")
+    
+    var buttonContentView   = UIView()
     
     var addToBasketButton   = StoreVCButton(fontSize: 20, label: "Add")
     
@@ -182,7 +186,7 @@ final class ProductDetailsVC: UIViewController {
     
     
     private func configureVC() {
-        view.backgroundColor = colorAsUIColor.storeBackground
+        view.backgroundColor = StoreUIColor.creamWhite
         navigationController?.setNavigationBarHidden(true, animated: true)
         navigationController?.navigationBar.prefersLargeTitles = true
     }
@@ -193,14 +197,14 @@ final class ProductDetailsVC: UIViewController {
     
     private func configureUIStackView() {
         plusButton.setImage(UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(scale: .large)), for: .normal)
-        plusButton.tintColor            = colorAsUIColor.storeTertiary
+        plusButton.tintColor            = .white
+        
         
         minusButton.setImage(UIImage(systemName: "minus", withConfiguration: UIImage.SymbolConfiguration(scale: .large)), for: .normal)
-        minusButton.tintColor           = colorAsUIColor.storeTertiary
-        
+        minusButton.tintColor           = .white
         counter.text                    = String(count)
-        counter.font                    = UIFont.preferredFont(forTextStyle: .title2)
-        counter.textColor               = colorAsUIColor.storeTertiary
+        counter.font                    = UIFont.systemFont(ofSize: 25, weight: .bold)
+        counter.textColor               = .white
         counter.textAlignment           = .center
         counter.isEnabled               = false
         
@@ -216,8 +220,17 @@ final class ProductDetailsVC: UIViewController {
     
     
     private func configureUIElements() {
-        addToBasketButton.backgroundColor = .gray
-        addToBasketButton.setTitleColor(.black, for: .normal)
+        addToBasketButton.backgroundColor       = .white
+        addToBasketButton.setTitleColor(StoreUIColor.grapefruit, for: .normal)
+        productImageView.layer.cornerRadius     = 0
+        
+        contentView.backgroundColor             = StoreUIColor.creamWhite
+        contentView.layer.cornerRadius          = 65
+        
+        buttonContentView.backgroundColor       = StoreUIColor.grapefruit
+        buttonContentView.layer.cornerRadius    = 65
+        
+        priceLabel.textColor                    = .white
     }
     
     
@@ -225,41 +238,58 @@ final class ProductDetailsVC: UIViewController {
     
     
     private func layoutUI() {
-        productCounter.translatesAutoresizingMaskIntoConstraints = false
-        addSubviews(productImageView, productTitleLabel, priceLabel, descriptionTextView, addToBasketButton, productCounter)
+        productCounter.translatesAutoresizingMaskIntoConstraints        = false
+        contentView.translatesAutoresizingMaskIntoConstraints           = false
+        buttonContentView.translatesAutoresizingMaskIntoConstraints     = false
+//        addSubviews(productImageView, productTitleLabel, priceLabel, descriptionTextView, addToBasketButton, productCounter)
+        addSubviews(productImageView, contentView)
         
-//        debugConfiguration(productImageView, productTitleLabel, priceLabel, descriptionTextView, addToBasketButton, productCounter)
+        contentView.addSubviews(productTitleLabel, descriptionTextView, buttonContentView)
+        
+        buttonContentView.addSubviews(priceLabel, addToBasketButton, productCounter)
+        
+//        debugConfiguration(productImageView, productTitleLabel, priceLabel, descriptionTextView, addToBasketButton, productCounter, contentView, buttonContentView)
         
         NSLayoutConstraint.activate([
-            productImageView.topAnchor.constraint           (equalTo: view.topAnchor, constant: 20),
-            productImageView.leadingAnchor.constraint       (equalTo: view.leadingAnchor, constant: 20),
-            productImageView.trailingAnchor.constraint      (equalTo: view.trailingAnchor, constant: -20),
+            productImageView.topAnchor.constraint           (equalTo: view.topAnchor, constant: 0),
+            productImageView.leadingAnchor.constraint       (equalTo: view.leadingAnchor, constant: 0),
+            productImageView.trailingAnchor.constraint      (equalTo: view.trailingAnchor, constant: 0),
             productImageView.heightAnchor.constraint        (equalTo: productImageView.widthAnchor),
+            
+            contentView.topAnchor.constraint                (equalTo: productImageView.bottomAnchor, constant: -60),
+            contentView.leadingAnchor.constraint            (equalTo: view.leadingAnchor, constant: 0),
+            contentView.trailingAnchor.constraint           (equalTo: view.trailingAnchor, constant: 60),
+            contentView.bottomAnchor.constraint             (equalTo: view.bottomAnchor, constant: 30),
             
             productTitleLabel.topAnchor.constraint          (equalTo: productImageView.bottomAnchor, constant: 10),
             productTitleLabel.leadingAnchor.constraint      (equalTo: view.leadingAnchor, constant: 20),
             productTitleLabel.trailingAnchor.constraint     (equalTo: view.trailingAnchor, constant: -20),
             productTitleLabel.heightAnchor.constraint       (equalToConstant: 30),
             
-            priceLabel.topAnchor.constraint                 (equalTo: productTitleLabel.bottomAnchor, constant: 0),
-            priceLabel.leadingAnchor.constraint             (equalTo: view.leadingAnchor, constant: 20),
-            priceLabel.widthAnchor.constraint               (equalToConstant: 100),
-            priceLabel.heightAnchor.constraint              (equalToConstant: 30),
-            
-            descriptionTextView.topAnchor.constraint        (equalTo: priceLabel.bottomAnchor, constant: 10),
+            descriptionTextView.topAnchor.constraint        (equalTo: productTitleLabel.bottomAnchor, constant: 10),
             descriptionTextView.leadingAnchor.constraint    (equalTo: view.leadingAnchor, constant: 20),
             descriptionTextView.trailingAnchor.constraint   (equalTo: view.trailingAnchor, constant: -20),
             descriptionTextView.heightAnchor.constraint     (equalToConstant: 100),
             
             addToBasketButton.bottomAnchor.constraint       (equalTo: view.bottomAnchor, constant: -30),
-            addToBasketButton.leadingAnchor.constraint      (equalTo: view.leadingAnchor, constant: 20),
-            addToBasketButton.widthAnchor.constraint        (equalToConstant: 200),
+            addToBasketButton.centerXAnchor.constraint      (equalTo: view.centerXAnchor, constant: 0),
+            addToBasketButton.widthAnchor.constraint        (equalToConstant: 300),
             addToBasketButton.heightAnchor.constraint       (equalToConstant: 50),
             
-            productCounter.bottomAnchor.constraint          (equalTo: view.bottomAnchor, constant: -30),
-            productCounter.trailingAnchor.constraint        (equalTo: view.trailingAnchor, constant: -20),
+            priceLabel.bottomAnchor.constraint              (equalTo: addToBasketButton.topAnchor, constant: -10),
+            priceLabel.leadingAnchor.constraint             (equalTo: addToBasketButton.leadingAnchor, constant: 5),
+            priceLabel.widthAnchor.constraint               (equalToConstant: 100),
+            priceLabel.heightAnchor.constraint              (equalToConstant: 30),
+            
+            productCounter.bottomAnchor.constraint          (equalTo: addToBasketButton.topAnchor, constant: -10),
+            productCounter.trailingAnchor.constraint        (equalTo: addToBasketButton.trailingAnchor, constant: -5),
             productCounter.widthAnchor.constraint           (equalToConstant: 100),
-            productCounter.heightAnchor.constraint          (equalToConstant: 50),
+            productCounter.heightAnchor.constraint          (equalToConstant: 30),
+            
+            buttonContentView.topAnchor.constraint          (equalTo: addToBasketButton.topAnchor, constant: -60),
+            buttonContentView.leadingAnchor.constraint      (equalTo: view.leadingAnchor, constant: 0),
+            buttonContentView.trailingAnchor.constraint     (equalTo: view.trailingAnchor, constant: 60),
+            buttonContentView.bottomAnchor.constraint       (equalTo: view.bottomAnchor, constant: 40),
         ])
     }
     
@@ -308,7 +338,7 @@ final class ProductDetailsVC: UIViewController {
                 case true:
                     UIView.animate(withDuration: 0.25, animations: {
                         DispatchQueue.main.async {
-                            viewToAnimate.backgroundColor = colorAsUIColor.storeSecondary
+                            viewToAnimate.backgroundColor = StoreUIColor.black
                             viewToAnimate.setTitle("Total $\(String(format: "%.2f", self.currentProduct.price * Double(self.count)))", for: .normal)
                         }
                         viewToAnimate.alpha = 1
@@ -327,7 +357,7 @@ final class ProductDetailsVC: UIViewController {
                 case true:
                     UIView.animate(withDuration: 0.2, animations: {
                         DispatchQueue.main.async {
-                            viewToAnimate.backgroundColor = .lightGray
+                            viewToAnimate.backgroundColor = .white
                             viewToAnimate.setTitle("Add to Basket", for: .normal)
                         }
                         viewToAnimate.alpha = 1

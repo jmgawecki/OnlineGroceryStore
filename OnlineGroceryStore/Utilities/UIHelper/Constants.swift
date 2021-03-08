@@ -105,19 +105,24 @@ extension AlertImage: RawRepresentable {
 enum systemImageAsUIImage {
     static let plusLarge                = UIImage(systemName: "plus",
                                                   withConfiguration: UIImage.SymbolConfiguration(scale: .large))
+    
     static let minusLarge               = UIImage(systemName: "minus",
                                                   withConfiguration: UIImage.SymbolConfiguration(scale: .large))
+    
+    
+    
 }
 
 
 // MARK: - Custom Color
 
 
-enum colorAsUIColor {
-    static let storeBackground          = UIColor(named: "storeBackground")
-    static let storeSecondaryBackground = UIColor(named: "storeSecondaryBackground")
-    static let storeSecondary           = UIColor(named: "storeSecondary")
-    static let storeTertiary            = UIColor(named: "storeTertiary")
-    static let storePrimaryText         = UIColor(named: "storePrimaryText")
+enum StoreUIColor {
+    static let creamWhite               = UIColor(named: "storeBackground")
+    static let orange                   = UIColor(named: "storeSecondary")
+    static let darkGreen                = UIColor(named: "storeTertiary")
+    static let grapefruit               = UIColor(named: "storePrimaryText")
+    static let mint                     = UIColor(named: "storeMint")
+    static let black                    = UIColor(named: "storeBlack")
 }
 

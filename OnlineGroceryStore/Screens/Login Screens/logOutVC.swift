@@ -21,7 +21,7 @@ final class logOutVC: UIViewController {
                                              ofsize: 35,
                                              ofweight: .bold,
                                              alpha: 1,
-                                             color: colorAsUIColor.storePrimaryText ?? .orange)
+                                             color: StoreUIColor.grapefruit ?? .orange)
     
     
     // MARK: - Override, Initialiser
@@ -76,7 +76,7 @@ final class logOutVC: UIViewController {
     
     
     private func configureVC() {
-        view.backgroundColor = colorAsUIColor.storeBackground
+        view.backgroundColor = StoreUIColor.creamWhite
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.setNavigationBarHidden(true, animated: true)
         tabBarController?.tabBar.isHidden = true
@@ -88,7 +88,7 @@ final class logOutVC: UIViewController {
         buttonsStack.axis                = .vertical
         buttonsStack.distribution        = .fillEqually
         buttonsStack.spacing             = 20
-        buttonsStack.backgroundColor     = colorAsUIColor.storeBackground
+        buttonsStack.backgroundColor     = StoreUIColor.creamWhite
 
         buttonsStack.addArrangedSubview(loginButton)
         buttonsStack.addArrangedSubview(registerButton)

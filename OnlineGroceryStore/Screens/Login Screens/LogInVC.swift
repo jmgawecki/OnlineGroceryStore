@@ -94,7 +94,7 @@ final class LogInVC: UIViewController {
         loginFormStackV.axis                = .vertical
         loginFormStackV.distribution        = .fillEqually
         loginFormStackV.spacing             = 14
-        loginFormStackV.backgroundColor     = colorAsUIColor.storeBackground
+        loginFormStackV.backgroundColor     = StoreUIColor.creamWhite
 
         loginFormStackV.addArrangedSubview(email)
         loginFormStackV.addArrangedSubview(password)
@@ -106,7 +106,7 @@ final class LogInVC: UIViewController {
     
     
     private func configureVC() {
-        view.backgroundColor = colorAsUIColor.storeBackground
+        view.backgroundColor = StoreUIColor.creamWhite
         title                = "Log In"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.setNavigationBarHidden(false, animated: true)

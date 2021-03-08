@@ -7,6 +7,11 @@
 
 import UIKit
 
+enum TabBarAnimation {
+    case toOrder
+    case fromOrder
+}
+
 struct StoreAnimation {
     
     
@@ -52,6 +57,25 @@ struct StoreAnimation {
         
     }
     
+    
+    static func animateTabBar(viewToAnimate: UITabBar, tabBarAnimationPath: TabBarAnimation) {
+        UIView.transition(with: viewToAnimate, duration: 0.3, options: [.beginFromCurrentState, .transitionCrossDissolve], animations: {
+            switch tabBarAnimationPath {
+            case .toOrder:
+                viewToAnimate.barTintColor              = StoreUIColor.grapefruit
+                viewToAnimate.tintColor                 = StoreUIColor.black
+                viewToAnimate.unselectedItemTintColor   = StoreUIColor.mint
+                viewToAnimate.clipsToBounds             = true
+                viewToAnimate.alpha                     = 1
+                viewToAnimate.isTranslucent             = false
+            case .fromOrder:
+                viewToAnimate.barTintColor              = StoreUIColor.creamWhite
+                viewToAnimate.tintColor                 = StoreUIColor.grapefruit
+                viewToAnimate.unselectedItemTintColor   = StoreUIColor.black
+                viewToAnimate.clipsToBounds             = false
+            }
+        }, completion: nil)
+    }
 }
 
 

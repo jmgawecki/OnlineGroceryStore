@@ -7,7 +7,9 @@
 
 import UIKit
 
-final class EntryVC: UIViewController {
+final class EntryVC: UIViewController, Coordinating {
+    var coordinator: Coordinator?
+    
     // MARK: - Declaration
     var loginButton         = StoreVCButton(fontSize: 18, label: "Log In")
     var registerButton      = StoreVCButton(fontSize: 18, label: "Sign Up")
@@ -20,14 +22,10 @@ final class EntryVC: UIViewController {
                                              ofsize: 35,
                                              ofweight: .bold,
                                              alpha: 0,
-                                             color: colorAsUIColor.storePrimaryText ?? .orange)
+                                             color: StoreUIColor.grapefruit ?? .orange)
+
     
-    var bodyLabel           = StoreBoldLabel(with: "Please log in or sign up in order to buy some awesome things!",
-                                             from: .left,
-                                             ofsize: 20,
-                                             ofweight: .medium,
-                                             alpha: 0,
-                                             color: colorAsUIColor.storePrimaryText ?? .orange)
+    var bodyLabel           = StoreSecondaryTitleLabel(from: .left, alpha: 0)
     
     
     
@@ -84,9 +82,9 @@ final class EntryVC: UIViewController {
     
     
     private func configureVC() {
-        view.backgroundColor = colorAsUIColor.storeBackground
+        view.backgroundColor = StoreUIColor.creamWhite
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.setNavigationBarHidden(true, animated: true)
+        
         navigationController?.isNavigationBarHidden = true
     }
     
@@ -96,13 +94,15 @@ final class EntryVC: UIViewController {
         buttonsStack.axis                = .vertical
         buttonsStack.distribution        = .fillEqually
         buttonsStack.spacing             = 20
-        buttonsStack.backgroundColor     = colorAsUIColor.storeBackground
+        buttonsStack.backgroundColor     = StoreUIColor.creamWhite
 
         buttonsStack.addArrangedSubview(loginButton)
         buttonsStack.addArrangedSubview(registerButton)
     }
     
+    
     private func configureUIElements() {
+        bodyLabel.text = "Please log in or sign up in order to buy some awesome things!"
         shopImageView.image = imageAsUIImage.shopBuilding
     }
     

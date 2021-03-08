@@ -24,7 +24,7 @@ class LastOrderVC: UIViewController {
     var dataSource:         UICollectionViewDiffableDataSource<Section, ProductLocal>!
     var currentUser:        UserLocal!
     
-    var addToBasketButton = StoreImageLabelButton(fontSize: 20, message: "Add to Basket", image: imageAsUIImage.foodPlaceholder!, textColor: colorAsUIColor.storeTertiary ?? .green)
+    var addToBasketButton = StoreImageLabelButton(fontSize: 20, message: "Add to Basket", image: imageAsUIImage.foodPlaceholder!, textColor: StoreUIColor.darkGreen ?? .green)
     
     var order: Order!
     
@@ -46,6 +46,11 @@ class LastOrderVC: UIViewController {
     
     
     override func viewWillDisappear(_ animated: Bool) { FireManager.shared.clearCache() }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        StoreAnimation.animateTabBar(viewToAnimate: tabBarController!.tabBar, tabBarAnimationPath: .fromOrder)
+    }
     
     
     init(with order: Order, for currentUser: UserLocal) {
@@ -90,7 +95,7 @@ class LastOrderVC: UIViewController {
     
     
     private func configureVC() {
-        view.backgroundColor = colorAsUIColor.storeBackground
+        view.backgroundColor = StoreUIColor.creamWhite
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.prefersLargeTitles = true
     }
@@ -106,17 +111,17 @@ class LastOrderVC: UIViewController {
     
     
     private func configureCollectionView() {
-        collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: CollectionLayouts.productsVCCollectionViewLayout())
-        collectionView.backgroundColor = colorAsUIColor.storeBackground
+        collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: CollectionLayouts.basketCollectionViewLayout())
+        collectionView.backgroundColor = StoreUIColor.creamWhite
     }
     
     
     private func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<LastOrderVCCollectionViewCell, ProductLocal> { (cell, indexPath, product) in
-            cell.set(with: product, currentUser: self.currentUser)
+        let cellRegistration = UICollectionView.CellRegistration<BasketCollectionViewCell, ProductLocal> { (cell, indexPath, product) in
+            cell.set(with: product)
         }
         
-        dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { (collectionView, indexPath, product) -> LastOrderVCCollectionViewCell? in
+        dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { (collectionView, indexPath, product) -> BasketCollectionViewCell? in
             return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: product)
         })
     }

@@ -94,7 +94,7 @@ final class SpecialOffersView: UIViewController {
     
     private func configureCollectionView() {
         collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: CollectionLayouts.favoriteCollectionViewLayout())
-        collectionView.backgroundColor = colorAsUIColor.storeBackground
+        collectionView.backgroundColor = StoreUIColor.creamWhite
         collectionView.delegate = self
     }
     
@@ -134,7 +134,7 @@ final class SpecialOffersView: UIViewController {
         segmentedControl = UISegmentedControl(items: items)
         
         segmentedControl.selectedSegmentIndex       = 0
-        segmentedControl.selectedSegmentTintColor   = colorAsUIColor.storeTertiary
+        segmentedControl.selectedSegmentTintColor   = StoreUIColor.darkGreen
         
         getProducts(uponField: "topOffer", withCondition: true)
     }

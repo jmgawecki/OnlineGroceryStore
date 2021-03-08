@@ -17,9 +17,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
-        window?.windowScene = windowScene
-        window?.rootViewController = setRootAsHomeTabBar() ?? configureEntryNavController()
-        window?.makeKeyAndVisible()
+        let NavC = UINavigationController()
+        
+        let coordinator = MainCoordinator()
+        coordinator.navigationController = NavC
+        
+        let window = UIWindow(windowScene: windowScene)
+        window.rootViewController = NavC
+        window.makeKeyAndVisible()
+        self.window = window
+        
+        if isUserSessionOn() {
+            coordinator.startFromHomeVC()
+        } else {
+            coordinator.startFromEntryVC()
+        }
         configureNavigationController()
     }
 
@@ -30,15 +42,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         return UINavigationController(rootViewController: entryVC)
     }
     
-//    private func configureHomeNavController() -> UINavigationController {
-//        let entryVC         = HomeVC()
-//        entryVC.title       = "Home"
-//        return UINavigationController(rootViewController: entryVC)
-//    }
-    
     
     private func configureNavigationController() {
-        UINavigationBar.appearance().tintColor = colorAsUIColor.storeTertiary
+        UINavigationBar.appearance().tintColor = StoreUIColor.darkGreen
+    }
+    
+    func isUserSessionOn() -> Bool {
+        if let _ = Auth.auth().currentUser { return true } else {
+            return false
+        }
     }
     
     

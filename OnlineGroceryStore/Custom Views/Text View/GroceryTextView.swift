@@ -37,7 +37,7 @@ final class GroceryTextView: UITextView {
         translatesAutoresizingMaskIntoConstraints   = false
         font                                        = UIFont.systemFont(ofSize: 17)
         isEditable                                  = false
-        backgroundColor                             = colorAsUIColor.storeBackground
-        textColor                                   = colorAsUIColor.storePrimaryText
+        backgroundColor                             = StoreUIColor.creamWhite
+        textColor                                   = StoreUIColor.grapefruit
     }
 }

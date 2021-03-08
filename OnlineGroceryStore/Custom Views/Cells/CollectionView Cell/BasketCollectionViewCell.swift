@@ -15,12 +15,14 @@ class BasketCollectionViewCell: UICollectionViewCell {
     
     var categoryImageView   = ShopImageView(frame: .zero)
     #warning("Refactor later so its initialised in a function set")
-    var categoryLabel       = StoreBodyLabel(from: .left, alpha: 1)
+    var productLabel        = StoreSecondaryTitleLabel(from: .left, alpha: 1)
     
     var priceLabel          = StoreBodyLabel(from: .center, alpha: 1)
     var xLabel              = StoreBodyLabel(from: .center, alpha: 1)
     var quantityLabel       = StoreBodyLabel(from: .center, alpha: 1)
     var totalProductLabel   = StoreBodyLabel(from: .center, alpha: 1)
+    
+    var cellSeparator       = UIView()
     
     
     var product: ProductLocal!
@@ -32,6 +34,7 @@ class BasketCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureCell()
+        configureLine()
         layoutUI()
     }
     
@@ -47,11 +50,11 @@ class BasketCollectionViewCell: UICollectionViewCell {
     func set(with basketProduct: ProductLocal) {
         self.product = basketProduct
         downloadImage(from: basketProduct.id)
-        categoryLabel.text          = product.name
-        priceLabel.text             = "$\(String(format: "%.2f" , product.price))"
+        productLabel.text          = product.name
+        priceLabel.text             = "$\(String(format: "%.2f" , product.price * product.discountMlt))"
         xLabel.text                 = "x"
         quantityLabel.text          = String(product.quantity)
-        totalProductLabel.text      = "Total: $\(String(format: "%.2f" , product.price * Double(product.quantity)))"
+        totalProductLabel.text      = "Total: $\(String(format: "%.2f" , product.price * product.discountMlt * Double(product.quantity)))"
     }
     // let doubleStr = String(format: "%.2f", myDouble) // "3.14"
     
@@ -69,13 +72,19 @@ class BasketCollectionViewCell: UICollectionViewCell {
     // MARK: - Cell configuration
     
     
-    private func configureCell() { backgroundColor = colorAsUIColor.storeBackground }
+    private func configureCell() { backgroundColor = StoreUIColor.creamWhite }
+    
+    
+    private func configureLine() {
+        cellSeparator.backgroundColor = StoreUIColor.orange
+    }
     
     
     private func layoutUI() {
-        addSubviews(categoryImageView, categoryLabel, priceLabel, xLabel, quantityLabel, totalProductLabel)
-//        debugConfiguration(categoryImageView, categoryLabel, priceLabel, xLabel, quantityLabel, totalProductLabel)
-        let padding: CGFloat    = 12
+        cellSeparator.translatesAutoresizingMaskIntoConstraints = false
+        
+        addSubviews(categoryImageView, productLabel, priceLabel, xLabel, quantityLabel, totalProductLabel, cellSeparator)
+//        debugConfiguration(categoryImageView, productLabel, priceLabel, xLabel, quantityLabel, totalProductLabel)
         
         NSLayoutConstraint.activate([
             categoryImageView.centerYAnchor.constraint      (equalTo: self.centerYAnchor),
@@ -83,13 +92,13 @@ class BasketCollectionViewCell: UICollectionViewCell {
             categoryImageView.heightAnchor.constraint       (equalToConstant: 60),
             categoryImageView.widthAnchor.constraint        (equalToConstant: 60),
             
-            categoryLabel.topAnchor.constraint              (equalTo: categoryImageView.topAnchor),
-            categoryLabel.leadingAnchor.constraint          (equalTo: categoryImageView.trailingAnchor, constant: 10),
-            categoryLabel.trailingAnchor.constraint         (equalTo: self.trailingAnchor, constant: -padding),
-            categoryLabel.heightAnchor.constraint           (equalToConstant: 30),
+            productLabel.topAnchor.constraint              (equalTo: categoryImageView.topAnchor),
+            productLabel.leadingAnchor.constraint          (equalTo: categoryImageView.trailingAnchor, constant: 10),
+            productLabel.trailingAnchor.constraint         (equalTo: self.trailingAnchor, constant: 0),
+            productLabel.heightAnchor.constraint           (equalToConstant: 30),
             
-            priceLabel.topAnchor.constraint                 (equalTo: categoryLabel.bottomAnchor, constant: 0),
-            priceLabel.leadingAnchor.constraint             (equalTo: categoryLabel.leadingAnchor, constant: 0),
+            priceLabel.topAnchor.constraint                 (equalTo: productLabel.bottomAnchor, constant: 0),
+            priceLabel.leadingAnchor.constraint             (equalTo: productLabel.leadingAnchor, constant: 0),
             priceLabel.widthAnchor.constraint               (equalToConstant: 65),
             priceLabel.heightAnchor.constraint              (equalToConstant: 30),
             
@@ -100,13 +109,18 @@ class BasketCollectionViewCell: UICollectionViewCell {
             
             quantityLabel.topAnchor.constraint              (equalTo: priceLabel.topAnchor, constant: 0),
             quantityLabel.leadingAnchor.constraint          (equalTo: xLabel.trailingAnchor, constant: 0),
-            quantityLabel.widthAnchor.constraint            (equalToConstant: 50),
+            quantityLabel.widthAnchor.constraint            (equalToConstant: 25),
             quantityLabel.heightAnchor.constraint           (equalToConstant: 30),
             
             totalProductLabel.topAnchor.constraint          (equalTo: priceLabel.topAnchor, constant: 0),
             totalProductLabel.leadingAnchor.constraint      (equalTo: quantityLabel.trailingAnchor, constant: 0),
             totalProductLabel.trailingAnchor.constraint     (equalTo: trailingAnchor, constant: -5),
             totalProductLabel.heightAnchor.constraint       (equalToConstant: 30),
+            
+            cellSeparator.topAnchor.constraint              (equalTo: priceLabel.bottomAnchor, constant: 0),
+            cellSeparator.leadingAnchor.constraint          (equalTo: priceLabel.leadingAnchor, constant: 0),
+            cellSeparator.trailingAnchor.constraint         (equalTo: totalProductLabel.trailingAnchor, constant: -40),
+            cellSeparator.heightAnchor.constraint           (equalToConstant: 1),
         ])
     }
 }

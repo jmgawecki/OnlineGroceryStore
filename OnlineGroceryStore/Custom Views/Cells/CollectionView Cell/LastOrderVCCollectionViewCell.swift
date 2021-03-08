@@ -21,13 +21,13 @@ class LastOrderVCCollectionViewCell: UICollectionViewCell {
                                                  ofsize: 20,
                                                  ofweight: .bold,
                                                  alpha: 1,
-                                                 color: colorAsUIColor.storePrimaryText ?? .red)
+                                                 color: StoreUIColor.grapefruit ?? .red)
     var priceLabel              = StoreBoldLabel(with: "$3.50",
                                                  from: .center,
                                                  ofsize: 18,
                                                  ofweight: .semibold,
                                                  alpha: 1,
-                                                 color: colorAsUIColor.storeTertiary ?? .orange)
+                                                 color: StoreUIColor.darkGreen ?? .orange)
     var favoriteSystemButton    = UIButton()
     var addToBasketButton       = StoreVCButton(fontSize: 20, label: "Add")
     
@@ -88,10 +88,10 @@ class LastOrderVCCollectionViewCell: UICollectionViewCell {
         print(product.id)
         if product.favorite == true {
             favoriteSystemButton.setImage(UIImage(systemName: "heart.fill", withConfiguration: UIImage.SymbolConfiguration(scale: .large)), for: .normal)
-            favoriteSystemButton.tintColor = colorAsUIColor.storeTertiary
+            favoriteSystemButton.tintColor = StoreUIColor.darkGreen
         } else {
             favoriteSystemButton.setImage(UIImage(systemName: "heart", withConfiguration: UIImage.SymbolConfiguration(scale: .large)), for: .normal)
-            favoriteSystemButton.tintColor = colorAsUIColor.storeTertiary
+            favoriteSystemButton.tintColor = StoreUIColor.darkGreen
         }
     }
     
@@ -111,10 +111,10 @@ class LastOrderVCCollectionViewCell: UICollectionViewCell {
     
     
     private func configureCell() {
-        backgroundColor                     = colorAsUIColor.storeBackground
+        backgroundColor                     = StoreUIColor.creamWhite
         layer.cornerRadius                  = 15
         layer.borderWidth = 1
-        layer.borderColor = colorAsUIColor.storePrimaryText?.cgColor
+        layer.borderColor = StoreUIColor.grapefruit?.cgColor
     }
     
     
@@ -126,7 +126,7 @@ class LastOrderVCCollectionViewCell: UICollectionViewCell {
         
         counter.text = String(count)
         counter.font = UIFont.preferredFont(forTextStyle: .title2)
-        counter.textColor = colorAsUIColor.storeTertiary
+        counter.textColor = StoreUIColor.darkGreen
         counter.textAlignment = .center
         counter.isEnabled = false
         

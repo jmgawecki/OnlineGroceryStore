@@ -31,7 +31,10 @@ final class OrdersVC: UIViewController {
     }
     
     
-    override func viewWillAppear(_ animated: Bool) { fetchOrders() }
+    override func viewWillAppear(_ animated: Bool) {
+        fetchOrders()
+        StoreAnimation.animateTabBar(viewToAnimate: tabBarController!.tabBar, tabBarAnimationPath: .fromOrder)
+    }
     
     
     override func viewWillDisappear(_ animated: Bool) { FireManager.shared.clearCache() }
@@ -56,7 +59,7 @@ final class OrdersVC: UIViewController {
     
     
     private func configureVC() {
-        view.backgroundColor = colorAsUIColor.storeBackground
+        view.backgroundColor = StoreUIColor.creamWhite
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.prefersLargeTitles = true
     }
@@ -88,7 +91,7 @@ final class OrdersVC: UIViewController {
         view.addSubview(categoriesTableView)
         categoriesTableView.rowHeight = 80
         categoriesTableView.delegate = self
-        categoriesTableView.backgroundColor = colorAsUIColor.storeBackground
+        categoriesTableView.backgroundColor = StoreUIColor.creamWhite
         categoriesTableView.register(OrdersVCTableViewCell.self, forCellReuseIdentifier: OrdersVCTableViewCell.reuseID)
     }
     

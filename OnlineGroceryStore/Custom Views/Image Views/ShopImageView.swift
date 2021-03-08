@@ -24,7 +24,7 @@ final class ShopImageView: UIImageView {
     
     
     private func configure() {
-        image = imageAsUIImage.foodPlaceholder
+        image = UIImage(named: "logoOrganicSquare")
         translatesAutoresizingMaskIntoConstraints = false
         clipsToBounds = true
         layer.cornerRadius = 10

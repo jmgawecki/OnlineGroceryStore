@@ -103,7 +103,7 @@ final class SignUpVC: UIViewController {
     
     
     private func configureVC() {
-        view.backgroundColor = colorAsUIColor.storeBackground
+        view.backgroundColor = StoreUIColor.creamWhite
         title = "Sign Up"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.setNavigationBarHidden(false, animated: true)
@@ -118,7 +118,7 @@ final class SignUpVC: UIViewController {
         registerFormStackV.axis                = .vertical
         registerFormStackV.distribution        = .fillEqually
         registerFormStackV.spacing             = 14
-        registerFormStackV.backgroundColor     = colorAsUIColor.storeBackground
+        registerFormStackV.backgroundColor     = StoreUIColor.creamWhite
         
         registerFormStackV.addArrangedSubview(firstName)
         registerFormStackV.addArrangedSubview(lastName)

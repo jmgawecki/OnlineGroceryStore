@@ -16,8 +16,8 @@ final class StoreAlertVC: UIViewController {
     //MARK: - Declarations
 
     let containerView   = UIView()
-    let titleLabel      = StoreSecondaryTitleLabel(from: .center, alpha: 1)
-    let messageLabel    = StoreBodyLabel(from: .left, alpha: 1)
+    let titleLabel      = StoreTitleLabel(from: .center, alpha: 1)
+    let messageLabel    = StoreSecondaryTitleLabel(from: .left, alpha: 1)
     let actionButton    = StoreVCButton()
     var girlImageView   = ShopImageView(frame: .zero)
     
@@ -68,14 +68,22 @@ final class StoreAlertVC: UIViewController {
     
     
     private func configureUIElements() {
-        view.backgroundColor        = UIColor.black.withAlphaComponent(0.75)
-        titleLabel.text             = alertTitle ?? "Something went wrong"
-        messageLabel.text           = message ?? "Unable to complete request"
-        messageLabel.numberOfLines  = 4
-        girlImageView.image         = girlImage
+        view.backgroundColor                = UIColor.black.withAlphaComponent(0.75)
+                
+        titleLabel.textColor                = StoreUIColor.mint
+        titleLabel.text                     = alertTitle ?? "Something went wrong"
+                
+        messageLabel.textColor              = StoreUIColor.mint
+        messageLabel.text                   = message ?? "Unable to complete request"
+        messageLabel.numberOfLines          = 4
+                
+        girlImageView.image                 = girlImage
         
-        containerView.backgroundColor = colorAsUIColor.storeBackground
-        containerView.layer.cornerRadius = 10
+        actionButton.backgroundColor        = StoreUIColor.black
+        actionButton.setTitleColor(StoreUIColor.mint, for: .normal)
+        
+        containerView.backgroundColor       = StoreUIColor.grapefruit
+        containerView.layer.cornerRadius    = 10
 
         actionButton.setTitle(buttonTitle ?? "Ok", for: .normal)
         actionButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)

@@ -124,7 +124,7 @@ final class LastsVC: UIViewController {
     
     private func configureCollectionView() {
         collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: CollectionLayouts.favoriteCollectionViewLayout())
-        collectionView.backgroundColor = colorAsUIColor.storeBackground
+        collectionView.backgroundColor = StoreUIColor.creamWhite
         collectionView.delegate = self
     }
     

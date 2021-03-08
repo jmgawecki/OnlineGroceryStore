@@ -35,6 +35,10 @@ final class SearchVC: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) { FireManager.shared.clearCache() }
     
+    override func viewWillAppear(_ animated: Bool) {
+        StoreAnimation.animateTabBar(viewToAnimate: tabBarController!.tabBar, tabBarAnimationPath: .fromOrder)
+    }
+    
     
     init(currentUser: UserLocal) {
         super.init(nibName: nil, bundle: nil)
@@ -74,7 +78,7 @@ final class SearchVC: UIViewController {
     
     
     private func configureVC() {
-        view.backgroundColor = colorAsUIColor.storeBackground
+        view.backgroundColor = StoreUIColor.creamWhite
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.prefersLargeTitles = true
     }
@@ -86,14 +90,15 @@ final class SearchVC: UIViewController {
     private func configureCollectionView() {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: CollectionLayouts.searchVCCollectionViewLayout())
         view.addSubview(collectionView)
-        collectionView.backgroundColor = colorAsUIColor.storeBackground
+        collectionView.backgroundColor = StoreUIColor.creamWhite
         collectionView.delegate = self
     }
     
     
     private func configureDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<ProductsVCCollectionViewCell, ProductLocal> { (cell, indexPath, product) in
-            cell.set(with: product, currentUser: self.currentUser )
+            cell.set(with: product, currentUser: self.currentUser)
+            cell.productsVCCollectionViewCellDelegate = self
         }
         
         dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { (collectionView, indexPath, product) -> UICollectionViewCell? in
@@ -147,5 +152,15 @@ extension SearchVC: UICollectionViewDelegate {
         let destVC = ProductDetailsVC(currentProduct: products[indexPath.item], currentUser: currentUser)
         destVC.getProductImage(for: products[indexPath.item].id)
         navigationController?.present(destVC, animated: true)
+    }
+}
+
+extension SearchVC: ProductsVCCollectionViewCellDelegate {
+    func didAddProducts() {
+        presentStoreAlertOnMainThread(title: .success, message: .itemAddedToBasket, button: .ok, image: .happyBlackGirlR056)
+    }
+    
+    func didNotAddProducts(with error: String) {
+        presentStoreAlertOnMainThread(title: .failure, message: .addSomeQuantity, button: .willDo, image: .happyBlackGirlR056)
     }
 }

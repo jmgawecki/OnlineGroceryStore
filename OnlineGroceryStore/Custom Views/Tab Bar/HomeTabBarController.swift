@@ -7,7 +7,9 @@
 
 import UIKit
 
-final class HomeTabBarController: UITabBarController {
+final class HomeTabBarController: UITabBarController, Coordinating {
+    var coordinator: Coordinator?
+    
     // MARK: - Declaration
     
     
@@ -21,6 +23,7 @@ final class HomeTabBarController: UITabBarController {
         super.viewDidLoad()
         configureTabBar()
         getCurrentUser()
+        delegate = self
     }
     
     
@@ -28,9 +31,9 @@ final class HomeTabBarController: UITabBarController {
     
     
     private func configureTabBar() {
-        UINavigationBar.appearance().tintColor  = colorAsUIColor.storePrimaryText
-        UITabBar.appearance().tintColor         = colorAsUIColor.storePrimaryText
-        view.backgroundColor                    = colorAsUIColor.storeBackground
+        UINavigationBar.appearance().tintColor  = StoreUIColor.grapefruit
+        UITabBar.appearance().tintColor         = StoreUIColor.grapefruit
+        view.backgroundColor                    = StoreUIColor.creamWhite
     }
     
     
@@ -91,5 +94,20 @@ final class HomeTabBarController: UITabBarController {
                 print(error)
             }
         }
+    }
+}
+
+extension HomeTabBarController: UITabBarControllerDelegate  {
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+
+        guard let fromView = selectedViewController?.view, let toView = viewController.view else {
+          return false // Make sure you want this as false
+        }
+
+        if fromView != toView {
+          UIView.transition(from: fromView, to: toView, duration: 0.3, options: [.transitionCrossDissolve], completion: nil)
+        }
+
+        return true
     }
 }

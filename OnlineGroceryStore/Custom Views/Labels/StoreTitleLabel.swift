@@ -33,7 +33,7 @@ class StoreTitleLabel: UILabel {
         translatesAutoresizingMaskIntoConstraints = false
         numberOfLines               = 0
         font                        = UIFont.systemFont(ofSize: 25, weight: .bold)
-        textColor                   = colorAsUIColor.storePrimaryText ?? .orange
+        textColor                   = StoreUIColor.grapefruit ?? .orange
         adjustsFontSizeToFitWidth   = true
     }
 }

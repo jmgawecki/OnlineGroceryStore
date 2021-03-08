@@ -26,7 +26,6 @@ final class ProductsVC: UIViewController {
         super.viewDidLoad()
         configureVC()
         configureUIElements()
-        layoutUI()
         configureCollectionView()
         configureDataSource()
         getProducts()
@@ -35,6 +34,11 @@ final class ProductsVC: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         FireManager.shared.clearCache()
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        StoreAnimation.animateTabBar(viewToAnimate: tabBarController!.tabBar, tabBarAnimationPath: .fromOrder)
     }
     
     
@@ -58,7 +62,7 @@ final class ProductsVC: UIViewController {
     
     
     private func configureVC() {
-        view.backgroundColor = colorAsUIColor.storeBackground
+        view.backgroundColor = StoreUIColor.creamWhite
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.prefersLargeTitles = true
     }
@@ -96,8 +100,9 @@ final class ProductsVC: UIViewController {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: CollectionLayouts.productsVCCollectionViewLayout())
         view.addSubview(collectionView)
         collectionView.delegate = self
-        collectionView.backgroundColor = colorAsUIColor.storeBackground
+        collectionView.backgroundColor = StoreUIColor.creamWhite
     }
+    
     
     private func configureDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<ProductsVCCollectionViewCell, ProductLocal> { (cell, indexPath, product) in
@@ -110,24 +115,13 @@ final class ProductsVC: UIViewController {
         })
     }
     
+    
     private func updateDataOnCollection() {
         var snapshot = NSDiffableDataSourceSnapshot<Section, ProductLocal>()
         snapshot.appendSections([.main])
         snapshot.appendItems(products, toSection: .main)
         DispatchQueue.main.async { self.dataSource.apply(snapshot, animatingDifferences: true); self.collectionView.reloadData() }
-        
     }
-    
-    
-    
-    
-    //MARK: - Layout configuration
-    
-    
-    private func layoutUI() {
-        
-    }
-    
     
 }
 

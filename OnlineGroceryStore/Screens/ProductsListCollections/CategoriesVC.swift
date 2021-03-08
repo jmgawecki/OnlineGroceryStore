@@ -8,7 +8,9 @@
 import UIKit
 import Firebase
 
-final class CategoriesVC: UIViewController {
+final class CategoriesVC: UIViewController, Coordinating{
+    var coordinator: Coordinator?
+    
     // MARK: - Declaration
     
     enum Section { case main }
@@ -41,6 +43,11 @@ final class CategoriesVC: UIViewController {
     }
     
     
+    override func viewWillAppear(_ animated: Bool) {
+        StoreAnimation.animateTabBar(viewToAnimate: tabBarController!.tabBar, tabBarAnimationPath: .fromOrder)
+    }
+    
+    
     init(currentUser: UserLocal) {
         super.init(nibName: nil, bundle: nil)
         self.currentUser = currentUser
@@ -63,7 +70,7 @@ final class CategoriesVC: UIViewController {
     
     private func configureVC() {
         title = "Categories"
-        view.backgroundColor = colorAsUIColor.storeBackground
+        view.backgroundColor = StoreUIColor.creamWhite
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.prefersLargeTitles = true
     }
@@ -78,7 +85,7 @@ final class CategoriesVC: UIViewController {
         view.addSubview(categoriesTableView)
         categoriesTableView.rowHeight = 80
         categoriesTableView.delegate = self
-        categoriesTableView.backgroundColor = colorAsUIColor.storeBackground
+        categoriesTableView.backgroundColor = StoreUIColor.creamWhite
         categoriesTableView.register(BrowseByCategoryTableViewCell.self, forCellReuseIdentifier: BrowseByCategoryTableViewCell.reuseID)
     }
     

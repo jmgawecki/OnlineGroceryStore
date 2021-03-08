@@ -16,18 +16,21 @@ final class FavoritesCollectionViewCell: UICollectionViewCell {
     let cache               = NSCache<NSString, UIImage>()
     
     var productImageView    = ShopImageView(frame: .zero)
+    
+    var cellContentView     = UIView()
+    
     var productTitleLabel   = StoreBoldLabel(with: "Product's name",
                                              from: .center,
                                              ofsize: 15,
                                              ofweight: .medium,
                                              alpha: 1,
-                                             color: colorAsUIColor.storePrimaryText ?? .orange)
+                                             color: StoreUIColor.grapefruit ?? .orange)
     var priceLabel          = StoreBoldLabel(with: "$3.50",
                                              from: .center,
                                              ofsize: 15,
                                              ofweight: .semibold,
                                              alpha: 1,
-                                             color: colorAsUIColor.storeTertiary ?? .green)
+                                             color: StoreUIColor.darkGreen ?? .green)
     
     var product: ProductLocal!
     
@@ -38,7 +41,9 @@ final class FavoritesCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureCell()
+       
         layoutUI()
+        configureUIElements()
     }
     
     
@@ -50,7 +55,7 @@ final class FavoritesCollectionViewCell: UICollectionViewCell {
     
     func set(with product: ProductLocal) {
         self.product = product
-        priceLabel.text = "$\(String(product.price))"
+        priceLabel.text = "$\(String(format: "%.2f" ,product.price)) Per Piece"
         productTitleLabel.text = product.name
         downloadImage(from: product.id)
     }
@@ -71,10 +76,22 @@ final class FavoritesCollectionViewCell: UICollectionViewCell {
     
     
     private func configureCell() {
-        backgroundColor                     = colorAsUIColor.storeBackground
+        backgroundColor                     = StoreUIColor.creamWhite
         layer.cornerRadius                  = 15
-        layer.borderWidth = 1
-        layer.borderColor = colorAsUIColor.storePrimaryText?.cgColor
+        layer.borderWidth                   = 1
+        layer.borderColor                   = StoreUIColor.grapefruit?.cgColor
+    }
+    
+    
+    private func configureUIElements() {
+        let mask                            = UIView(frame: bounds)
+        mask.backgroundColor                = .black
+        
+        cellContentView.backgroundColor     = StoreUIColor.creamWhite
+        cellContentView.mask                = mask
+        cellContentView.layer.cornerRadius  = 20
+        
+        productImageView.layer.cornerRadius = 15
     }
     
     
@@ -82,9 +99,11 @@ final class FavoritesCollectionViewCell: UICollectionViewCell {
     
     
     private func layoutUI() {
+        cellContentView.translatesAutoresizingMaskIntoConstraints = false
         
-        addSubviews(productImageView, productTitleLabel, priceLabel)
-//        debugConfiguration(productImageView, productTitleLabel, priceLabel)
+        addSubviews(productImageView, cellContentView ,productTitleLabel, priceLabel)
+        cellContentView.addSubviews(productTitleLabel, priceLabel)
+//        debugConfiguration(productImageView, productTitleLabel, priceLabel, self)
         
         NSLayoutConstraint.activate([
             productImageView.topAnchor.constraint           (equalTo: topAnchor, constant: 0),
@@ -92,15 +111,20 @@ final class FavoritesCollectionViewCell: UICollectionViewCell {
             productImageView.trailingAnchor.constraint      (equalTo: trailingAnchor, constant: 0),
             productImageView.heightAnchor.constraint        (equalTo: productImageView.widthAnchor),
             
-            productTitleLabel.topAnchor.constraint          (equalTo: productImageView.bottomAnchor, constant: 0),
-            productTitleLabel.leadingAnchor.constraint      (equalTo: leadingAnchor, constant: 0),
-            productTitleLabel.widthAnchor.constraint        (equalTo: widthAnchor, multiplier: 0.7),
-            productTitleLabel.heightAnchor.constraint       (equalToConstant: 60),
+            cellContentView.topAnchor.constraint            (equalTo: productImageView.bottomAnchor, constant: -20),
+            cellContentView.leadingAnchor.constraint        (equalTo: leadingAnchor, constant: 0),
+            cellContentView.trailingAnchor.constraint       (equalTo: trailingAnchor, constant: 30),
+            cellContentView.bottomAnchor.constraint         (equalTo: bottomAnchor, constant: 30),
             
-            priceLabel.topAnchor.constraint                 (equalTo: productImageView.bottomAnchor, constant: 0),
-            priceLabel.leadingAnchor.constraint             (equalTo: productTitleLabel.trailingAnchor, constant: 5),
+            productTitleLabel.topAnchor.constraint          (equalTo: cellContentView.topAnchor, constant: 0),
+            productTitleLabel.leadingAnchor.constraint      (equalTo: cellContentView.leadingAnchor, constant: 0),
+            productTitleLabel.trailingAnchor.constraint     (equalTo: trailingAnchor, constant: 0),
+            productTitleLabel.heightAnchor.constraint       (equalToConstant: 45),
+            
+            priceLabel.topAnchor.constraint                 (equalTo: productTitleLabel.bottomAnchor, constant: 0),
+            priceLabel.leadingAnchor.constraint             (equalTo: leadingAnchor, constant: 5),
             priceLabel.trailingAnchor.constraint            (equalTo: trailingAnchor, constant: 0),
-            priceLabel.heightAnchor.constraint              (equalToConstant: 60),
+            priceLabel.heightAnchor.constraint              (equalToConstant: 20),
         ])
     }
 }

@@ -11,10 +11,22 @@ import Firebase
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
+    var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
+        let NavC = UINavigationController()
+        
+        let coordinator = MainCoordinator()
+        coordinator.navigationController = NavC
+        
+        let window = UIWindow(frame: UIScreen.main.bounds)
+        window.rootViewController = NavC
+        window.makeKeyAndVisible()
+        self.window = window
+        
+        coordinator.startFromEntryVC()
+        
         return true
     }
 
