@@ -10,14 +10,16 @@ import UIKit
 class OrderStatusVC: UIViewController {
     // MARK: - Declaration
     
-    var orderImageView          = ShopImageView(frame: .zero)
-    var progressView            = UIProgressView(progressViewStyle: .default)
-    var firstPoint              = ProgressCircledView()
-    var secondPoint             = UIView()
-    var thirdPoint              = UIView()
     
+    var orderImageView          = ShopImageView(frame: .zero)
+    var progressView:           OrderProgressUIView!
+    var statusLabel             = StoreSecondaryTitleLabel(from: .center, alpha: 1)
+    var totalPaidLable          = StoreBodyLabel(from: .left, alpha: 1)
+
     var currentUser:            UserLocal!
     var currentOrder:           Order!
+    
+    var seeOrderButton          = StoreVCButton(fontSize: 25, label: "See Order")
     
     
     
@@ -30,8 +32,8 @@ class OrderStatusVC: UIViewController {
         super.viewDidLoad()
         configureVC()
         configureUIElements()
-        configureProgressView()
         layoutUI()
+        configureSeeOrderButton()
     }
     
     
@@ -53,6 +55,13 @@ class OrderStatusVC: UIViewController {
     // MARK: - @Objectives
     
     
+    @objc private func seeOrderButtonTapped(sender: UIView) {
+        StoreAnimation.animateClickedView(sender, animationDuration: 0.2, middleAlpha: 0.3, endAlpha: 1)
+        let destVC = LastOrderVC(with: currentOrder, for: currentUser)
+        destVC.lastOrderVCDelegates = self
+        navigationController?.pushViewController(destVC, animated: true)
+    }
+    
     
     
     //MARK: - Private Function
@@ -60,26 +69,47 @@ class OrderStatusVC: UIViewController {
     
     private func configureVC() {
         view.backgroundColor = StoreUIColor.creamWhite
-        navigationController?.setNavigationBarHidden(true, animated: true)
+        navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.prefersLargeTitles = true
+    }
+    
+    
+    private func configureSeeOrderButton() {
+        seeOrderButton.addTarget(self, action: #selector(seeOrderButtonTapped), for: .touchUpInside)
+    }
+    
+    
+    private func updateTotalLabel() -> Double {
+        var total = 0.0
+        for product in currentOrder.products {
+            total += (product.price * product.discountMlt) * Double(product.quantity)
+        }
+        return total
     }
     
     
     
     //MARK: - VC Configuration
-    
-    private func configureProgressView() {
-        progressView.progress               = 0.25
-        progressView.progressTintColor      = StoreUIColor.grapefruit
-        
-        secondPoint.backgroundColor         = StoreUIColor.grapefruit
-        thirdPoint.backgroundColor          = StoreUIColor.grapefruit
-    }
-    
+
     
     private func configureUIElements() {
         orderImageView.image = storeUIImage.pizzaDeliveryR32
         orderImageView.layer.cornerRadius = 0
+        
+        seeOrderButton.backgroundColor = StoreUIColor.grapefruit
+        
+        progressView = OrderProgressUIView(currentOrder: currentOrder)
+        
+        if currentOrder.status == "Processing" {
+            statusLabel.text = currentOrder.status
+        } else if currentOrder.status == "Out For Delivery" {
+            statusLabel.text = "\(currentOrder.status)\nEst. delivery \(currentOrder.plannedDelivery ?? "unnknown yet")"
+        } else if currentOrder.status == "Delivered" {
+            statusLabel.text = "Delivered on \(currentOrder.delivered!)"
+        }
+        
+        totalPaidLable.text = "Total paid: $\(String(format: "%.2f", updateTotalLabel()))"
+        
         
     }
     
@@ -89,26 +119,36 @@ class OrderStatusVC: UIViewController {
     
     private func layoutUI() {
         progressView.translatesAutoresizingMaskIntoConstraints  = false
-        secondPoint.translatesAutoresizingMaskIntoConstraints   = false
-        thirdPoint.translatesAutoresizingMaskIntoConstraints    = false
         
-        addSubviews(orderImageView, progressView, firstPoint, secondPoint, thirdPoint)
+        addSubviews(orderImageView, progressView, statusLabel, seeOrderButton, totalPaidLable)
+        
+//        debugConfiguration(progressView, statusLabel, seeOrderButton, totalPaidLable)
         
         NSLayoutConstraint.activate([
-            orderImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
-            orderImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            orderImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            orderImageView.heightAnchor.constraint(equalTo: orderImageView.widthAnchor, multiplier: 0.67),
+            orderImageView.topAnchor.constraint         (equalTo: view.topAnchor, constant: 0),
+            orderImageView.leadingAnchor.constraint     (equalTo: view.leadingAnchor, constant: 0),
+            orderImageView.trailingAnchor.constraint    (equalTo: view.trailingAnchor, constant: 0),
+            orderImageView.heightAnchor.constraint      (equalTo: orderImageView.widthAnchor, multiplier: 0.67),
             
-            progressView.topAnchor.constraint(equalTo: orderImageView.bottomAnchor, constant: 15),
-            progressView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            progressView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            progressView.heightAnchor.constraint(equalToConstant: 5),
+            progressView.topAnchor.constraint           (equalTo: orderImageView.bottomAnchor, constant: 15),
+            progressView.leadingAnchor.constraint       (equalTo: view.leadingAnchor, constant: 20),
+            progressView.trailingAnchor.constraint      (equalTo: view.trailingAnchor, constant: -30),
+            progressView.heightAnchor.constraint        (equalToConstant: 5),
             
-            firstPoint.centerYAnchor.constraint(equalTo: progressView.centerYAnchor, constant: 0),
-            firstPoint.centerXAnchor.constraint(equalTo: progressView.centerXAnchor, constant: 0),
-            firstPoint.heightAnchor.constraint(equalToConstant: 13),
-            firstPoint.widthAnchor.constraint(equalToConstant: 13),
+            statusLabel.topAnchor.constraint            (equalTo: progressView.bottomAnchor, constant: 15),
+            statusLabel.centerXAnchor.constraint        (equalTo: view.centerXAnchor, constant: 0),
+            statusLabel.widthAnchor.constraint          (equalToConstant: 250),
+            statusLabel.heightAnchor.constraint         (equalToConstant: 60),
+            
+            totalPaidLable.topAnchor.constraint         (equalTo: statusLabel.bottomAnchor, constant: 0),
+            totalPaidLable.leadingAnchor.constraint     (equalTo: statusLabel.leadingAnchor, constant: 0),
+            totalPaidLable.trailingAnchor.constraint    (equalTo: statusLabel.trailingAnchor, constant: 0),
+            totalPaidLable.heightAnchor.constraint      (equalToConstant: 30),
+            
+            seeOrderButton.bottomAnchor.constraint      (equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -15),
+            seeOrderButton.centerXAnchor.constraint     (equalTo: view.centerXAnchor, constant: 0),
+            seeOrderButton.widthAnchor.constraint       (equalToConstant: 230),
+            seeOrderButton.heightAnchor.constraint      (equalToConstant: 44)
         ])
     }
     
@@ -118,3 +158,8 @@ class OrderStatusVC: UIViewController {
 
 //MARK: - Extension
 
+extension OrderStatusVC: LastOrderVCDelegates {
+    func didRequestDismissal() {
+        self.presentStoreAlertOnMainThread(title: .success, message: .orderAddedToBasket, button: .ok, image: .happyBlackGirlR056)
+    }
+}

@@ -9,6 +9,9 @@ import Foundation
 
 struct Order: Codable, Hashable {
     let orderNumber:        String
-    let date:               String
+    let whenOrdered:        String
     let products:           [ProductLocal]
+    let status:             String
+    let plannedDelivery:    String?
+    let delivered:          String?
 }

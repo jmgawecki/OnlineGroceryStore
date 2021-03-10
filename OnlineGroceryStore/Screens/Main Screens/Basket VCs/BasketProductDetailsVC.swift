@@ -69,6 +69,8 @@ class BasketProductDetailsVC: UIViewController {
         descriptionTextView.text                = currentProduct.description
         counter.text                            = String(currentProduct.quantity)
         count                                   = currentProduct.quantity
+        let total = String(format: "%.2f", (currentProduct.price * currentProduct.discountMlt * Double(currentProduct.quantity)))
+        addToBasketButton.setTitle("Total $\(total)", for: .normal)
         priceLabel.text                         = "$\(String(format: "%.2f", currentProduct.price))"
         self.basketProductDetailsVCDelegates    = basketProductDetailsVCDelegates
     }

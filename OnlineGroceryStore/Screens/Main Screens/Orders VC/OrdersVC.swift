@@ -122,7 +122,7 @@ extension OrdersVC: UITableViewDelegate {
         let destVC = LastOrderVC(with: orders[indexPath.row], for: currentUser)
         let destVC2 = OrderStatusVC(currentUser: currentUser, currentOrder: orders[indexPath.row])
         destVC.currentUser  = currentUser
-        destVC.title        = "Order \(orders[indexPath.item].date)"
+        destVC.title        = "Order \(orders[indexPath.item].whenOrdered)"
         destVC.lastOrderVCDelegates = self
         navigationController?.pushViewController(destVC2, animated: true)
     }

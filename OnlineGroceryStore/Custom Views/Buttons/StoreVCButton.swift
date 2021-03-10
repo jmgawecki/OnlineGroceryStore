@@ -33,7 +33,7 @@ final class StoreVCButton: UIButton {
     private func configure() {
         translatesAutoresizingMaskIntoConstraints = false
         
-        backgroundColor     = StoreUIColor.orange
+        backgroundColor     = StoreUIColor.grapefruit
         layer.cornerRadius  = 10
         layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
         layer.shadowOffset = CGSize(width: 0.0, height: 2.0)

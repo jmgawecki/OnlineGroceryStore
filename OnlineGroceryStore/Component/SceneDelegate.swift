@@ -17,21 +17,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
-        let NavC = UINavigationController()
-        
-        let coordinator = MainCoordinator()
-        coordinator.navigationController = NavC
+//        let NavC = UINavigationController()
+//
+//        let coordinator = MainCoordinator()
+//        coordinator.navigationController = NavC
         
         let window = UIWindow(windowScene: windowScene)
-        window.rootViewController = NavC
+        window.rootViewController = isUserSessionOn() ? setRootAsHomeTabBar() : configureEntryNavController()
         window.makeKeyAndVisible()
         self.window = window
         
-        if isUserSessionOn() {
-            coordinator.startFromHomeVC()
-        } else {
-            coordinator.startFromEntryVC()
-        }
+//        if isUserSessionOn() {
+//            coordinator.startFromHomeVC()
+//        } else {
+//            coordinator.startFromEntryVC()
+//        }
         configureNavigationController()
     }
 

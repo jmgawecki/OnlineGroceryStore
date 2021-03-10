@@ -93,7 +93,7 @@ final class StoreAlertVC: UIViewController {
     private func layoutUI() {
         view.addSubviews(containerView, actionButton, titleLabel, messageLabel)
         containerView.translatesAutoresizingMaskIntoConstraints = false
-        debugConfiguration(containerView, actionButton, titleLabel, messageLabel)
+//        debugConfiguration(containerView, actionButton, titleLabel, messageLabel)
 
         NSLayoutConstraint.activate([
             containerView.centerYAnchor.constraint  (equalTo: view.centerYAnchor),

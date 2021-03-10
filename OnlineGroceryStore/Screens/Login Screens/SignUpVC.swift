@@ -91,7 +91,8 @@ final class SignUpVC: UIViewController {
             switch result {
             case .success(let currentUser):
                 self.currentUser = currentUser
-                self.pushToHomeScreen(with: self.currentUser!)
+                let destVC = HomeTabBarController()
+                self.navigationController?.pushViewController(destVC, animated: true)
             case .failure(_):
                 self.presentStoreAlertOnMainThread(title: .failure, message: .checkInternet, button: .willDo, image: .concernedBlackGirlR056)
             }

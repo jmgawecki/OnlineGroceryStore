@@ -43,7 +43,7 @@ class OrdersVCTableViewCell: UITableViewCell {
     
     func set(with order: Order) {
         orderLabel.text     = "Order nr. \(order.orderNumber.dropLast(29))"
-        dateLabel.text      = "From \(order.date)"
+        dateLabel.text      = "From \(order.whenOrdered)"
         totalLabel.text     = "Total paid: $\(String(format: "%.2f", countTotal(for: order)))"
     }
     

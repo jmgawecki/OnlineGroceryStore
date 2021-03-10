@@ -7,8 +7,8 @@
 
 import UIKit
 
-final class EntryVC: UIViewController, Coordinating {
-    var coordinator: Coordinator?
+final class EntryVC: UIViewController {
+//    var coordinator: Coordinator?
     
     // MARK: - Declaration
     var loginButton         = StoreVCButton(fontSize: 18, label: "Log In")

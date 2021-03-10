@@ -9,10 +9,10 @@ import UIKit
 import Firebase
 import Network
 
-final class HomeVC: UIViewController, Coordinating {
+final class HomeVC: UIViewController {
     // MARK: - Coordinator
     
-    var coordinator: Coordinator?
+//    var coordinator: Coordinator?
     
     // MARK: - Declaration
     
@@ -147,7 +147,6 @@ final class HomeVC: UIViewController, Coordinating {
     
     private func animateViews() {
         StoreAnimation.animateViewToAppear(hiNameLabel, animationDuration: 1, animationDelay: 0.5)
-//        StoreAnimation.animateViewToAppear(vawingGirlImageView, animationDuration: 1, animationDelay: 0.5)
     }
     
     
@@ -155,9 +154,6 @@ final class HomeVC: UIViewController, Coordinating {
 
     
     private func configureUIElements() {
-//        vawingGirlImageView.image                   = imageAsUIImage.wavingBlackGirlR056
-//        vawingGirlImageView.alpha                   = 0
-        
         hiNameLabel.text                            = "Hi \(currentUser?.firstName ?? "")"
         hiNameLabel.textColor                       = StoreUIColor.creamWhite
         hiNameLabel.font                            = UIFont.systemFont(ofSize: 30, weight: .medium)
@@ -170,8 +166,8 @@ final class HomeVC: UIViewController, Coordinating {
         allCategoriesButton.backgroundColor         = StoreUIColor.creamWhite
         allCategoriesButton.setTitleColor(StoreUIColor.black, for: .normal)
         
-        logOutButton.backgroundColor                = StoreUIColor.black
-        logOutButton.setTitleColor(StoreUIColor.grapefruit, for: .normal)
+        logOutButton.backgroundColor                = StoreUIColor.grapefruit
+        logOutButton.setTitleColor(.white, for: .normal)
         
         hiNameLabel.font = UIFont.systemFont(ofSize: 35, weight: .semibold)
         
@@ -223,12 +219,7 @@ final class HomeVC: UIViewController, Coordinating {
             hiNameLabel.topAnchor.constraint                (equalTo: contentView.topAnchor, constant: 10),
             hiNameLabel.widthAnchor.constraint              (equalToConstant: 220),
             hiNameLabel.heightAnchor.constraint             (equalToConstant: 50),
-            
-//            vawingGirlImageView.topAnchor.constraint        (equalTo: contentView.topAnchor),
-//            vawingGirlImageView.leadingAnchor.constraint    (equalTo: hiNameLabel.trailingAnchor, constant: 5), //
-//            vawingGirlImageView.widthAnchor.constraint      (equalToConstant: 100),
-//            vawingGirlImageView.heightAnchor.constraint     (equalTo: vawingGirlImageView.widthAnchor, multiplier: 1.78),
-            
+   
             allCategoriesButton.topAnchor.constraint        (equalTo: hiNameLabel.bottomAnchor, constant: 15),
             allCategoriesButton.leadingAnchor.constraint    (equalTo: hiNameLabel.leadingAnchor, constant: 0),
             allCategoriesButton.widthAnchor.constraint      (equalToConstant: 250),

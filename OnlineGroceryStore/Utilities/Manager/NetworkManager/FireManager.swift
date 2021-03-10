@@ -406,7 +406,7 @@ final class FireManager {
     
     func addOrder(for user: UserLocal, products: [ProductLocal], date: String, idOrder: String, completed: @escaping(Error?) -> Void) {
         var order: Order?
-        order = Order(orderNumber: idOrder, date: date, products: products)
+        order = Order(orderNumber: idOrder, whenOrdered: date, products: products, status: "Processing", plannedDelivery: "nil", delivered: "nil")
         do {
             let _ = try db.collection("userPersistence").document(user.email).collection("lastOrders").addDocument(from: order)
             completed(nil)

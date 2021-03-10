@@ -327,7 +327,6 @@ final class ProductsVCCollectionViewCell: UICollectionViewCell {
                         DispatchQueue.main.async {
                             viewToAnimate.backgroundColor = StoreUIColor.black
                             viewToAnimate.setTitle("Total $\(String(format: "%.2f", self.currentProduct.price * Double(self.count)))", for: .normal)
-                            viewToAnimate.setTitleColor(StoreUIColor.mint, for: .normal)
                         }
                         viewToAnimate.alpha = 1
                         

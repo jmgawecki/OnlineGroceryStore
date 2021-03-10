@@ -26,5 +26,6 @@ class ProgressCircledView: UIView {
     private func configure() {
         translatesAutoresizingMaskIntoConstraints   = false
         backgroundColor                             = .gray
+        alpha                                       = 0.3
     }
 }

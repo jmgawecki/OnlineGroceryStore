@@ -8,8 +8,8 @@
 import UIKit
 import Firebase
 
-final class CategoriesVC: UIViewController, Coordinating{
-    var coordinator: Coordinator?
+final class CategoriesVC: UIViewController {
+//    var coordinator: Coordinator?
     
     // MARK: - Declaration
     

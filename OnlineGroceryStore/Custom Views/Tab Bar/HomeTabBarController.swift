@@ -7,8 +7,8 @@
 
 import UIKit
 
-final class HomeTabBarController: UITabBarController, Coordinating {
-    var coordinator: Coordinator?
+final class HomeTabBarController: UITabBarController {
+//    var coordinator: Coordinator?
     
     // MARK: - Declaration
     

@@ -96,6 +96,9 @@ final class logOutVC: UIViewController {
     
     private func configureUIElements() {
         shopImageView.image = storeUIImage.wavingPeopleR088
+        
+        loginButton.backgroundColor = StoreUIColor.grapefruit
+        registerButton.backgroundColor = StoreUIColor.grapefruit
     }
     
     
