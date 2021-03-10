@@ -12,43 +12,8 @@ Technology used:
 - Fetching data from JSON
 - CocoaPods integration
 - Collection Views with Diffable Data Source with Compositional Layouts
+- Animations build natively
 - Table Views with Diffable Data Source
 
-I am attaching some screenshots of the app. Perfecting UI is the last stage of my project so please forgive me that is not done yet:))
-
-Entry View Controller:
-<img src="https://user-images.githubusercontent.com/71930261/109963260-1c0e0280-7ce4-11eb-906a-12720ffa7b27.png" width="225">
-
-Login View Controller:
-<img src="https://user-images.githubusercontent.com/71930261/109963268-1dd7c600-7ce4-11eb-85da-4628ba17ab46.png" width="225">
-
-Sign up View Controller:
-<img src="https://user-images.githubusercontent.com/71930261/109963269-1e705c80-7ce4-11eb-8422-b81c19d52f65.png" width="225">
-
-Home View Controller:
-<img src="https://user-images.githubusercontent.com/71930261/109963031-d81afd80-7ce3-11eb-81c7-c8117f732dcf.png" width="225">
-
-View Controller with the search engine:
-<img src="https://user-images.githubusercontent.com/71930261/109970142-9f335680-7cec-11eb-826c-55093c046238.png" width="225">
-
-View Controller with previous orders list:
-<img src="https://user-images.githubusercontent.com/71930261/109963023-d6513a00-7ce3-11eb-8119-020420bf548e.png" width="225">
-
-View Controller with the previous order's details:
-<img src="https://user-images.githubusercontent.com/71930261/109970756-57f99580-7ced-11eb-894f-1f2adee5fe1f.png" width="225">
-
-View Controller with the basket:
-<img src="https://user-images.githubusercontent.com/71930261/109963027-d6e9d080-7ce3-11eb-8919-7789df337055.png" width="225">
-
-Categories View Controller:
-<img src="https://user-images.githubusercontent.com/71930261/109963035-d8b39400-7ce3-11eb-90e0-f0c262a02a14.png" width="225">
-
-Products categories View Controller:
-<img src="https://user-images.githubusercontent.com/71930261/109963037-d94c2a80-7ce3-11eb-8b8c-d5c77819acb5.png" width="225">
-
-Log out View Controller
-<img src="https://user-images.githubusercontent.com/71930261/109970581-241e7000-7ced-11eb-9465-e60751508580.png" width="225">
-
-
-
-
+Please follow the video to see the short video of the app:)
+https://drive.google.com/file/d/1Yyw3sflwVXEna2GMw3eIk-2hsx8AzWMT/view?usp=sharing
