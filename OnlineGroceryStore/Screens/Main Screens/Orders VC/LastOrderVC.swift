@@ -20,13 +20,16 @@ class LastOrderVC: UIViewController {
     
     enum Section { case main }
     
-    var collectionView:     UICollectionView!
-    var dataSource:         UICollectionViewDiffableDataSource<Section, ProductLocal>!
-    var currentUser:        UserLocal!
+    var collectionView:         UICollectionView!
+    var dataSource:             UICollectionViewDiffableDataSource<Section, ProductLocal>!
     
-    var addToBasketButton = StoreImageLabelButton(fontSize: 20, message: "Add to Basket", image: imageAsUIImage.foodPlaceholder!, textColor: StoreUIColor.darkGreen ?? .green)
+    var totalLabel              = StoreSecondaryTitleLabel(from: .right, alpha: 1)
+    var addToBasketButton       = StoreVCButton(fontSize: 20, label: "Add to basket")
     
-    var order: Order!
+    var currentUser:            UserLocal!
+    var order:                  Order!
+    
+    var bottomColorView         = UIView()
     
     weak var lastOrderVCDelegates: LastOrderVCDelegates!
     
@@ -38,10 +41,12 @@ class LastOrderVC: UIViewController {
         super.viewDidLoad()
         configureVC()
         configureCollectionView()
+        configureUIElements()
         layoutUI()
         configureDataSource()
         updateDataOnCollection()
         configureAddToBasketButton()
+        updateTotalLabel()
     }
     
     
@@ -49,7 +54,7 @@ class LastOrderVC: UIViewController {
     
     
     override func viewWillAppear(_ animated: Bool) {
-        StoreAnimation.animateTabBar(viewToAnimate: tabBarController!.tabBar, tabBarAnimationPath: .fromOrder)
+        StoreAnimation.animateTabBar(viewToAnimate: tabBarController!.tabBar, tabBarAnimationPath: .toOrder)
     }
     
     
@@ -134,26 +139,68 @@ class LastOrderVC: UIViewController {
         DispatchQueue.main.async { self.dataSource.apply(snapshot, animatingDifferences: true); self.collectionView.reloadData() }
         
     }
-
     
-    //MARK: - Layout configuration
+    // MARK: - UI Configuration
+    
+    
+    private func configureUIElements() {
+        addToBasketButton.setTitleColor(StoreUIColor.grapefruit, for: .normal)
+        addToBasketButton.backgroundColor       = StoreUIColor.black
+        bottomColorView.backgroundColor         = StoreUIColor.grapefruit
+        bottomColorView.layer.cornerRadius      = 44
+            
+        totalLabel.layer.cornerRadius           = 10
+        totalLabel.textColor                    = .white
+        totalLabel.backgroundColor              = StoreUIColor.grapefruit
+    }
+    
+    private func updateTotalLabel() {
+        var total = 0.0
+        for product in order.products {
+            print(product)
+            total += (product.price * product.discountMlt) * Double(product.quantity)
+            print(total)
+        }
+        print(total)
+        DispatchQueue.main.async {
+            self.totalLabel.text = "Paid Total: $\(String(format: "%.2f", total))"
+        }
+    }
+    
+    
+    
+    //MARK: - Layout UI
     
     
     private func layoutUI() {
-        view.addSubviews(addToBasketButton, collectionView)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.translatesAutoresizingMaskIntoConstraints    = false
+        bottomColorView.translatesAutoresizingMaskIntoConstraints   = false
+        addSubviews(bottomColorView, collectionView)
+        bottomColorView.addSubviews(addToBasketButton, totalLabel)
+        //        debugConfiguration(bottomColorView, collectionView, orderButton, totalLabel)
         
         NSLayoutConstraint.activate([
-            addToBasketButton.bottomAnchor.constraint   (equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
-            addToBasketButton.leadingAnchor.constraint  (equalTo: view.leadingAnchor, constant: 0),
-            addToBasketButton.trailingAnchor.constraint (equalTo: view.trailingAnchor, constant: 0),
-            addToBasketButton.heightAnchor.constraint   (equalToConstant: 60),
+            addToBasketButton.bottomAnchor.constraint       (equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -3),
+            addToBasketButton.leadingAnchor.constraint      (equalTo: view.leadingAnchor, constant: 20),
+            addToBasketButton.trailingAnchor.constraint     (equalTo: view.trailingAnchor, constant: -20),
+            addToBasketButton.heightAnchor.constraint       (equalToConstant: 44),
             
+            totalLabel.bottomAnchor.constraint              (equalTo: addToBasketButton.topAnchor, constant: -10),
+            totalLabel.trailingAnchor.constraint            (equalTo: addToBasketButton.trailingAnchor, constant: 0),
+            totalLabel.widthAnchor.constraint               (equalToConstant: 250),
+            totalLabel.heightAnchor.constraint              (equalToConstant: 40),
             
-            collectionView.topAnchor.constraint         (equalTo: view.topAnchor, constant: 0),
-            collectionView.leadingAnchor.constraint     (equalTo: view.leadingAnchor, constant: 0),
-            collectionView.trailingAnchor.constraint    (equalTo: view.trailingAnchor, constant: 0),
-            collectionView.bottomAnchor.constraint      (equalTo: addToBasketButton.topAnchor, constant: 0),
+            collectionView.topAnchor.constraint             (equalTo: view.topAnchor, constant: 0),
+            collectionView.leadingAnchor.constraint         (equalTo: view.leadingAnchor, constant: 0),
+            collectionView.trailingAnchor.constraint        (equalTo: view.trailingAnchor, constant: 0),
+            collectionView.bottomAnchor.constraint          (equalTo: addToBasketButton.topAnchor, constant: -50),
+            
+            bottomColorView.bottomAnchor.constraint         (equalTo: view.bottomAnchor, constant: 50),
+            bottomColorView.leadingAnchor.constraint        (equalTo: view.leadingAnchor, constant: 0),
+            bottomColorView.trailingAnchor.constraint       (equalTo: view.trailingAnchor, constant: 50),
+            bottomColorView.topAnchor.constraint            (equalTo: collectionView.bottomAnchor, constant: 0),
         ])
     }
+    
+    
 }

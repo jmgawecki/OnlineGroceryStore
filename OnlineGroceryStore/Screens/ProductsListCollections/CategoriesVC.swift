@@ -132,10 +132,9 @@ final class CategoriesVC: UIViewController, Coordinating{
 
 extension CategoriesVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        #warning("do a check for current user")
-        let destVC = ProductsVC(currentUser: currentUser!)
-        destVC.currentCategory = categories[indexPath.row]
-        #warning("how to add category's title?")
+        let destVC              = ProductsVC(currentUser: currentUser!)
+        destVC.currentCategory  = categories[indexPath.row]
+        destVC.title            = categories[indexPath.row]
         
         navigationController?.pushViewController(destVC, animated: true)
     }

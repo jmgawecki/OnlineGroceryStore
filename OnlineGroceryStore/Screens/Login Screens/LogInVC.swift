@@ -65,7 +65,7 @@ final class LogInVC: UIViewController {
 
     
     private func pushToHomeScreen(with currentUser: UserLocal) {
-        let destVC = HomeVC(currentUser: currentUser)
+        let destVC = HomeTabBarController()
         navigationController?.pushViewController(destVC, animated: true)
     }
     
@@ -80,7 +80,7 @@ final class LogInVC: UIViewController {
             case .success(let user):
                 self.pushToHomeScreen(with: user)
             case .failure(_):
-                self.presentStoreAlertOnMainThread(title: .failure, message: .checkInternet, button: .willDo, image: .concernedBlackGirlR056)
+                self.presentStoreAlertOnMainThread(title: .failure, message: .failedToSignIn, button: .willDo, image: .concernedBlackGirlR056)
             }
         }
     }
@@ -114,7 +114,7 @@ final class LogInVC: UIViewController {
     
 
     private func configureUIElements() {
-        shopImageView.image = imageAsUIImage.shoppingLadyr056
+        shopImageView.image = storeUIImage.shoppingLadyr056
     }
     
     

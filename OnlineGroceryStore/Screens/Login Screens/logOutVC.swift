@@ -95,7 +95,7 @@ final class logOutVC: UIViewController {
     }
     
     private func configureUIElements() {
-        shopImageView.image = imageAsUIImage.wavingPeopleR088
+        shopImageView.image = storeUIImage.wavingPeopleR088
     }
     
     

@@ -176,13 +176,13 @@ final class BasketVC: UIViewController {
     
     
     private func configureUIElements() {
-        orderButton.setTitleColor(StoreUIColor.mint, for: .normal)
+        orderButton.setTitleColor(StoreUIColor.grapefruit, for: .normal)
         orderButton.backgroundColor         = StoreUIColor.black
         bottomColorView.backgroundColor     = StoreUIColor.grapefruit
         bottomColorView.layer.cornerRadius  = 44
         
         totalLabel.layer.cornerRadius       = 10
-        totalLabel.textColor                = StoreUIColor.mint
+        totalLabel.textColor                = .white
         totalLabel.backgroundColor          = StoreUIColor.grapefruit
     }
     

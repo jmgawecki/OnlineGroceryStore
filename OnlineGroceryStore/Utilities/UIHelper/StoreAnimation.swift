@@ -38,7 +38,7 @@ struct StoreAnimation {
     }
     
     
-    static func animateEntryVC(firstLabel: UIView, secondLabel: UIView, anArrow: UIImageView?) {
+    static func animateEntryVC(firstLabel: UIView, secondLabel: UIView, logInPannel: UIView...) {
         UIView.animate(withDuration: 1) {
             firstLabel.alpha = 1
         } completion: { (_) in
@@ -46,8 +46,9 @@ struct StoreAnimation {
                 secondLabel.alpha = 1
             } completion: { (_) in
                 UIView.animate(withDuration: 0.5) {
-                    if anArrow != nil{
-                        anArrow!.alpha = 1
+                    for view in logInPannel {
+                        print("executed")
+                        view.alpha = 1
                     }
                     
                 }
@@ -63,8 +64,8 @@ struct StoreAnimation {
             switch tabBarAnimationPath {
             case .toOrder:
                 viewToAnimate.barTintColor              = StoreUIColor.grapefruit
-                viewToAnimate.tintColor                 = StoreUIColor.black
-                viewToAnimate.unselectedItemTintColor   = StoreUIColor.mint
+                viewToAnimate.tintColor                 = StoreUIColor.selectedTabBarItemOrderVC
+                viewToAnimate.unselectedItemTintColor   = .white
                 viewToAnimate.clipsToBounds             = true
                 viewToAnimate.alpha                     = 1
                 viewToAnimate.isTranslucent             = false

@@ -89,7 +89,7 @@ final class OrdersVC: UIViewController {
     private func configureTableView() {
         categoriesTableView = UITableView(frame: view.bounds, style: .plain)
         view.addSubview(categoriesTableView)
-        categoriesTableView.rowHeight = 80
+        categoriesTableView.rowHeight = 90
         categoriesTableView.delegate = self
         categoriesTableView.backgroundColor = StoreUIColor.creamWhite
         categoriesTableView.register(OrdersVCTableViewCell.self, forCellReuseIdentifier: OrdersVCTableViewCell.reuseID)
@@ -119,10 +119,12 @@ final class OrdersVC: UIViewController {
 
 extension OrdersVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let destVC = LastOrderVC(with: orders[indexPath.item], for: currentUser)
-        destVC.currentUser = currentUser
+        let destVC = LastOrderVC(with: orders[indexPath.row], for: currentUser)
+        let destVC2 = OrderStatusVC(currentUser: currentUser, currentOrder: orders[indexPath.row])
+        destVC.currentUser  = currentUser
+        destVC.title        = "Order \(orders[indexPath.item].date)"
         destVC.lastOrderVCDelegates = self
-        navigationController?.pushViewController(destVC, animated: true)
+        navigationController?.pushViewController(destVC2, animated: true)
     }
 }
 

@@ -18,11 +18,11 @@ final class HomeVC: UIViewController, Coordinating {
     
     var scrollView              = UIScrollView()
     
-    var quickActionMenu:        StoreVCButton!
-    var hiNameLabel             = StoreTitleLabel(from: .left, alpha: 0)
-    var vawingGirlImageView     = ShopImageView(frame: .zero)
     
-    var colorBottomContentView  = UIView()
+    var hiNameLabel             = StoreTitleLabel(from: .left, alpha: 0)
+//    var vawingGirlImageView     = ShopImageView(frame: .zero)
+    
+    var colorTopView            = UIView()
     
     var contentView             = UIView()
     var specialOffersView       = UIView()
@@ -30,6 +30,7 @@ final class HomeVC: UIViewController, Coordinating {
     
     var allCategoriesButton     = StoreVCButton(fontSize: 20, label: "Shop by Category")
     
+    var logOutButton         = StoreVCButton(fontSize: 18, label: "Log Out")
     
     var currentUser:            UserLocal?
     
@@ -39,16 +40,11 @@ final class HomeVC: UIViewController, Coordinating {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        checkNetworkStatus()
         layoutAndConfigureScrollView()
-        configureQuickActionMenu()
-        layoutUIInScrollView()
         configureUIElements()
-        configureAllCategoriesButton()
+        layoutUIInScrollView()
+        configureButtons()
         animateViews()
-        
-        add(childVC: SpecialOffersView(currentUser: currentUser!, specialOffersViewDelegate: self), to: specialOffersView)
-        add(childVC: LastsVC(currentUser: currentUser!, lastsVCDelegates: self), to: favoritesOffersView)
     }
     
     
@@ -73,6 +69,12 @@ final class HomeVC: UIViewController, Coordinating {
         
 //        coordinator?.pushVCWithUser(with: currentUser, viewController: , isNavigationHidden: <#T##Bool#>)
         navigationController?.pushViewController(destVC, animated: true)
+    }
+    
+    
+    @objc private func logOutButtonTapped(_ sender: UIView) {
+        StoreAnimation.animateClickedView(sender, animationDuration: 0.2, middleAlpha: 0.3, endAlpha: 1)
+        signOut()
     }
     
     
@@ -137,53 +139,43 @@ final class HomeVC: UIViewController, Coordinating {
     // MARK: - Button Configuration
     
     
-    private func configureAllCategoriesButton() {
+    private func configureButtons() {
         allCategoriesButton.addTarget(self, action: #selector(allCategoriesButtonTapped), for: .touchUpInside)
+        logOutButton.addTarget(self, action: #selector(logOutButtonTapped), for: .touchUpInside)
     }
     
     
     private func animateViews() {
         StoreAnimation.animateViewToAppear(hiNameLabel, animationDuration: 1, animationDelay: 0.5)
-        StoreAnimation.animateViewToAppear(vawingGirlImageView, animationDuration: 1, animationDelay: 0.5)
+//        StoreAnimation.animateViewToAppear(vawingGirlImageView, animationDuration: 1, animationDelay: 0.5)
     }
     
     
     // MARK: - UI Configuration
-    
-    
-    private func configureQuickActionMenu() {
-        quickActionMenu             = StoreVCButton(fontSize: 18, label: "More")
-        quickActionMenu.menu        = UIMenu(options: .displayInline,
-                                             children: [ UIAction(title: "Log out", handler: { [weak self] (_) in
-                                                guard let self = self else { return }
-                                                self.signOut()
-                                             }),
-                                             UIAction(title: "Personal data", handler: { (_) in
-                                                print("tralalallalalalaa")
-                                             })])
-        quickActionMenu.showsMenuAsPrimaryAction = true
-    }
-    
+
     
     private func configureUIElements() {
-        vawingGirlImageView.image                   = imageAsUIImage.wavingBlackGirlR056
-        vawingGirlImageView.alpha                   = 0
+//        vawingGirlImageView.image                   = imageAsUIImage.wavingBlackGirlR056
+//        vawingGirlImageView.alpha                   = 0
         
         hiNameLabel.text                            = "Hi \(currentUser?.firstName ?? "")"
         hiNameLabel.textColor                       = StoreUIColor.creamWhite
         hiNameLabel.font                            = UIFont.systemFont(ofSize: 30, weight: .medium)
         
-        scrollView.backgroundColor                  = StoreUIColor.grapefruit
+        scrollView.backgroundColor                  = StoreUIColor.scrollViewBackground
         
-        colorBottomContentView.backgroundColor      = StoreUIColor.creamWhite
-        colorBottomContentView.layer.cornerRadius   = 45
-        
+        colorTopView.backgroundColor                = StoreUIColor.creamWhite
+        colorTopView.layer.cornerRadius             = 45
         
         allCategoriesButton.backgroundColor         = StoreUIColor.creamWhite
-        allCategoriesButton.setTitleColor(.black, for: .normal)
+        allCategoriesButton.setTitleColor(StoreUIColor.black, for: .normal)
         
-        quickActionMenu.backgroundColor             = StoreUIColor.creamWhite
-        quickActionMenu.setTitleColor(.black, for: .normal)
+        logOutButton.backgroundColor                = StoreUIColor.black
+        logOutButton.setTitleColor(StoreUIColor.grapefruit, for: .normal)
+        
+        hiNameLabel.font = UIFont.systemFont(ofSize: 35, weight: .semibold)
+        
+       
     }
     
     
@@ -209,42 +201,40 @@ final class HomeVC: UIViewController, Coordinating {
             contentView.trailingAnchor.constraint           (equalTo: scrollView.trailingAnchor),
             
             contentView.widthAnchor.constraint              (equalTo: scrollView.widthAnchor),
-            contentView.heightAnchor.constraint             (equalToConstant: 900),
+            contentView.heightAnchor.constraint             (equalToConstant: 965),
         ])
     }
     
     
     private func layoutUIInScrollView() {
-        specialOffersView.translatesAutoresizingMaskIntoConstraints      = false
-        favoritesOffersView.translatesAutoresizingMaskIntoConstraints    = false
-        colorBottomContentView.translatesAutoresizingMaskIntoConstraints = false
+        specialOffersView.translatesAutoresizingMaskIntoConstraints     = false
+        favoritesOffersView.translatesAutoresizingMaskIntoConstraints   = false
+        colorTopView.translatesAutoresizingMaskIntoConstraints          = false
         
-        contentView.addSubviews(hiNameLabel, allCategoriesButton, quickActionMenu, vawingGirlImageView, colorBottomContentView)
-        colorBottomContentView.addSubviews(favoritesOffersView, specialOffersView)
+        contentView.addSubviews(hiNameLabel, allCategoriesButton, colorTopView, logOutButton)
+        colorTopView.addSubviews(favoritesOffersView, specialOffersView)
+        
+        add(childVC: SpecialOffersView(currentUser: currentUser!, specialOffersViewDelegate: self), to: specialOffersView)
+        add(childVC: LastsVC(currentUser: currentUser!, lastsVCDelegates: self), to: favoritesOffersView)
         
         
         NSLayoutConstraint.activate([
-            hiNameLabel.leadingAnchor.constraint            (equalTo: contentView.leadingAnchor, constant: 20),
-            hiNameLabel.topAnchor.constraint                (equalTo: contentView.topAnchor, constant: 20),
+            hiNameLabel.leadingAnchor.constraint            (equalTo: contentView.leadingAnchor, constant: 30),
+            hiNameLabel.topAnchor.constraint                (equalTo: contentView.topAnchor, constant: 10),
             hiNameLabel.widthAnchor.constraint              (equalToConstant: 220),
             hiNameLabel.heightAnchor.constraint             (equalToConstant: 50),
             
-            vawingGirlImageView.topAnchor.constraint        (equalTo: contentView.topAnchor),
-            vawingGirlImageView.leadingAnchor.constraint    (equalTo: hiNameLabel.trailingAnchor, constant: 5), //
-            vawingGirlImageView.widthAnchor.constraint      (equalToConstant: 100),
-            vawingGirlImageView.heightAnchor.constraint     (equalTo: vawingGirlImageView.widthAnchor, multiplier: 1.78),
+//            vawingGirlImageView.topAnchor.constraint        (equalTo: contentView.topAnchor),
+//            vawingGirlImageView.leadingAnchor.constraint    (equalTo: hiNameLabel.trailingAnchor, constant: 5), //
+//            vawingGirlImageView.widthAnchor.constraint      (equalToConstant: 100),
+//            vawingGirlImageView.heightAnchor.constraint     (equalTo: vawingGirlImageView.widthAnchor, multiplier: 1.78),
             
-            quickActionMenu.bottomAnchor.constraint         (equalTo: vawingGirlImageView.bottomAnchor, constant: 0),
-            quickActionMenu.leadingAnchor.constraint        (equalTo: hiNameLabel.leadingAnchor, constant: 0),
-            quickActionMenu.widthAnchor.constraint          (equalToConstant: 180),
-            quickActionMenu.heightAnchor.constraint         (equalToConstant: 40),
-            
-            allCategoriesButton.bottomAnchor.constraint     (equalTo: quickActionMenu.topAnchor, constant: -15),
+            allCategoriesButton.topAnchor.constraint        (equalTo: hiNameLabel.bottomAnchor, constant: 15),
             allCategoriesButton.leadingAnchor.constraint    (equalTo: hiNameLabel.leadingAnchor, constant: 0),
-            allCategoriesButton.widthAnchor.constraint      (equalToConstant: 180),
-            allCategoriesButton.heightAnchor.constraint     (equalToConstant: 40),
+            allCategoriesButton.widthAnchor.constraint      (equalToConstant: 250),
+            allCategoriesButton.heightAnchor.constraint     (equalToConstant: 44),
             
-            favoritesOffersView.topAnchor.constraint        (equalTo: vawingGirlImageView.bottomAnchor, constant: 70),
+            favoritesOffersView.topAnchor.constraint        (equalTo: allCategoriesButton.bottomAnchor, constant: 70),
             favoritesOffersView.leadingAnchor.constraint    (equalTo: contentView.leadingAnchor, constant: 0),
             favoritesOffersView.trailingAnchor.constraint   (equalTo: contentView.trailingAnchor, constant: 0),
             favoritesOffersView.heightAnchor.constraint     (equalToConstant: 300),
@@ -254,10 +244,15 @@ final class HomeVC: UIViewController, Coordinating {
             specialOffersView.trailingAnchor.constraint     (equalTo: contentView.trailingAnchor, constant: 0),
             specialOffersView.heightAnchor.constraint       (equalToConstant: 330),
             
-            colorBottomContentView.topAnchor.constraint     (equalTo: favoritesOffersView.topAnchor, constant: -30),
-            colorBottomContentView.leadingAnchor.constraint (equalTo: contentView.leadingAnchor, constant: 0),
-            colorBottomContentView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 50),
-            colorBottomContentView.bottomAnchor.constraint  (equalTo: contentView.bottomAnchor, constant: 300),
+            logOutButton.topAnchor.constraint               (equalTo: specialOffersView.bottomAnchor, constant: 0),
+            logOutButton.leadingAnchor.constraint           (equalTo: contentView.leadingAnchor, constant: 15),
+            logOutButton.trailingAnchor.constraint          (equalTo: contentView.trailingAnchor, constant: -15),
+            logOutButton.heightAnchor.constraint            (equalToConstant: 44),
+            
+            colorTopView.topAnchor.constraint               (equalTo: favoritesOffersView.topAnchor, constant: -30),
+            colorTopView.leadingAnchor.constraint           (equalTo: contentView.leadingAnchor, constant: 0),
+            colorTopView.trailingAnchor.constraint          (equalTo: contentView.trailingAnchor, constant: 50),
+            colorTopView.bottomAnchor.constraint            (equalTo: contentView.bottomAnchor, constant: 300),
         ])
     }
 }

@@ -152,7 +152,7 @@ final class LastsVC: UIViewController {
     
     
     private func configureUIElements() {
-        hiNameLabel.text = "Favorites"
+        hiNameLabel.text = "Usuals"
     }
     
     
@@ -167,7 +167,7 @@ final class LastsVC: UIViewController {
         
         NSLayoutConstraint.activate([
             hiNameLabel.topAnchor.constraint            (equalTo: view.topAnchor, constant: 0),
-            hiNameLabel.leadingAnchor.constraint        (equalTo: view.leadingAnchor, constant: 15),
+            hiNameLabel.leadingAnchor.constraint        (equalTo: view.leadingAnchor, constant: 30),
             hiNameLabel.trailingAnchor.constraint       (equalTo: view.trailingAnchor, constant: 0),
             hiNameLabel.heightAnchor.constraint         (equalToConstant: 30),
             

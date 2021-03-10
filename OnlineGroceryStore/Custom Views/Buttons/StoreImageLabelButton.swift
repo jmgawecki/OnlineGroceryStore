@@ -62,7 +62,7 @@ final class StoreImageLabelButton: UIButton {
     private func layoutUI() {
         addSubview(buttonImageView)
         addSubview(buttonLabel)
-        buttonImageView.image = imageAsUIImage.foodPlaceholder
+        buttonImageView.image = storeUIImage.foodPlaceholder
         
         
         NSLayoutConstraint.activate([

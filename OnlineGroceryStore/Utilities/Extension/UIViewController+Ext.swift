@@ -26,4 +26,13 @@ extension UIViewController {
         }
     }
     
+    func presentStoreAlertOnMainThreadBottomWindow(title: AlertTitle, message: AlertMessages, button: AlertButtonTitle, image: AlertImage) {
+        DispatchQueue.main.async {
+            let alertVC = StoreAlertVC(title: title, message: message, buttonTitle: button, image: image)
+            alertVC.modalPresentationStyle  = .overFullScreen
+            alertVC.modalTransitionStyle    = .crossDissolve
+            self.present(alertVC, animated: true)
+        }
+    }
+    
 }

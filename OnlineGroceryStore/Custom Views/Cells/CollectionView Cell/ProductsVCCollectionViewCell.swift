@@ -9,12 +9,18 @@ import UIKit
 import Firebase
 import FirebaseUI
 
+
+enum DelegateCase {
+    case checkConnection
+    case addQuantity
+}
+
     // MARK: - Protocol & Delegate
 
 
 protocol ProductsVCCollectionViewCellDelegate: class {
     func didAddProducts()
-    func didNotAddProducts(with error: String)
+    func didNotAddProducts(DelegateCase: DelegateCase)
 }
 
 
@@ -122,13 +128,13 @@ final class ProductsVCCollectionViewCell: UICollectionViewCell {
     @objc private func addToBasketButtonTapped(sender: UIView) {
         animateButtonView(sender)
         guard count > 0 else {
-            self.productsVCCollectionViewCellDelegate.didNotAddProducts(with: "Seem like you haven't add any products! Add some with the + button and try again.")
+            self.productsVCCollectionViewCellDelegate.didNotAddProducts(DelegateCase: .addQuantity)
             return
         }
         FireManager.shared.addProductToBasket(for: currentUser, with: currentProduct, howMany: count) { [weak self] (error) in
             guard let self = self else { return }
             if let error = error {
-                self.productsVCCollectionViewCellDelegate.didNotAddProducts(with: error.localizedDescription)
+                self.productsVCCollectionViewCellDelegate.didNotAddProducts(DelegateCase: .checkConnection)
             } else {
                 self.productsVCCollectionViewCellDelegate.didAddProducts()
             }
@@ -251,19 +257,19 @@ final class ProductsVCCollectionViewCell: UICollectionViewCell {
             productImageView.leadingAnchor.constraint       (equalTo: leadingAnchor, constant: 0),
             productImageView.widthAnchor.constraint         (equalTo: productImageView.heightAnchor),
             
-            priceLabel.topAnchor.constraint                 (equalTo: productTitleLabel.bottomAnchor, constant: 0),
+            priceLabel.topAnchor.constraint                 (equalTo: productTitleLabel.bottomAnchor, constant: 20),
             priceLabel.leadingAnchor.constraint             (equalTo: productImageView.trailingAnchor, constant: 0),
             priceLabel.trailingAnchor.constraint            (equalTo: trailingAnchor),
             priceLabel.heightAnchor.constraint              (equalToConstant: 40),
             
-            productCounter.topAnchor.constraint             (equalTo: priceLabel.bottomAnchor, constant: 10),
+            productCounter.centerYAnchor.constraint         (equalTo: centerYAnchor, constant: 10),
             productCounter.centerXAnchor.constraint         (equalTo: priceLabel.centerXAnchor, constant: 0),
             productCounter.widthAnchor.constraint           (equalToConstant: 130),
             productCounter.heightAnchor.constraint          (equalToConstant: 50),
             
             addToBasketButton.topAnchor.constraint          (equalTo: productCounter.bottomAnchor, constant: 10),
             addToBasketButton.centerXAnchor.constraint      (equalTo: productCounter.centerXAnchor, constant: 0),
-            addToBasketButton.widthAnchor.constraint        (equalToConstant: 150),
+            addToBasketButton.widthAnchor.constraint        (equalToConstant: 140),
             addToBasketButton.heightAnchor.constraint       (equalToConstant: 44),
             
             topColorView.topAnchor.constraint               (equalTo: productTitleLabel.bottomAnchor, constant: 0),

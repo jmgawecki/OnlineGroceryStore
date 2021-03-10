@@ -16,8 +16,8 @@ final class StoreAlertVC: UIViewController {
     //MARK: - Declarations
 
     let containerView   = UIView()
-    let titleLabel      = StoreTitleLabel(from: .center, alpha: 1)
-    let messageLabel    = StoreSecondaryTitleLabel(from: .left, alpha: 1)
+    let titleLabel      = StoreSecondaryTitleLabel(from: .center, alpha: 1)
+    let messageLabel    = StoreBodyLabel(from: .left, alpha: 1)
     let actionButton    = StoreVCButton()
     var girlImageView   = ShopImageView(frame: .zero)
     
@@ -26,7 +26,7 @@ final class StoreAlertVC: UIViewController {
     var buttonTitle:    String?
     var girlImage:      UIImage?
     
-    let padding:        CGFloat = 20
+    let padding:        CGFloat = 15
     
     
     //MARK: - Initialisers
@@ -70,17 +70,17 @@ final class StoreAlertVC: UIViewController {
     private func configureUIElements() {
         view.backgroundColor                = UIColor.black.withAlphaComponent(0.75)
                 
-        titleLabel.textColor                = StoreUIColor.mint
+        titleLabel.textColor                = StoreUIColor.creamWhite
         titleLabel.text                     = alertTitle ?? "Something went wrong"
                 
-        messageLabel.textColor              = StoreUIColor.mint
+        messageLabel.textColor              = StoreUIColor.creamWhite
         messageLabel.text                   = message ?? "Unable to complete request"
         messageLabel.numberOfLines          = 4
                 
         girlImageView.image                 = girlImage
         
         actionButton.backgroundColor        = StoreUIColor.black
-        actionButton.setTitleColor(StoreUIColor.mint, for: .normal)
+        actionButton.setTitleColor(StoreUIColor.creamWhite, for: .normal)
         
         containerView.backgroundColor       = StoreUIColor.grapefruit
         containerView.layer.cornerRadius    = 10
@@ -93,6 +93,7 @@ final class StoreAlertVC: UIViewController {
     private func layoutUI() {
         view.addSubviews(containerView, actionButton, titleLabel, messageLabel)
         containerView.translatesAutoresizingMaskIntoConstraints = false
+        debugConfiguration(containerView, actionButton, titleLabel, messageLabel)
 
         NSLayoutConstraint.activate([
             containerView.centerYAnchor.constraint  (equalTo: view.centerYAnchor),
@@ -110,10 +111,10 @@ final class StoreAlertVC: UIViewController {
             actionButton.trailingAnchor.constraint  (equalTo: containerView.trailingAnchor, constant: -padding),
             actionButton.heightAnchor.constraint    (equalToConstant: 44),
 
-            messageLabel.topAnchor.constraint       (equalTo: titleLabel.bottomAnchor, constant: 8),
+            messageLabel.topAnchor.constraint       (equalTo: titleLabel.bottomAnchor, constant: 5),
             messageLabel.leadingAnchor.constraint   (equalTo: containerView.leadingAnchor, constant: padding),
             messageLabel.trailingAnchor.constraint  (equalTo: containerView.trailingAnchor, constant: -padding),
-            messageLabel.bottomAnchor.constraint    (equalTo: actionButton.topAnchor, constant: -12)
+            messageLabel.bottomAnchor.constraint    (equalTo: actionButton.topAnchor, constant: -8)
         ])
     }
     

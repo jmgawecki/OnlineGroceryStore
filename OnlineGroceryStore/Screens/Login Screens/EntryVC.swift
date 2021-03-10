@@ -27,6 +27,8 @@ final class EntryVC: UIViewController, Coordinating {
     
     var bodyLabel           = StoreSecondaryTitleLabel(from: .left, alpha: 0)
     
+    var colorBottomView     = UIView()
+    
     
     
     // MARK: - Override, Initialiser
@@ -44,7 +46,7 @@ final class EntryVC: UIViewController, Coordinating {
     
     override func viewWillAppear(_ animated: Bool) {
         configureVC()
-        StoreAnimation.animateEntryVC(firstLabel: welcomeLabel, secondLabel: bodyLabel, anArrow: nil)
+        StoreAnimation.animateEntryVC(firstLabel: welcomeLabel, secondLabel: bodyLabel, logInPannel: colorBottomView, buttonsStack)
     }
     
     
@@ -93,22 +95,37 @@ final class EntryVC: UIViewController, Coordinating {
         buttonsStack.translatesAutoresizingMaskIntoConstraints = false
         buttonsStack.axis                = .vertical
         buttonsStack.distribution        = .fillEqually
-        buttonsStack.spacing             = 20
-        buttonsStack.backgroundColor     = StoreUIColor.creamWhite
-
+        buttonsStack.spacing             = 15
+        buttonsStack.backgroundColor     = StoreUIColor.grapefruit
+        buttonsStack.alpha               = 0
+        
+        loginButton.backgroundColor      = StoreUIColor.creamWhite
+        loginButton.setTitleColor(StoreUIColor.black, for: .normal)
+        
+        registerButton.backgroundColor   = StoreUIColor.creamWhite
+        registerButton.setTitleColor(StoreUIColor.black, for: .normal)
+        
         buttonsStack.addArrangedSubview(loginButton)
         buttonsStack.addArrangedSubview(registerButton)
     }
     
     
     private func configureUIElements() {
-        bodyLabel.text = "Please log in or sign up in order to buy some awesome things!"
-        shopImageView.image = imageAsUIImage.shopBuilding
+        bodyLabel.text                          = "Please log in or sign up in order to buy some awesome things!"
+        shopImageView.image                     = storeUIImage.shopBuilding
+        
+        colorBottomView.backgroundColor         = StoreUIColor.grapefruit
+        colorBottomView.layer.cornerRadius      = 45
+        colorBottomView.alpha                   = 0
     }
     
     
     private func layoutUIElements() {
-        addSubviews(shopImageView, buttonsStack, welcomeLabel, bodyLabel)
+        colorBottomView.translatesAutoresizingMaskIntoConstraints = false
+    
+        addSubviews(shopImageView, welcomeLabel, bodyLabel, colorBottomView)
+        colorBottomView.addSubview(buttonsStack)
+//        debugConfiguration(shopImageView,welcomeLabel,bodyLabel,colorBottomView,buttonsStack,colorBottomView)
         
         NSLayoutConstraint.activate([
             shopImageView.topAnchor.constraint          (equalTo: view.topAnchor, constant: 100),
@@ -126,10 +143,15 @@ final class EntryVC: UIViewController, Coordinating {
             bodyLabel.heightAnchor.constraint           (equalToConstant: 65),
             bodyLabel.leadingAnchor.constraint          (equalTo: shopImageView.leadingAnchor, constant: 15),
             
-            buttonsStack.bottomAnchor.constraint        (equalTo: view.bottomAnchor, constant: -80),
-            buttonsStack.heightAnchor.constraint        (equalToConstant: 110),
-            buttonsStack.widthAnchor.constraint         (equalToConstant: 280),
+            buttonsStack.bottomAnchor.constraint        (equalTo: view.bottomAnchor, constant: -50),
+            buttonsStack.heightAnchor.constraint        (equalToConstant: 100),
+            buttonsStack.widthAnchor.constraint         (equalToConstant: 250),
             buttonsStack.centerXAnchor.constraint       (equalTo: view.centerXAnchor),
+            
+            colorBottomView.topAnchor.constraint        (equalTo: buttonsStack.topAnchor, constant: -50),
+            colorBottomView.leadingAnchor.constraint    (equalTo: view.leadingAnchor, constant: 0),
+            colorBottomView.trailingAnchor.constraint   (equalTo: view.trailingAnchor, constant: 40),
+            colorBottomView.bottomAnchor.constraint     (equalTo: view.bottomAnchor, constant: 20),
         ])
     }
 }

@@ -110,7 +110,7 @@ final class SignUpVC: UIViewController {
     }
 
     
-    private func configureUIElements() { shopImageView.image = imageAsUIImage.shoppingLadyr071 }
+    private func configureUIElements() { shopImageView.image = storeUIImage.shoppingLadyr071 }
     
     
     private func configureRegisterStackView() {

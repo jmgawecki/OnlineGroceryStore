@@ -160,7 +160,14 @@ extension SearchVC: ProductsVCCollectionViewCellDelegate {
         presentStoreAlertOnMainThread(title: .success, message: .itemAddedToBasket, button: .ok, image: .happyBlackGirlR056)
     }
     
-    func didNotAddProducts(with error: String) {
-        presentStoreAlertOnMainThread(title: .failure, message: .addSomeQuantity, button: .willDo, image: .happyBlackGirlR056)
+    func didNotAddProducts(DelegateCase: DelegateCase) {
+        switch DelegateCase {
+        case .checkConnection:
+            presentStoreAlertOnMainThread(title: .failure, message: .checkInternet, button: .willDo, image: .happyBlackGirlR056)
+            
+        case .addQuantity:
+            presentStoreAlertOnMainThread(title: .failure, message: .addSomeQuantity, button: .willDo, image: .happyBlackGirlR056)
+        }
+       
     }
 }
